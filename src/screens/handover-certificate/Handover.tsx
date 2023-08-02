@@ -66,7 +66,7 @@ const Handover = () => {
   };
 
   return (
-    <View style={{padding: 20}}>
+    <View style={{padding: 20}}> 
       <ScrollView>
         <View>
           <View style={{backgroundColor: '#c7fe1a', padding: 10}}>
