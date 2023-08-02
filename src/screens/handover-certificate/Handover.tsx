@@ -73,7 +73,7 @@ const Handover = () => {
             <Text style={myStyles.headingText}>Project Details:</Text>
           </View>
           <Text>What is this Certificate Relating to ?</Text>
-          <Text>Choose One</Text>
+          <Text>Choose One</Text> 
           <RadioGroup
             options={options}
             selectedValue={selectedValue}
