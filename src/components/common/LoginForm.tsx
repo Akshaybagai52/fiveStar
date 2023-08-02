@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React from 'react';
 import {
   View,
@@ -8,6 +9,7 @@ import {
   Platform,
   Modal,
   Dimensions,
+  Alert,
 } from 'react-native';
 const screenHeight = Dimensions.get('window').height;
 
@@ -17,11 +19,30 @@ const Login = ({navigation}: any) => {
 
   const handleSubmit = () => {
     const formData = new FormData();
-    formData.append('name', `${firstName}`);
-    formData.append('email', email);
+    formData.append('email', `${firstName}`);
+    formData.append('password', email);
+    axios
+      .post('https://api.fivestaraccess.com.au/login.php', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+      .then(res => {
+        const status = res.data.status;
+        
+        if (status === 'approved') {
+          navigation.navigate('Handover');
+        } else {
+          Alert.alert('Login Failed', 'Invalid Details.');
+        }
+      })
+      .catch(err => {
+        Alert.alert('Something Went Wrong');
+      });
   };
+
   const handleGetStartedPress = () => {
-    navigation.navigate('Handover');
+    handleSubmit();
   };
 
   return (
@@ -45,7 +66,9 @@ const Login = ({navigation}: any) => {
 
         <TouchableOpacity
           style={styles.submitButton}
-          onPress={handleGetStartedPress}>
+          onPress={handleGetStartedPress}
+          disabled={firstName.length > 0 && email.length ? false : true}
+          >
           <Text style={styles.submitButtonText}>Login</Text>
         </TouchableOpacity>
         {/* <TouchableOpacity style={styles.closeButton} onPress={onClose}>

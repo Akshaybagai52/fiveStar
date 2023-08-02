@@ -4,6 +4,9 @@ import {myStyles} from './styles';
 import RadioGroup, {Option} from '../../themes/buttons/RadioButtons';
 import TextInputGroup from '../../themes/buttons/TextInputGroup';
 import {InputField} from '../../types/interfaces/types';
+import CustomHeader from '../../themes/text/TextWithGreenBg';
+import { Checkbox } from 'react-native-paper';
+// import AudioRecorderScreen from '../../themes/buttons/AudioRecorder';
 
 const Handover = () => {
   const [selectedValue, setSelectedValue] = useState<string>('option1');
@@ -66,7 +69,7 @@ const Handover = () => {
   };
 
   return (
-    <View style={{padding: 20}}> 
+    <View style={{padding: 20}}>
       <ScrollView>
         <View>
           <View style={{backgroundColor: '#c7fe1a', padding: 10}}>
@@ -84,6 +87,28 @@ const Handover = () => {
           <TextInputGroup inputFields={formData} />
           {/* <Text>How would you describe the work completed ?*</Text>
           <TextInput multiline={true} numberOfLines={4} /> */}
+        </View>
+        {/* <AudioRecorderScreen /> */}
+        <CustomHeader text="Scaffold Details" />
+        <View>
+          <Text>
+            The scaffold described below has been erected in accordance with AS
+            4576 - Guidelines for scaffolding, AS 1576 (1-6) - Scaffolding, AS
+            1577 - Scaffold planks, Work Health and Safety (managing the Risks
+            of Falls at Workplaces) Code of Practice 2015, Safe Work Australia -
+            Guide to Scaffolds and Scaffolding. The scaffold described below is
+            suitable for its intended purpose only. All Hop-up’s can only be
+            installed following the removal of the form ply deck below. The
+            Principal contractor must ensure all falls are managed in the
+            interim by either installing adequate edge protection or ensuring
+            the ply is formed to the perimeter scaffold internal standards.
+            Hop-Ups are to be loaded to maximum capacity of 225Kg Simultaneous
+            loading permitted as per Scaffold Design
+          </Text>
+        </View>
+        <View>
+          <Text>Is scaffold built as per Drawings Supplied ? *</Text>
+          <Checkbox.Item label="Item" status="checked" />
         </View>
       </ScrollView>
     </View>
