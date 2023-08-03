@@ -1,5 +1,7 @@
 import React from 'react';
-import {View, TextInput, StyleSheet, Text} from 'react-native';
+import {View, TextInput, StyleSheet} from 'react-native';
+import { Text } from 'react-native-paper';
+
 
 interface TextInputGroupProps {
   inputFields: Partial<{
@@ -42,7 +44,6 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 16,
-    fontWeight: 'bold',
     marginBottom: 5,
   },
   asterisk: {

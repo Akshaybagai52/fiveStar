@@ -1,4 +1,5 @@
-import {View, Text, ScrollView} from 'react-native';
+import {View, ScrollView, Button} from 'react-native';
+import { Text} from 'react-native-paper';
 import React, {useState} from 'react';
 import {myStyles} from './styles';
 import RadioGroup, {Option} from '../../themes/buttons/RadioButtons';
@@ -10,6 +11,10 @@ import CheckBox from '../../themes/buttons/Checkbox';
 import {CheckboxItem} from '../../types/interfaces/types';
 // import { checkBoxType } from '../../types/interfaces/types';
 // import AudioRecorderScreen from '../../themes/buttons/AudioRecorder';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Icon1 from 'react-native-vector-icons/FontAwesome5';
+import Icon2 from 'react-native-vector-icons/Feather';
+import { ButtonGreen } from '../../themes/text/ButtonGreen';
 
 const loadingCapacity: CheckboxItem[] = [
   {label: 'LIGHT 225 KG', status: 'unchecked'},
@@ -29,38 +34,112 @@ const elevations: CheckboxItem[] = [
   {label: 'Whole House', status: 'unchecked'},
 ];
 
+
+
+// const scaffoldData: InputField[] =
+
 const Handover = () => {
-  const [selectedValue, setSelectedValue] = useState<string>('option1');
-  const [formData, setFormData] = useState<Partial<InputField>[]>([
+  const initialFormData: Partial<InputField>[] = [
     {
       label: 'What"s the Project ID ?',
-      onChangeText: text => handleInputChange('fullName', text),
+      onChangeText: (text: string) => handleInputChange('fullName', text),
       showAsterisk: true,
     },
     {
       label: 'Which Building and what Level ?',
-      onChangeText: text => handleInputChange('email', text),
+      onChangeText: (text: string) => handleInputChange('email', text),
     },
     {
       label: 'What"s the name of Customer or Builder ?',
-      onChangeText: text => handleInputChange('phoneNumber', text),
+      onChangeText: (text: string) => handleInputChange('phoneNumber', text),
     },
     {
       label: 'Customer ABN',
-      onChangeText: text => handleInputChange('phoneNumber', text),
+      onChangeText: (text: string) => handleInputChange('phoneNumber', text),
     },
     {
       label: 'How would you describe the work completed ?',
-      onChangeText: text => handleInputChange('phoneNumber', text),
+      onChangeText: (text: string) => handleInputChange('phoneNumber', text),
       showAsterisk: true,
       multiline: true,
       numberOfLines: 4,
     },
-  ]);
+  ];
+  const scaffoldData: Partial<InputField>[] =  [
+    {
+      label: 'Scaffold length',
+      onChangeText: text => handlescaffoldChange('fullName', text),
+    },
+    {
+      label: 'No. of Bays long',
+      onChangeText: text => handlescaffoldChange('email', text),
+    },
+    {
+      label: 'Scaffold Height',
+      onChangeText: text => handlescaffoldChange('phoneNumber', text),
+    },
+    {
+      label: 'No. of Lifts Above Base Lift',
+      onChangeText: text => handlescaffoldChange('phoneNumber', text),
+    },
+  ]
+  const userPersonalData: Partial<InputField>[] =  [
+    {
+      label: 'Name of authorised Customer Representative ',
+      onChangeText: text => handlescaffoldChange('fullName', text),
+      showAsterisk: true,
+    },
+    {
+      label: 'Write your HRWL number (High Risk Work Licence number)',
+      onChangeText: text => handlescaffoldChange('email', text),
+    },
+    {
+      label: 'Write your Customer email for them to receive a pdf copy',
+      onChangeText: text => handlescaffoldChange('phoneNumber', text),
+    },
+    {
+      label: 'Write your email to receive a pdf copy',
+      onChangeText: text => handlescaffoldChange('phoneNumber', text),
+    },
+    {
+      label: 'Handover Date and Time ',
+      onChangeText: text => handlescaffoldChange('phoneNumber', text),
+      showAsterisk: true,
+    },
+    {
+      label: 'Name of authorised Customer Representative ',
+      onChangeText: text => handlescaffoldChange('phoneNumber', text),
+      showAsterisk: true,
+    },
+  ]
+  const [selectedValue, setSelectedValue] = useState<string>('option1');
+  const [formData, setFormData] = useState<Partial<InputField>[]>(initialFormData);
+  const [scaffold, setScaffold] = useState<Partial<InputField>[]>(scaffoldData);
+  const [userData, setUserData] = useState<Partial<InputField>[]>(userPersonalData);
   const [checkboxes, setCheckboxes] = useState<CheckboxItem[]>(loadingCapacity);
 
   const handleInputChange = (fieldName: string, text: string) => {
     setFormData(prevFormData => {
+      return prevFormData.map(field => {
+        if (field.label === fieldName) {
+          return {...field, value: text};
+        }
+        return field;
+      });
+    });
+  };
+  const handlescaffoldChange = (fieldName: string, text: string) => {
+    setScaffold(prevFormData => {
+      return prevFormData.map(field => {
+        if (field.label === fieldName) {
+          return {...field, value: text};
+        }
+        return field;
+      });
+    });
+  };
+  const handleUserData = (fieldName: string, text: string) => {
+    setUserData(prevFormData => {
       return prevFormData.map(field => {
         if (field.label === fieldName) {
           return {...field, value: text};
@@ -90,27 +169,74 @@ const Handover = () => {
   const handleSelect = (value: string) => {
     setSelectedValue(value);
   };
+
   const handleCheckboxPress = (label: string) => {
+    // @ts-ignore
     setCheckboxes(prevCheckboxes => {
-      return prevCheckboxes.map(checkbox =>
-        checkbox.label === label
-          ? {
-              ...checkbox,
-              status: checkbox.status === 'checked' ? 'unchecked' : 'checked',
-            }
-          : checkbox,
-      );
+      // @ts-ignore
+      console.log(prevCheckboxes);
+      const updatedCheckboxes = prevCheckboxes.map((checkbox: CheckboxItem) => {
+        // @ts-ignore
+        console.log(checkbox);
+        if (checkbox.label === label) {
+          // @ts-ignore
+          const newStatus =
+            checkbox.status === 'checked'
+              ? 'unchecked'
+              : checkbox.status === 'unchecked'
+              ? 'checked'
+              : 'indeterminate';
+          // @ts-ignore
+          console.log(`Updating checkbox status to ${newStatus}`);
+          return {
+            ...checkbox,
+            status: newStatus,
+          };
+        } else {
+          return checkbox;
+        }
+      });
+
+      // @ts-ignore
+      console.log(updatedCheckboxes);
+      // @ts-ignore
+      return updatedCheckboxes;
     });
   };
-
   return (
     <View style={{padding: 20}}>
       <ScrollView>
         <View>
-          <View style={{backgroundColor: '#c7fe1a', padding: 10}}>
+          <View style={{padding: 10, marginBottom: 15}}>
+            <Text>
+              <Icon name="office-building-marker" size={20} color="#112D4E" />{' '}
+              Five Star Scaffolding Pty Ltd
+            </Text>
+            <Text style={{marginTop: 10}}>
+              <Icon name="license" size={20} color="#112D4E" /> ABN 70 130 008
+              212
+            </Text>
+            <Text style={{marginTop: 10}}>
+              <Icon1 name="street-view" size={20} color="#112D4E" /> 61 Long
+              Street, Smithfield NSW 2164
+            </Text>
+            <Text style={{marginTop: 10}}>
+              <Icon2 name="phone-call" size={20} color="#112D4E" /> (02) 9632
+              3466
+            </Text>
+          </View>
+          <View style={{marginBottom: 20}}>
+            <Text style={{fontSize: 30, fontWeight: 'bold'}}>
+              Handover Certificate
+            </Text>
+          </View>
+          <View
+            style={{backgroundColor: '#c7fe1a', padding: 10, marginBottom: 10}}>
             <Text style={myStyles.headingText}>Project Details:</Text>
           </View>
-          <Text>What is this Certificate Relating to ?</Text>
+          <Text style={{fontSize: 19}}>
+            What is this Certificate Relating to ?
+          </Text>
           <Text>Choose One</Text>
           <RadioGroup
             options={options}
@@ -124,9 +250,18 @@ const Handover = () => {
           <TextInput multiline={true} numberOfLines={4} /> */}
         </View>
         {/* <AudioRecorderScreen /> */}
-        <CustomHeader text="Scaffold Details" />
-        <View>
-          <Text>
+        <View style={{margin: 15}}>
+          <CustomHeader text="Scaffold Details:" />
+        </View>
+        <View
+          style={{
+            elevation: 8,
+            borderColor: 'black',
+            padding: 30,
+            marginTop: 20,
+            marginBottom: 20,
+          }}>
+          <Text style={{fontSize: 16, fontWeight: 'bold'}}>
             The scaffold described below has been erected in accordance with AS
             4576 - Guidelines for scaffolding, AS 1576 (1-6) - Scaffolding, AS
             1577 - Scaffold planks, Work Health and Safety (managing the Risks
@@ -142,17 +277,42 @@ const Handover = () => {
           </Text>
         </View>
         <View>
-          <Text>Is scaffold built as per Drawings Supplied ? *</Text>
+          <Text style={{fontSize: 18, fontWeight: 'bold'}}>
+            Is scaffold built as per Drawings Supplied ?
+          </Text>
 
           <CheckBox
-            checkboxes={loadingCapacity}
+            checkboxes={checkboxes}
             onPress={handleCheckboxPress}
           />
         </View>
-        <View>
-          <Text>Which elevations were completed ? Choose all applicable *</Text>
-          <CheckBox checkboxes={elevations} onPress={handleCheckboxPress}/>
+        <View style={{marginTop: 15}}>
+          <Text style={{fontSize: 18, fontWeight: 'bold'}}>
+            Which elevations were completed ? Choose all applicable *
+          </Text>
+          <CheckBox checkboxes={elevations} onPress={handleCheckboxPress} />
         </View>
+        <View>
+          <TextInputGroup inputFields={scaffold} />
+        </View>
+        <View style={{marginBottom: 15, marginTop: 15}}>
+          <CustomHeader text="Signatures" />
+        </View>
+        <View>
+          <Text style={{fontWeight: 'bold', fontSize: 15, marginBottom: 15}}>
+            I acknowledge that I have read and understood and agree with the
+            Handover Certificate Terms and Conditions. I have fully understood
+            the Duty Category of the work platforms. Any breach of the Handover
+            Certificate Terms and Conditions may result in an infringement of
+            "Decommission of Scaffold Notice" being issued. Any breach of the
+            Handover Certificate may lead to injury or death.
+          </Text>
+        </View>
+        <View>
+          <TextInputGroup inputFields={userData} />
+        </View>
+        {/* <Button title='Submit' color="#c7fe1a"></Button> */}
+        <ButtonGreen text="Submit" />
       </ScrollView>
     </View>
   );

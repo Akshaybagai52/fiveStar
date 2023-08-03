@@ -1,5 +1,7 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
+import { Text } from 'react-native-paper';
+
 
 interface CustomHeaderProps {
   text: string;
@@ -19,8 +21,9 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   headingText: {
-    fontSize: 18,
+    fontSize: 24,
     fontWeight: 'bold',
+    color:'#14274E'
   },
 });
 
