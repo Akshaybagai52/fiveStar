@@ -1,3 +1,4 @@
+
 export interface InputField {
     label: string;
     value: string;
@@ -7,3 +8,9 @@ export interface InputField {
     multiline: boolean;
     numberOfLines: number;
   }
+
+// Checkbox component
+export interface CheckboxItem {
+  label: string;
+  status: 'checked' | 'unchecked' | 'indeterminate';
+}

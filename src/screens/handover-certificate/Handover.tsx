@@ -5,8 +5,29 @@ import RadioGroup, {Option} from '../../themes/buttons/RadioButtons';
 import TextInputGroup from '../../themes/buttons/TextInputGroup';
 import {InputField} from '../../types/interfaces/types';
 import CustomHeader from '../../themes/text/TextWithGreenBg';
-import { Checkbox } from 'react-native-paper';
+import {Checkbox} from 'react-native-paper';
+import CheckBox from '../../themes/buttons/Checkbox';
+import {CheckboxItem} from '../../types/interfaces/types';
+// import { checkBoxType } from '../../types/interfaces/types';
 // import AudioRecorderScreen from '../../themes/buttons/AudioRecorder';
+
+const loadingCapacity: CheckboxItem[] = [
+  {label: 'LIGHT 225 KG', status: 'unchecked'},
+  {label: 'MEDIUM 450 KG', status: 'unchecked'},
+  {label: 'HEAVY 675 KG', status: 'unchecked'},
+  {label: 'SPECIAL DUTY', status: 'unchecked'},
+];
+
+const elevations: CheckboxItem[] = [
+  {label: 'East Elevation', status: 'unchecked'},
+  {label: 'West Elevation', status: 'unchecked'},
+  {label: 'North Elevation', status: 'unchecked'},
+  {label: 'South Elevation', status: 'unchecked'},
+  {label: 'Variation works', status: 'unchecked'},
+  {label: 'Whole Project', status: 'unchecked'},
+  {label: 'Whole Level', status: 'unchecked'},
+  {label: 'Whole House', status: 'unchecked'},
+];
 
 const Handover = () => {
   const [selectedValue, setSelectedValue] = useState<string>('option1');
@@ -36,6 +57,7 @@ const Handover = () => {
       numberOfLines: 4,
     },
   ]);
+  const [checkboxes, setCheckboxes] = useState<CheckboxItem[]>(loadingCapacity);
 
   const handleInputChange = (fieldName: string, text: string) => {
     setFormData(prevFormData => {
@@ -59,6 +81,7 @@ const Handover = () => {
       value: 'Other Works - mention in Notes below',
     },
   ];
+
   // const inputField: InputField[] = [
   //   { label: 'Name', value: '', placeholder: 'Enter your name', onChangeText: (text: string) => handleInputChange(0, text), showAsterisk: true },
   //   { label: 'Email', value: '', placeholder: 'Enter your email', onChangeText: (text: string) => handleInputChange(1, text) },
@@ -66,6 +89,18 @@ const Handover = () => {
   // ]
   const handleSelect = (value: string) => {
     setSelectedValue(value);
+  };
+  const handleCheckboxPress = (label: string) => {
+    setCheckboxes(prevCheckboxes => {
+      return prevCheckboxes.map(checkbox =>
+        checkbox.label === label
+          ? {
+              ...checkbox,
+              status: checkbox.status === 'checked' ? 'unchecked' : 'checked',
+            }
+          : checkbox,
+      );
+    });
   };
 
   return (
@@ -108,7 +143,15 @@ const Handover = () => {
         </View>
         <View>
           <Text>Is scaffold built as per Drawings Supplied ? *</Text>
-          <Checkbox.Item label="Item" status="checked" />
+
+          <CheckBox
+            checkboxes={loadingCapacity}
+            onPress={handleCheckboxPress}
+          />
+        </View>
+        <View>
+          <Text>Which elevations were completed ? Choose all applicable *</Text>
+          <CheckBox checkboxes={elevations} onPress={handleCheckboxPress}/>
         </View>
       </ScrollView>
     </View>
