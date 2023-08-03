@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { View, TouchableOpacity, Text } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
+import { Text } from 'react-native-paper';
 import { Checkbox } from 'react-native-paper';
 import { CheckboxItem } from '../../types/interfaces/types';
 
@@ -15,7 +16,7 @@ const CheckBox: React.FC<CheckBoxProps> = ({ checkboxes, onPress }) => {
         <TouchableOpacity key={label} onPress={() => onPress(label)}>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <Checkbox status={status} />
-            <Text style={{ fontWeight: 'bold' }}>{label}</Text>
+            <Text >{label}{status}</Text>
           </View>
         </TouchableOpacity>
       ))}

@@ -4,7 +4,7 @@ import React from 'react'
 
 const GetStarted = ({ navigation }:any) => {
   const handleGetStartedPress = () => {
-    navigation.navigate('Handover');
+    navigation.navigate('Login');
 };
   return (
     <View style={styles.container}>
