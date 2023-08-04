@@ -15,7 +15,7 @@ const CheckBox: React.FC<CheckBoxProps> = ({ checkboxes, onPress }) => {
       {checkboxes.map(({ label, status }) => (
         <TouchableOpacity key={label} onPress={() => onPress(label)}>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Checkbox status={status} />
+            <Checkbox status={status}  />
             <Text >{label}{status}</Text>
           </View>
         </TouchableOpacity>

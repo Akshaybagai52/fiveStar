@@ -1,5 +1,5 @@
 {
-  "name": "AwesomeProject",
+  "name": "Five Star Scaffolding",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -28,6 +28,7 @@
     "@react-native/metro-config": "^0.72.9",
     "@tsconfig/react-native": "^3.0.0",
     "@types/react": "^18.0.24",
+    "@types/react-native-vector-icons": "^6.4.13",
     "@types/react-test-renderer": "^18.0.0",
     "babel-jest": "^29.2.1",
     "eslint": "^8.19.0",

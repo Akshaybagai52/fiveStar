@@ -18,6 +18,10 @@ const Login = ({navigation}: any) => {
   const [email, setEmail] = React.useState('');
 
   const handleSubmit = () => {
+    console.log(firstName)
+    if(!firstName || !email) {
+      return Alert.alert("Login Failed", "Please fill all the details")
+    }
     const formData = new FormData();
     formData.append('email', `${firstName}`);
     formData.append('password', email);
@@ -67,7 +71,7 @@ const Login = ({navigation}: any) => {
         <TouchableOpacity
           style={styles.submitButton}
           onPress={handleGetStartedPress}
-          disabled={firstName.length > 0 && email.length ? false : true}
+          // disabled={firstName.length > 0 && email.length ? false : true}
           >
           <Text style={styles.submitButtonText}>Login</Text>
         </TouchableOpacity>

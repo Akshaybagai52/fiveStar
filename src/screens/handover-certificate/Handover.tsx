@@ -6,7 +6,6 @@ import RadioGroup, {Option} from '../../themes/buttons/RadioButtons';
 import TextInputGroup from '../../themes/buttons/TextInputGroup';
 import {InputField} from '../../types/interfaces/types';
 import CustomHeader from '../../themes/text/TextWithGreenBg';
-import {Checkbox} from 'react-native-paper';
 import CheckBox from '../../themes/buttons/Checkbox';
 import {CheckboxItem} from '../../types/interfaces/types';
 // import { checkBoxType } from '../../types/interfaces/types';
@@ -117,6 +116,7 @@ const Handover = () => {
   const [scaffold, setScaffold] = useState<Partial<InputField>[]>(scaffoldData);
   const [userData, setUserData] = useState<Partial<InputField>[]>(userPersonalData);
   const [checkboxes, setCheckboxes] = useState<CheckboxItem[]>(loadingCapacity);
+  const [elevationData, setElevationData] = useState<CheckboxItem[]>(elevations);
 
   const handleInputChange = (fieldName: string, text: string) => {
     setFormData(prevFormData => {
@@ -159,13 +159,8 @@ const Handover = () => {
       label: 'Other Works - mention in Notes below',
       value: 'Other Works - mention in Notes below',
     },
+    
   ];
-
-  // const inputField: InputField[] = [
-  //   { label: 'Name', value: '', placeholder: 'Enter your name', onChangeText: (text: string) => handleInputChange(0, text), showAsterisk: true },
-  //   { label: 'Email', value: '', placeholder: 'Enter your email', onChangeText: (text: string) => handleInputChange(1, text) },
-
-  // ]
   const handleSelect = (value: string) => {
     setSelectedValue(value);
   };
@@ -173,21 +168,14 @@ const Handover = () => {
   const handleCheckboxPress = (label: string) => {
     // @ts-ignore
     setCheckboxes(prevCheckboxes => {
-      // @ts-ignore
-      console.log(prevCheckboxes);
       const updatedCheckboxes = prevCheckboxes.map((checkbox: CheckboxItem) => {
-        // @ts-ignore
-        console.log(checkbox);
         if (checkbox.label === label) {
-          // @ts-ignore
           const newStatus =
             checkbox.status === 'checked'
               ? 'unchecked'
               : checkbox.status === 'unchecked'
               ? 'checked'
               : 'indeterminate';
-          // @ts-ignore
-          console.log(`Updating checkbox status to ${newStatus}`);
           return {
             ...checkbox,
             status: newStatus,
@@ -196,13 +184,33 @@ const Handover = () => {
           return checkbox;
         }
       });
-
-      // @ts-ignore
-      console.log(updatedCheckboxes);
-      // @ts-ignore
       return updatedCheckboxes;
     });
   };
+  const handleElevationDataPress = (label: string) => {
+    // @ts-ignore
+    setElevationData(prevElevation => {
+      const updatedCheckboxes = prevElevation.map((elevation: CheckboxItem) => {
+        if (elevation.label === label) {
+          const newStatus =
+          elevation.status === 'checked'
+              ? 'unchecked'
+              : elevation.status === 'unchecked'
+              ? 'checked'
+              : 'indeterminate';
+          return {
+            ...elevation,
+            status: newStatus,
+          };
+        } else {
+          return elevation;
+        }
+      });
+      return updatedCheckboxes;
+    });
+  };
+  
+  
   return (
     <View style={{padding: 20}}>
       <ScrollView>
@@ -290,7 +298,7 @@ const Handover = () => {
           <Text style={{fontSize: 18, fontWeight: 'bold'}}>
             Which elevations were completed ? Choose all applicable *
           </Text>
-          <CheckBox checkboxes={elevations} onPress={handleCheckboxPress} />
+          <CheckBox checkboxes={elevationData} onPress={handleElevationDataPress} />
         </View>
         <View>
           <TextInputGroup inputFields={scaffold} />
