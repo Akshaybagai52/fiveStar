@@ -2,7 +2,6 @@ import React from 'react';
 import {View, TextInput, StyleSheet} from 'react-native';
 import { Text } from 'react-native-paper';
 
-
 interface TextInputGroupProps {
   inputFields: Partial<{
     label: string;
@@ -12,6 +11,8 @@ interface TextInputGroupProps {
     showAsterisk?: boolean;
     multiline: boolean;
     numberOfLines: number;
+    mode: string;
+            
   }>[];
 }
 
@@ -30,7 +31,7 @@ const TextInputGroup: React.FC<TextInputGroupProps> = ({inputFields}) => {
             onChangeText={inputField.onChangeText}
             placeholder={inputField.placeholder}
             multiline={inputField.multiline}
-            numberOfLines={inputField.numberOfLines}
+            numberOfLines={inputField.numberOfLines} 
           />
         </View>
       ))}

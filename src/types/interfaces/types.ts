@@ -9,7 +9,8 @@ export interface InputField {
     numberOfLines: number;
   }
 
-// Checkbox component
+
+
 export interface CheckboxItem {
   label: string;
   status: 'checked' | 'unchecked' | 'indeterminate';
