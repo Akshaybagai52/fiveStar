@@ -14,6 +14,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Icon1 from 'react-native-vector-icons/FontAwesome5';
 import Icon2 from 'react-native-vector-icons/Feather';
 import { ButtonGreen } from '../../themes/text/ButtonGreen';
+import Recorder from '../../themes/buttons/AudioRecorder';
 
 const loadingCapacity: CheckboxItem[] = [
   {label: 'LIGHT 225 KG', status: 'unchecked'},
@@ -316,6 +317,7 @@ const Handover = () => {
             Handover Certificate may lead to injury or death.
           </Text>
         </View>
+        {/* <Recorder /> */}
         <View>
           <TextInputGroup inputFields={userData} />
         </View>
