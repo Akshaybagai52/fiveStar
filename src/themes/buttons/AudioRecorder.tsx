@@ -50,7 +50,7 @@ const Recorder = () => {
 
   const onPausePlay = async () => {
     await audioRecorderPlayer.pausePlayer();
-     setIsPlaying(false);
+    // setIsPlaying(false);
   };
 
   const onStopPlay = () => {
@@ -84,11 +84,13 @@ const Recorder = () => {
       {/* <Text>Current Position Sec: {currentPositionSec}</Text> */}
       {/* <Text>Current Duration Sec: {currentDurationSec}</Text> */}
       {/* <Text>Play Time: {playTime}</Text> */}
-      {/* <ProgressBar
-        progress={currentPositionSec / currentDurationSec}
-        color="#112D4E"
-        style={{height: 8, borderRadius: 5, marginTop: 10, width: '90%'}}
-      /> */}
+      {currentDurationSec > 0 && ( // Conditional rendering of ProgressBar
+        <ProgressBar
+          progress={currentPositionSec / currentDurationSec}
+          color="#112D4E"
+          style={{ height: 8, borderRadius: 5, marginTop: 10, width: '90%' }}
+        />
+      )}
       <View
         style={{
           marginTop: 10,
@@ -97,12 +99,20 @@ const Recorder = () => {
           justifyContent: 'space-between',
         }}>
         <Button
-          icon={isPlaying ? 'play-pause' : 'play-circle'}
-          onPress={isPlaying ? onPausePlay : onStartPlay}
+          icon={'play-circle'}
+          onPress={onStartPlay}
           disabled={isRecording}
           // style={{width: '90%'}}
           mode="contained">
-          {isPlaying ? 'Pause' : 'Play'}{' '}
+          Play
+        </Button>
+        <Button
+          icon={'play-pause'}
+          onPress={onPausePlay }
+          disabled={isRecording}
+          // style={{width: '90%'}}
+          mode="contained">
+          Pause
         </Button>
         <Button
           icon={'restart'}
@@ -112,6 +122,7 @@ const Recorder = () => {
           mode="contained">
           Restart
         </Button>
+        
       </View>
 
       {/* <Text>Duration: {duration}</Text> */}
