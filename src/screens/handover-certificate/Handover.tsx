@@ -15,6 +15,8 @@ import Icon1 from 'react-native-vector-icons/FontAwesome5';
 import Icon2 from 'react-native-vector-icons/Feather';
 import { ButtonGreen } from '../../themes/text/ButtonGreen';
 import Recorder from '../../themes/buttons/AudioRecorder';
+import { MySignatureCanvas } from '../../themes/buttons/SignatureCanvas';
+// import SignatureCanvas from '../../themes/buttons/SignatureCanvas';
 
 const loadingCapacity: CheckboxItem[] = [
   {label: 'LIGHT 225 KG', status: 'unchecked'},
@@ -258,6 +260,11 @@ const Handover = () => {
           {/* <Text>How would you describe the work completed ?*</Text>
           <TextInput multiline={true} numberOfLines={4} /> */}
         </View>
+        <View style={{marginBottom: 15, marginTop: 15}}>
+        <Recorder />
+
+        </View>
+
         {/* <AudioRecorderScreen /> */}
         <View style={{margin: 15}}>
           <CustomHeader text="Scaffold Details:" />
@@ -317,11 +324,11 @@ const Handover = () => {
             Handover Certificate may lead to injury or death.
           </Text>
         </View>
-        <Recorder />
         <View>
           <TextInputGroup inputFields={userData} />
         </View>
-        {/* <Button title='Submit' color="#c7fe1a"></Button> */}
+        {/* <SignatureScreen /> */}
+        <MySignatureCanvas />
         <ButtonGreen text="Submit" />
       </ScrollView>
     </View>
