@@ -317,7 +317,7 @@ const Handover = () => {
             Handover Certificate may lead to injury or death.
           </Text>
         </View>
-        {/* <Recorder /> */}
+        <Recorder />
         <View>
           <TextInputGroup inputFields={userData} />
         </View>
