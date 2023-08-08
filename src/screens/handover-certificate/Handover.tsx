@@ -1,6 +1,6 @@
 import {View, ScrollView, Button} from 'react-native';
 import { Text} from 'react-native-paper';
-import React, {useState} from 'react';
+import React, {useState, useRef} from 'react';
 import {myStyles} from './styles';
 import RadioGroup, {Option} from '../../themes/buttons/RadioButtons';
 import TextInputGroup from '../../themes/buttons/TextInputGroup';
@@ -41,6 +41,23 @@ const elevations: CheckboxItem[] = [
 // const scaffoldData: InputField[] =
 
 const Handover = () => {
+  // Scroll View start
+  const scrollViewRef:any = useRef(null);
+
+  const handleCanvasBegin = () => {
+    if (scrollViewRef.current) {
+      scrollViewRef.current.setNativeProps({ scrollEnabled: false });
+    }
+  };
+
+  const handleCanvasEnd = () => {
+    if (scrollViewRef.current) {
+      scrollViewRef.current.setNativeProps({ scrollEnabled: true });
+    }
+  };
+
+
+  // Scroll View End
   const initialFormData: Partial<InputField>[] = [
     {
       label: 'What"s the Project ID ?',
@@ -216,7 +233,7 @@ const Handover = () => {
   
   return (
     <View style={{padding: 20}}>
-      <ScrollView>
+      <ScrollView ref={scrollViewRef} scrollEnabled>
         <View>
           <View style={{padding: 10, marginBottom: 15}}>
             <Text>
@@ -328,7 +345,11 @@ const Handover = () => {
           <TextInputGroup inputFields={userData} />
         </View>
         {/* <SignatureScreen /> */}
-        <MySignatureCanvas />
+        <MySignatureCanvas onBegin={handleCanvasBegin}
+          onEnd={handleCanvasEnd}/>
+
+<MySignatureCanvas onBegin={handleCanvasBegin}
+          onEnd={handleCanvasEnd}/>
         <ButtonGreen text="Submit" />
       </ScrollView>
     </View>
