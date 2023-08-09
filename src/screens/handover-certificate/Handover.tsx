@@ -16,6 +16,7 @@ import Icon2 from 'react-native-vector-icons/Feather';
 import { ButtonGreen } from '../../themes/text/ButtonGreen';
 import Recorder from '../../themes/buttons/AudioRecorder';
 import { MySignatureCanvas } from '../../themes/buttons/SignatureCanvas';
+import FilePicker from '../../themes/buttons/FilePicker';
 // import SignatureCanvas from '../../themes/buttons/SignatureCanvas';
 
 const loadingCapacity: CheckboxItem[] = [
@@ -350,6 +351,7 @@ const Handover = () => {
 
 <MySignatureCanvas onBegin={handleCanvasBegin}
           onEnd={handleCanvasEnd}/>
+          <FilePicker />
         <ButtonGreen text="Submit" />
       </ScrollView>
     </View>
