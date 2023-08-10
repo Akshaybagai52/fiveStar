@@ -69,7 +69,7 @@ const Recorder = () => {
           justifyContent: 'space-between',
           width: '90%',
         }}>
-        <Button
+        <Button  rippleColor="#e0aaff"
           icon={isRecording ? 'stop' : 'record'}
           onPress={isRecording ? onStopRecord : onStartRecord}
           disabled={isPlaying}
@@ -98,7 +98,7 @@ const Recorder = () => {
           width: '90%',
           justifyContent: 'space-between',
         }}>
-        <Button
+        <Button  rippleColor="#e0aaff"
           icon={'play-circle'}
           onPress={onStartPlay}
           disabled={isRecording}
@@ -106,7 +106,7 @@ const Recorder = () => {
           mode="contained">
           Play
         </Button>
-        <Button
+        <Button rippleColor="#e0aaff"
           icon={'play-pause'}
           onPress={onPausePlay }
           disabled={isRecording}
@@ -114,7 +114,7 @@ const Recorder = () => {
           mode="contained">
           Pause
         </Button>
-        <Button
+        <Button rippleColor="#e0aaff"
           icon={'restart'}
           onPress={onStopPlay}
           disabled={isRecording}

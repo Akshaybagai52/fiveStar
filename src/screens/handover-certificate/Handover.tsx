@@ -1,5 +1,5 @@
 import {View, ScrollView, Button} from 'react-native';
-import { Text} from 'react-native-paper';
+import {Text} from 'react-native-paper';
 import React, {useState, useRef} from 'react';
 import {myStyles} from './styles';
 import RadioGroup, {Option} from '../../themes/buttons/RadioButtons';
@@ -13,9 +13,9 @@ import {CheckboxItem} from '../../types/interfaces/types';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Icon1 from 'react-native-vector-icons/FontAwesome5';
 import Icon2 from 'react-native-vector-icons/Feather';
-import { ButtonGreen } from '../../themes/text/ButtonGreen';
+import {ButtonGreen} from '../../themes/text/ButtonGreen';
 import Recorder from '../../themes/buttons/AudioRecorder';
-import { MySignatureCanvas } from '../../themes/buttons/SignatureCanvas';
+import {MySignatureCanvas} from '../../themes/buttons/SignatureCanvas';
 import FilePicker from '../../themes/buttons/FilePicker';
 // import SignatureCanvas from '../../themes/buttons/SignatureCanvas';
 
@@ -37,26 +37,23 @@ const elevations: CheckboxItem[] = [
   {label: 'Whole House', status: 'unchecked'},
 ];
 
-
-
 // const scaffoldData: InputField[] =
 
 const Handover = () => {
   // Scroll View start
-  const scrollViewRef:any = useRef(null);
+  const scrollViewRef: any = useRef(null);
 
   const handleCanvasBegin = () => {
     if (scrollViewRef.current) {
-      scrollViewRef.current.setNativeProps({ scrollEnabled: false });
+      scrollViewRef.current.setNativeProps({scrollEnabled: false});
     }
   };
 
   const handleCanvasEnd = () => {
     if (scrollViewRef.current) {
-      scrollViewRef.current.setNativeProps({ scrollEnabled: true });
+      scrollViewRef.current.setNativeProps({scrollEnabled: true});
     }
   };
-
 
   // Scroll View End
   const initialFormData: Partial<InputField>[] = [
@@ -85,7 +82,7 @@ const Handover = () => {
       numberOfLines: 4,
     },
   ];
-  const scaffoldData: Partial<InputField>[] =  [
+  const scaffoldData: Partial<InputField>[] = [
     {
       label: 'Scaffold length',
       onChangeText: text => handlescaffoldChange('fullName', text),
@@ -102,8 +99,8 @@ const Handover = () => {
       label: 'No. of Lifts Above Base Lift',
       onChangeText: text => handlescaffoldChange('phoneNumber', text),
     },
-  ]
-  const userPersonalData: Partial<InputField>[] =  [
+  ];
+  const userPersonalData: Partial<InputField>[] = [
     {
       label: 'Name of authorised Customer Representative ',
       onChangeText: text => handlescaffoldChange('fullName', text),
@@ -131,13 +128,16 @@ const Handover = () => {
       onChangeText: text => handlescaffoldChange('phoneNumber', text),
       showAsterisk: true,
     },
-  ]
+  ];
   const [selectedValue, setSelectedValue] = useState<string>('option1');
-  const [formData, setFormData] = useState<Partial<InputField>[]>(initialFormData);
+  const [formData, setFormData] =
+    useState<Partial<InputField>[]>(initialFormData);
   const [scaffold, setScaffold] = useState<Partial<InputField>[]>(scaffoldData);
-  const [userData, setUserData] = useState<Partial<InputField>[]>(userPersonalData);
+  const [userData, setUserData] =
+    useState<Partial<InputField>[]>(userPersonalData);
   const [checkboxes, setCheckboxes] = useState<CheckboxItem[]>(loadingCapacity);
-  const [elevationData, setElevationData] = useState<CheckboxItem[]>(elevations);
+  const [elevationData, setElevationData] =
+    useState<CheckboxItem[]>(elevations);
 
   const handleInputChange = (fieldName: string, text: string) => {
     setFormData(prevFormData => {
@@ -180,7 +180,6 @@ const Handover = () => {
       label: 'Other Works - mention in Notes below',
       value: 'Other Works - mention in Notes below',
     },
-    
   ];
   const handleSelect = (value: string) => {
     setSelectedValue(value);
@@ -214,7 +213,7 @@ const Handover = () => {
       const updatedCheckboxes = prevElevation.map((elevation: CheckboxItem) => {
         if (elevation.label === label) {
           const newStatus =
-          elevation.status === 'checked'
+            elevation.status === 'checked'
               ? 'unchecked'
               : elevation.status === 'unchecked'
               ? 'checked'
@@ -230,8 +229,7 @@ const Handover = () => {
       return updatedCheckboxes;
     });
   };
-  
-  
+
   return (
     <View style={{padding: 20}}>
       <ScrollView ref={scrollViewRef} scrollEnabled>
@@ -279,8 +277,7 @@ const Handover = () => {
           <TextInput multiline={true} numberOfLines={4} /> */}
         </View>
         <View style={{marginBottom: 15, marginTop: 15}}>
-        <Recorder />
-
+          <Recorder />
         </View>
 
         {/* <AudioRecorderScreen /> */}
@@ -315,16 +312,16 @@ const Handover = () => {
             Is scaffold built as per Drawings Supplied ?
           </Text>
 
-          <CheckBox
-            checkboxes={checkboxes}
-            onPress={handleCheckboxPress}
-          />
+          <CheckBox checkboxes={checkboxes} onPress={handleCheckboxPress} />
         </View>
         <View style={{marginTop: 15}}>
           <Text style={{fontSize: 18, fontWeight: 'bold'}}>
             Which elevations were completed ? Choose all applicable *
           </Text>
-          <CheckBox checkboxes={elevationData} onPress={handleElevationDataPress} />
+          <CheckBox
+            checkboxes={elevationData}
+            onPress={handleElevationDataPress}
+          />
         </View>
         <View>
           <TextInputGroup inputFields={scaffold} />
@@ -345,13 +342,20 @@ const Handover = () => {
         <View>
           <TextInputGroup inputFields={userData} />
         </View>
-        {/* <SignatureScreen /> */}
-        <MySignatureCanvas onBegin={handleCanvasBegin}
-          onEnd={handleCanvasEnd}/>
-
-<MySignatureCanvas onBegin={handleCanvasBegin}
-          onEnd={handleCanvasEnd}/>
+        <View style={{width: '90%', marginBottom: 50}}>
           <FilePicker />
+        </View>
+
+        {/* <SignatureScreen /> */}
+        <MySignatureCanvas
+          onBegin={handleCanvasBegin}
+          onEnd={handleCanvasEnd}
+        />
+
+        <MySignatureCanvas
+          onBegin={handleCanvasBegin}
+          onEnd={handleCanvasEnd}
+        />
         <ButtonGreen text="Submit" />
       </ScrollView>
     </View>

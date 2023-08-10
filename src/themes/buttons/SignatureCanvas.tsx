@@ -46,7 +46,7 @@ export const MySignatureCanvas = ({ onBegin, onEnd }: any) => {
       onEnd={onEnd}
       />
       <View style={styles.buttonsContainer}>
-        <Button icon='delete' onPress={handleClearSignature} mode='contained' >Clear</Button>
+        <Button rippleColor="#e0aaff" icon='delete' onPress={handleClearSignature} mode='contained' >Clear</Button>
         {/* <Button icon='content-save' onPress={handleGetSignature} mode='contained' >Save</Button> */}
         {/* <Button icon='content-save' onPress={handleData} mode='contained' >sfds</Button> */}
         {/* <Button icon='undo' onPress={handleClearSignature} mode='contained' >Undo</Button> */}
