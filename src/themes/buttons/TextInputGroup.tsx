@@ -1,22 +1,20 @@
 import React from 'react';
-import {View, TextInput, StyleSheet} from 'react-native';
+import { View, TextInput, StyleSheet } from 'react-native';
 import { Text } from 'react-native-paper';
+import { Field } from 'formik';
 
 interface TextInputGroupProps {
   inputFields: Partial<{
+    name: string; // Add the name field
     label: string;
-    value: string;
-    onChangeText: (text: string) => void;
     placeholder: string;
     showAsterisk?: boolean;
     multiline: boolean;
     numberOfLines: number;
-    mode: string;
-            
   }>[];
 }
 
-const TextInputGroup: React.FC<TextInputGroupProps> = ({inputFields}) => {
+const TextInputGroup: React.FC<TextInputGroupProps> = ({ inputFields }) => {
   return (
     <View>
       {inputFields.map((inputField, index) => (
@@ -25,14 +23,22 @@ const TextInputGroup: React.FC<TextInputGroupProps> = ({inputFields}) => {
             {inputField.label}
             {inputField.showAsterisk && <Text style={styles.asterisk}>*</Text>}
           </Text>
-          <TextInput
-            style={styles.textInput}
-            value={inputField.value}
-            onChangeText={inputField.onChangeText}
-            placeholder={inputField.placeholder}
-            multiline={inputField.multiline}
-            numberOfLines={inputField.numberOfLines} 
-          />
+          <Field name={inputField.name}>
+            
+          {({ field, form }: {field: any; form: any}) => (            
+              <>
+              {/* {console.log(form)} */}
+              <TextInput
+                value={field.value}
+                style={styles.textInput}
+                onChangeText={(e:any) => form.setFieldValue(inputField.name,e)}
+                placeholder={inputField.placeholder}
+                multiline={inputField.multiline}
+                numberOfLines={inputField.numberOfLines}
+              />
+              </>
+            )}
+          </Field>
         </View>
       ))}
     </View>
