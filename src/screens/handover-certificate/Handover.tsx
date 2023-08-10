@@ -1,4 +1,4 @@
-import {View, ScrollView, Button} from 'react-native';
+import {View, ScrollView, TouchableOpacity} from 'react-native';
 import {Text} from 'react-native-paper';
 import React, {useState, useRef} from 'react';
 import {myStyles} from './styles';
@@ -17,6 +17,8 @@ import {ButtonGreen} from '../../themes/text/ButtonGreen';
 import Recorder from '../../themes/buttons/AudioRecorder';
 import {MySignatureCanvas} from '../../themes/buttons/SignatureCanvas';
 import FilePicker from '../../themes/buttons/FilePicker';
+import {Formik, Form} from 'formik'; // Import Formik and Form
+import * as Yup from 'yup';
 // import SignatureCanvas from '../../themes/buttons/SignatureCanvas';
 
 const loadingCapacity: CheckboxItem[] = [
@@ -36,7 +38,17 @@ const elevations: CheckboxItem[] = [
   {label: 'Whole Level', status: 'unchecked'},
   {label: 'Whole House', status: 'unchecked'},
 ];
-
+const options: Option[] = [
+  {label: 'Erection', value: 'Erection'},
+  {label: 'Variation Works', value: 'Variation Works'},
+  {label: 'Dismantle', value: 'Dismantle'},
+  {label: 'Inspection', value: 'Inspection'},
+  {label: 'Damage Rectification Works', value: 'Damage Rectification Works'},
+  {
+    label: 'Other Works - mention in Notes below',
+    value: 'Other Works - mention in Notes below',
+  },
+];
 // const scaffoldData: InputField[] =
 
 const Handover = () => {
@@ -59,27 +71,27 @@ const Handover = () => {
   const initialFormData: Partial<InputField>[] = [
     {
       label: 'What"s the Project ID ?',
-      onChangeText: (text: string) => handleInputChange('fullName', text),
       showAsterisk: true,
+      name: 'projectId',
     },
     {
       label: 'Which Building and what Level ?',
-      onChangeText: (text: string) => handleInputChange('email', text),
+      name: 'buildingLevel',
     },
     {
       label: 'What"s the name of Customer or Builder ?',
-      onChangeText: (text: string) => handleInputChange('phoneNumber', text),
+      name: 'nameOfBuilder',
     },
     {
       label: 'Customer ABN',
-      onChangeText: (text: string) => handleInputChange('phoneNumber', text),
+      name: 'customerABN',
     },
     {
       label: 'How would you describe the work completed ?',
-      onChangeText: (text: string) => handleInputChange('phoneNumber', text),
       showAsterisk: true,
       multiline: true,
       numberOfLines: 4,
+      name: 'workCompletion',
     },
   ];
   const scaffoldData: Partial<InputField>[] = [
@@ -139,16 +151,16 @@ const Handover = () => {
   const [elevationData, setElevationData] =
     useState<CheckboxItem[]>(elevations);
 
-  const handleInputChange = (fieldName: string, text: string) => {
-    setFormData(prevFormData => {
-      return prevFormData.map(field => {
-        if (field.label === fieldName) {
-          return {...field, value: text};
-        }
-        return field;
-      });
-    });
-  };
+  // const handleInputChange = (fieldName: string, text: string) => {
+  //   setFormData(prevFormData => {
+  //     return prevFormData.map(field => {
+  //       if (field.label === fieldName) {
+  //         return {...field, value: text};
+  //       }
+  //       return field;
+  //     });
+  //   });
+  // };
   const handlescaffoldChange = (fieldName: string, text: string) => {
     setScaffold(prevFormData => {
       return prevFormData.map(field => {
@@ -159,31 +171,20 @@ const Handover = () => {
       });
     });
   };
-  const handleUserData = (fieldName: string, text: string) => {
-    setUserData(prevFormData => {
-      return prevFormData.map(field => {
-        if (field.label === fieldName) {
-          return {...field, value: text};
-        }
-        return field;
-      });
-    });
-  };
+  // const handleUserData = (fieldName: string, text: string) => {
+  //   setUserData(prevFormData => {
+  //     return prevFormData.map(field => {
+  //       if (field.label === fieldName) {
+  //         return {...field, value: text};
+  //       }
+  //       return field;
+  //     });
+  //   });
+  // };
 
-  const options: Option[] = [
-    {label: 'Erection', value: 'Erection'},
-    {label: 'Variation Works', value: 'Variation Works'},
-    {label: 'Dismantle', value: 'Dismantle'},
-    {label: 'Inspection', value: 'Inspection'},
-    {label: 'Damage Rectification Works', value: 'Damage Rectification Works'},
-    {
-      label: 'Other Works - mention in Notes below',
-      value: 'Other Works - mention in Notes below',
-    },
-  ];
-  const handleSelect = (value: string) => {
-    setSelectedValue(value);
-  };
+  // const handleSelect = (value: string) => {
+  //   setSelectedValue(value);
+  // };
 
   const handleCheckboxPress = (label: string) => {
     // @ts-ignore
@@ -230,133 +231,174 @@ const Handover = () => {
     });
   };
 
+  const initialValues = {
+    selectedOption: '',
+    projectId: '',
+    buildingLevel: '',
+    nameOfBuilder: '',
+    customerABN: '',
+    workCompletion: '',
+  };
+  // const handleSubmit = (values: any) => {
+  //   // Handle form submission...
+  //   console.log(values);
+  // };
+
   return (
     <View style={{padding: 20}}>
       <ScrollView ref={scrollViewRef} scrollEnabled>
-        <View>
-          <View style={{padding: 10, marginBottom: 15}}>
-            <Text>
-              <Icon name="office-building-marker" size={20} color="#112D4E" />{' '}
-              Five Star Scaffolding Pty Ltd
-            </Text>
-            <Text style={{marginTop: 10}}>
-              <Icon name="license" size={20} color="#112D4E" /> ABN 70 130 008
-              212
-            </Text>
-            <Text style={{marginTop: 10}}>
-              <Icon1 name="street-view" size={20} color="#112D4E" /> 61 Long
-              Street, Smithfield NSW 2164
-            </Text>
-            <Text style={{marginTop: 10}}>
-              <Icon2 name="phone-call" size={20} color="#112D4E" /> (02) 9632
-              3466
-            </Text>
-          </View>
-          <View style={{marginBottom: 20}}>
-            <Text style={{fontSize: 30, fontWeight: 'bold'}}>
-              Handover Certificate
-            </Text>
-          </View>
-          <View
-            style={{backgroundColor: '#c7fe1a', padding: 10, marginBottom: 10}}>
-            <Text style={myStyles.headingText}>Project Details:</Text>
-          </View>
-          <Text style={{fontSize: 19}}>
-            What is this Certificate Relating to ?
-          </Text>
-          <Text>Choose One</Text>
-          <RadioGroup
-            options={options}
-            selectedValue={selectedValue}
-            onValueChange={handleSelect}
-          />
-        </View>
-        <View>
-          <TextInputGroup inputFields={formData} />
-          {/* <Text>How would you describe the work completed ?*</Text>
-          <TextInput multiline={true} numberOfLines={4} /> */}
-        </View>
-        <View style={{marginBottom: 15, marginTop: 15}}>
-          <Recorder />
-        </View>
-
-        {/* <AudioRecorderScreen /> */}
-        <View style={{margin: 15}}>
-          <CustomHeader text="Scaffold Details:" />
-        </View>
-        <View
-          style={{
-            elevation: 8,
-            borderColor: 'black',
-            padding: 30,
-            marginTop: 20,
-            marginBottom: 20,
+        <Formik
+          initialValues={initialValues}
+          enableReinitialize={true}
+          onSubmit={values => {
+            // Handle form submission here using values object
+            console.log(values);
           }}>
-          <Text style={{fontSize: 16, fontWeight: 'bold'}}>
-            The scaffold described below has been erected in accordance with AS
-            4576 - Guidelines for scaffolding, AS 1576 (1-6) - Scaffolding, AS
-            1577 - Scaffold planks, Work Health and Safety (managing the Risks
-            of Falls at Workplaces) Code of Practice 2015, Safe Work Australia -
-            Guide to Scaffolds and Scaffolding. The scaffold described below is
-            suitable for its intended purpose only. All Hop-up’s can only be
-            installed following the removal of the form ply deck below. The
-            Principal contractor must ensure all falls are managed in the
-            interim by either installing adequate edge protection or ensuring
-            the ply is formed to the perimeter scaffold internal standards.
-            Hop-Ups are to be loaded to maximum capacity of 225Kg Simultaneous
-            loading permitted as per Scaffold Design
-          </Text>
-        </View>
-        <View>
-          <Text style={{fontSize: 18, fontWeight: 'bold'}}>
-            Is scaffold built as per Drawings Supplied ?
-          </Text>
+          {({handleSubmit, values}) => (
+            <View>
+              <View>
+                <View style={{padding: 10, marginBottom: 15}}>
+                  <Text>
+                    <Icon
+                      name="office-building-marker"
+                      size={20}
+                      color="#112D4E"
+                    />{' '}
+                    Five Star Scaffolding Pty Ltd
+                  </Text>
+                  <Text style={{marginTop: 10}}>
+                    <Icon name="license" size={20} color="#112D4E" /> ABN 70 130
+                    008 212
+                  </Text>
+                  <Text style={{marginTop: 10}}>
+                    <Icon1 name="street-view" size={20} color="#112D4E" /> 61
+                    Long Street, Smithfield NSW 2164
+                  </Text>
+                  <Text style={{marginTop: 10}}>
+                    <Icon2 name="phone-call" size={20} color="#112D4E" /> (02)
+                    9632 3466
+                  </Text>
+                </View>
+                <View style={{marginBottom: 20}}>
+                  <Text style={{fontSize: 30, fontWeight: 'bold'}}>
+                    Handover Certificate
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    backgroundColor: '#c7fe1a',
+                    padding: 10,
+                    marginBottom: 10,
+                  }}>
+                  <Text style={myStyles.headingText}>Project Details:</Text>
+                </View>
+                <Text style={{fontSize: 19}}>
+                  What is this Certificate Relating to ?
+                </Text>
+                <Text>Choose One</Text>
+                <RadioGroup
+                  options={options}
+                  name="selectedValue"
+                />
+              </View>
+              <View>
+                <TextInputGroup inputFields={formData} />
+              </View>
+              <View style={{marginBottom: 15, marginTop: 15}}>
+                <Recorder />
+              </View>
+              <View style={{margin: 15}}>
+                <CustomHeader text="Scaffold Details:" />
+              </View>
+              <View
+                style={{
+                  elevation: 8,
+                  borderColor: 'black',
+                  padding: 30,
+                  marginTop: 20,
+                  marginBottom: 20,
+                }}>
+                <Text style={{fontSize: 16, fontWeight: 'bold'}}>
+                  The scaffold described below has been erected in accordance
+                  with AS 4576 - Guidelines for scaffolding, AS 1576 (1-6) -
+                  Scaffolding, AS 1577 - Scaffold planks, Work Health and Safety
+                  (managing the Risks of Falls at Workplaces) Code of Practice
+                  2015, Safe Work Australia - Guide to Scaffolds and
+                  Scaffolding. The scaffold described below is suitable for its
+                  intended purpose only. All Hop-up’s can only be installed
+                  following the removal of the form ply deck below. The
+                  Principal contractor must ensure all falls are managed in the
+                  interim by either installing adequate edge protection or
+                  ensuring the ply is formed to the perimeter scaffold internal
+                  standards. Hop-Ups are to be loaded to maximum capacity of
+                  225Kg Simultaneous loading permitted as per Scaffold Design
+                </Text>
+              </View>
+              <View>
+                <Text style={{fontSize: 18, fontWeight: 'bold'}}>
+                  Is scaffold built as per Drawings Supplied ?
+                </Text>
 
-          <CheckBox checkboxes={checkboxes} onPress={handleCheckboxPress} />
-        </View>
-        <View style={{marginTop: 15}}>
-          <Text style={{fontSize: 18, fontWeight: 'bold'}}>
-            Which elevations were completed ? Choose all applicable *
-          </Text>
-          <CheckBox
-            checkboxes={elevationData}
-            onPress={handleElevationDataPress}
-          />
-        </View>
-        <View>
-          <TextInputGroup inputFields={scaffold} />
-        </View>
-        <View style={{marginBottom: 15, marginTop: 15}}>
-          <CustomHeader text="Signatures" />
-        </View>
-        <View>
-          <Text style={{fontWeight: 'bold', fontSize: 15, marginBottom: 15}}>
-            I acknowledge that I have read and understood and agree with the
-            Handover Certificate Terms and Conditions. I have fully understood
-            the Duty Category of the work platforms. Any breach of the Handover
-            Certificate Terms and Conditions may result in an infringement of
-            "Decommission of Scaffold Notice" being issued. Any breach of the
-            Handover Certificate may lead to injury or death.
-          </Text>
-        </View>
-        <View>
-          <TextInputGroup inputFields={userData} />
-        </View>
-        <View style={{width: '90%', marginBottom: 50}}>
-          <FilePicker />
-        </View>
+                {/* <CheckBox
+                  checkboxes={checkboxes}
+                  // onPress={handleCheckboxPress}
+                /> */}
+              </View>
+              <View style={{marginTop: 15}}>
+                <Text style={{fontSize: 18, fontWeight: 'bold'}}>
+                  Which elevations were completed ? Choose all applicable *
+                </Text>
+                <CheckBox
+                  checkboxes={elevationData}
+                  // onPress={handleElevationDataPress}
+                />
+              </View>
+              <View>
+                {/* <TextInputGroup inputFields={scaffold} /> */}
+              </View>
+              <View style={{marginBottom: 15, marginTop: 15}}>
+                <CustomHeader text="Signatures" />
+              </View>
+              <View>
+                <Text
+                  style={{
+                    fontWeight: 'bold',
+                    fontSize: 15,
+                    marginBottom: 15,
+                  }}>
+                  I acknowledge that I have read and understood and agree with
+                  the Handover Certificate Terms and Conditions. I have fully
+                  understood the Duty Category of the work platforms. Any breach
+                  of the Handover Certificate Terms and Conditions may result in
+                  an infringement of "Decommission of Scaffold Notice" being
+                  issued. Any breach of the Handover Certificate may lead to
+                  injury or death.
+                </Text>
+              </View>
+              <View>
+                {/* <TextInputGroup inputFields={userData} /> */}
+              </View>
+              <View style={{width: '90%', marginBottom: 50}}>
+                <FilePicker />
+              </View>
 
-        {/* <SignatureScreen /> */}
-        <MySignatureCanvas
-          onBegin={handleCanvasBegin}
-          onEnd={handleCanvasEnd}
-        />
+              {/* <SignatureScreen /> */}
+              <MySignatureCanvas
+                onBegin={handleCanvasBegin}
+                onEnd={handleCanvasEnd}
+              />
 
-        <MySignatureCanvas
-          onBegin={handleCanvasBegin}
-          onEnd={handleCanvasEnd}
-        />
-        <ButtonGreen text="Submit" />
+              <MySignatureCanvas
+                onBegin={handleCanvasBegin}
+                onEnd={handleCanvasEnd}
+              />
+              <TouchableOpacity onPress={() => handleSubmit()}>
+                <Text>Submit</Text>
+              </TouchableOpacity>
+              <ButtonGreen text="Submit" />
+            </View>
+          )}
+        </Formik>
       </ScrollView>
     </View>
   );

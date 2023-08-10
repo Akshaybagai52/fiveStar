@@ -7,6 +7,7 @@ export interface InputField {
     showAsterisk?: boolean;
     multiline: boolean;
     numberOfLines: number;
+    name: string;
   }
 
 
