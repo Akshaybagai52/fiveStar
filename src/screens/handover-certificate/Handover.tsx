@@ -1,5 +1,5 @@
-import {View, ScrollView, TouchableOpacity} from 'react-native';
-import {Text} from 'react-native-paper';
+import {View, ScrollView, TouchableOpacity, Image, Alert} from 'react-native';
+import {Button, Text} from 'react-native-paper';
 import React, {useState, useRef} from 'react';
 import {myStyles} from './styles';
 import RadioGroup, {Option} from '../../themes/buttons/RadioButtons';
@@ -19,7 +19,13 @@ import {MySignatureCanvas} from '../../themes/buttons/SignatureCanvas';
 import FilePicker from '../../themes/buttons/FilePicker';
 import {Formik, Form} from 'formik'; // Import Formik and Form
 import * as Yup from 'yup';
-import GeneratePdf from '../../themes/buttons/GeneratePdf';
+// generate pdf
+
+import RNHTMLtoPDF from 'react-native-html-to-pdf';
+import ViewShot from 'react-native-view-shot';
+import {useCallback} from 'react';
+import RNFS from 'react-native-fs';
+import PDF from 'react-native-pdf';
 // import SignatureCanvas from '../../themes/buttons/SignatureCanvas';
 
 const loadingCapacity: CheckboxItem[] = [
@@ -165,30 +171,29 @@ const Handover = () => {
     {
       label: 'Name of authorised Customer Representative ',
       showAsterisk: true,
-      name: 'signatures.customerName'
+      name: 'signatures.customerName',
     },
     {
       label: 'Write your HRWL number (High Risk Work Licence number)',
-      name: 'signatures.HRWLNumber'
+      name: 'signatures.HRWLNumber',
     },
     {
       label: 'Write your Customer email for them to receive a pdf copy',
-      name: 'signatures.customerEmail'
+      name: 'signatures.customerEmail',
     },
     {
       label: 'Write your email to receive a pdf copy',
-      name: 'signatures.customerEmail2'
+      name: 'signatures.customerEmail2',
     },
     {
       label: 'Handover Date and Time ',
       showAsterisk: true,
-      name: 'signatures.Date&Time'
+      name: 'signatures.Date&Time',
     },
     {
       label: 'Name of authorised Customer Representative ',
       showAsterisk: true,
-      name: 'signatures.customerName2'
-
+      name: 'signatures.customerName2',
     },
   ];
   const [selectedValue, setSelectedValue] = useState<string>('option1');
@@ -268,160 +273,213 @@ const Handover = () => {
   //   // Handle form submission...
   //   console.log(values);
   // };
+  const viewShotRef = useRef<ViewShot>(null);
+  const [screenshotUri, setScreenshotUri] = useState<string | null>(null);
+  const [generatedPdf, setGeneratedPdf] = useState<string | null>(null);
+
+  const captureScreenshot = () => {
+    // @ts-ignore
+    viewShotRef.current
+      ?.capture()
+      .then(uri => {
+        console.log('Screenshot captured:', uri);
+        setScreenshotUri(uri); // Store the URI in state
+      })
+      .catch(error => {
+        console.error('Error capturing screenshot:', error);
+      });
+  };
+  const generatePdfAndDownload = async () => {
+    if (!screenshotUri) {
+      return;
+    }
+
+    const base64Image = await RNFS.readFile(screenshotUri, 'base64');
+    const imageSrc = `data:image/png;base64,${base64Image}`;
+
+    const options = {
+      html: `<img src="${imageSrc}" />`,
+      fileName: 'screenshot',
+      directory: 'Documents',
+    };
+
+    try {
+      const pdf = await RNHTMLtoPDF.convert(options);
+      Alert.alert('PDF generated:', pdf.filePath);
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+    }
+  };
 
   return (
-    <View style={{padding: 20}}>
+    <View style={{padding: 20, backgroundColor: '#fff'}}>
       <ScrollView ref={scrollViewRef} scrollEnabled>
-        <Formik
-          initialValues={initialValues}
-          enableReinitialize={true}
-          onSubmit={values => {
-            console.log(values);
-          }}>
-          {({handleSubmit, values}) => (
-            <View>
-              <View>
-                <View style={{padding: 10, marginBottom: 15}}>
-                  <Text>
-                    <Icon
-                      name="office-building-marker"
-                      size={20}
-                      color="#112D4E"
-                    />{' '}
-                    Five Star Scaffolding Pty Ltd
+        <ViewShot ref={viewShotRef} options={{format: 'jpg', quality: 1}}>
+          <Formik
+            initialValues={initialValues}
+            enableReinitialize={true}
+            onSubmit={values => {
+              console.log(values);
+            }}>
+            {({handleSubmit, values}) => (
+              <View style={{backgroundColor: '#fff'}}>
+                <View>
+                  <View style={{padding: 10, marginBottom: 15}}>
+                    <Text>
+                      <Icon
+                        name="office-building-marker"
+                        size={20}
+                        color="#112D4E"
+                      />{' '}
+                      Five Star Scaffolding Pty Ltd
+                    </Text>
+                    <Text style={{marginTop: 10}}>
+                      <Icon name="license" size={20} color="#112D4E" /> ABN 70
+                      130 008 212
+                    </Text>
+                    <Text style={{marginTop: 10}}>
+                      <Icon1 name="street-view" size={20} color="#112D4E" /> 61
+                      Long Street, Smithfield NSW 2164
+                    </Text>
+                    <Text style={{marginTop: 10}}>
+                      <Icon2 name="phone-call" size={20} color="#112D4E" /> (02)
+                      9632 3466
+                    </Text>
+                  </View>
+                  <View style={{marginBottom: 20}}>
+                    <Text style={{fontSize: 30, fontWeight: 'bold'}}>
+                      Handover Certificate
+                    </Text>
+                  </View>
+                  <View
+                    style={{
+                      backgroundColor: '#c7fe1a',
+                      padding: 10,
+                      marginBottom: 10,
+                    }}>
+                    <Text style={myStyles.headingText}>Project Details:</Text>
+                  </View>
+                  <Text style={{fontSize: 19}}>
+                    What is this Certificate Relating to ?
                   </Text>
-                  <Text style={{marginTop: 10}}>
-                    <Icon name="license" size={20} color="#112D4E" /> ABN 70 130
-                    008 212
-                  </Text>
-                  <Text style={{marginTop: 10}}>
-                    <Icon1 name="street-view" size={20} color="#112D4E" /> 61
-                    Long Street, Smithfield NSW 2164
-                  </Text>
-                  <Text style={{marginTop: 10}}>
-                    <Icon2 name="phone-call" size={20} color="#112D4E" /> (02)
-                    9632 3466
-                  </Text>
+                  <Text>Choose One</Text>
+                  <RadioGroup
+                    options={options}
+                    name="projectDetails.certificationRelation.selectedOption"
+                  />
                 </View>
-                <View style={{marginBottom: 20}}>
-                  <Text style={{fontSize: 30, fontWeight: 'bold'}}>
-                    Handover Certificate
-                  </Text>
+                <View>
+                  <TextInputGroup inputFields={formData} />
+                </View>
+                <View style={{marginBottom: 15, marginTop: 15}}>
+                  <Recorder />
+                </View>
+                <View style={{margin: 15}}>
+                  <CustomHeader text="Scaffold Details:" />
                 </View>
                 <View
                   style={{
-                    backgroundColor: '#c7fe1a',
-                    padding: 10,
-                    marginBottom: 10,
+                    elevation: 8,
+                    borderColor: 'black',
+                    padding: 30,
+                    marginTop: 20,
+                    marginBottom: 20,
                   }}>
-                  <Text style={myStyles.headingText}>Project Details:</Text>
+                  <Text style={{fontSize: 16, fontWeight: 'bold'}}>
+                    The scaffold described below has been erected in accordance
+                    with AS 4576 - Guidelines for scaffolding, AS 1576 (1-6) -
+                    Scaffolding, AS 1577 - Scaffold planks, Work Health and
+                    Safety (managing the Risks of Falls at Workplaces) Code of
+                    Practice 2015, Safe Work Australia - Guide to Scaffolds and
+                    Scaffolding. The scaffold described below is suitable for
+                    its intended purpose only. All Hop-up’s can only be
+                    installed following the removal of the form ply deck below.
+                    The Principal contractor must ensure all falls are managed
+                    in the interim by either installing adequate edge protection
+                    or ensuring the ply is formed to the perimeter scaffold
+                    internal standards. Hop-Ups are to be loaded to maximum
+                    capacity of 225Kg Simultaneous loading permitted as per
+                    Scaffold Design
+                  </Text>
                 </View>
-                <Text style={{fontSize: 19}}>
-                  What is this Certificate Relating to ?
-                </Text>
-                <Text>Choose One</Text>
-                <RadioGroup
-                  options={options}
-                  name="projectDetails.certificationRelation.selectedOption"
-                />
-              </View>
-              <View>
-                <TextInputGroup inputFields={formData} />
-              </View>
-              <View style={{marginBottom: 15, marginTop: 15}}>
-                <Recorder />
-              </View>
-              <View style={{margin: 15}}>
-                <CustomHeader text="Scaffold Details:" />
-              </View>
-              <View
-                style={{
-                  elevation: 8,
-                  borderColor: 'black',
-                  padding: 30,
-                  marginTop: 20,
-                  marginBottom: 20,
-                }}>
-                <Text style={{fontSize: 16, fontWeight: 'bold'}}>
-                  The scaffold described below has been erected in accordance
-                  with AS 4576 - Guidelines for scaffolding, AS 1576 (1-6) -
-                  Scaffolding, AS 1577 - Scaffold planks, Work Health and Safety
-                  (managing the Risks of Falls at Workplaces) Code of Practice
-                  2015, Safe Work Australia - Guide to Scaffolds and
-                  Scaffolding. The scaffold described below is suitable for its
-                  intended purpose only. All Hop-up’s can only be installed
-                  following the removal of the form ply deck below. The
-                  Principal contractor must ensure all falls are managed in the
-                  interim by either installing adequate edge protection or
-                  ensuring the ply is formed to the perimeter scaffold internal
-                  standards. Hop-Ups are to be loaded to maximum capacity of
-                  225Kg Simultaneous loading permitted as per Scaffold Design
-                </Text>
-              </View>
-              <View>
-                <Text style={{fontSize: 18, fontWeight: 'bold'}}>
-                  Is scaffold built as per Drawings Supplied ?
-                </Text>
+                <View>
+                  <Text style={{fontSize: 18, fontWeight: 'bold'}}>
+                    Is scaffold built as per Drawings Supplied ?
+                  </Text>
 
-                <CheckBox
-                  checkboxes={checkboxes}
-                  onPress={handleCheckboxPress}
-                />
-              </View>
-              <View style={{marginTop: 15}}>
-                <Text style={{fontSize: 18, fontWeight: 'bold'}}>
-                  Which elevations were completed ? Choose all applicable *
-                </Text>
-                <CheckBox
-                  checkboxes={elevationData}
-                  onPress={handleElevationDataPress}
-                />
-              </View>
-              <View>
-                <TextInputGroup inputFields={scaffold} />
-              </View>
-              <View style={{marginBottom: 15, marginTop: 15}}>
-                <CustomHeader text="Signatures" />
-              </View>
-              <View>
-                <Text
-                  style={{
-                    fontWeight: 'bold',
-                    fontSize: 15,
-                    marginBottom: 15,
-                  }}>
-                  I acknowledge that I have read and understood and agree with
-                  the Handover Certificate Terms and Conditions. I have fully
-                  understood the Duty Category of the work platforms. Any breach
-                  of the Handover Certificate Terms and Conditions may result in
-                  an infringement of "Decommission of Scaffold Notice" being
-                  issued. Any breach of the Handover Certificate may lead to
-                  injury or death.
-                </Text>
-              </View>
-             <TextInputGroup inputFields={userData} />
-              <View style={{width: '90%', marginBottom: 50}}>
-                <FilePicker />
-              </View>
-              <GeneratePdf />
+                  <CheckBox
+                    checkboxes={checkboxes}
+                    onPress={handleCheckboxPress}
+                  />
+                </View>
+                <View style={{marginTop: 15}}>
+                  <Text style={{fontSize: 18, fontWeight: 'bold'}}>
+                    Which elevations were completed ? Choose all applicable *
+                  </Text>
+                  <CheckBox
+                    checkboxes={elevationData}
+                    onPress={handleElevationDataPress}
+                  />
+                </View>
+                <View>
+                  <TextInputGroup inputFields={scaffold} />
+                </View>
+                <View style={{marginBottom: 15, marginTop: 15}}>
+                  <CustomHeader text="Signatures" />
+                </View>
+                <View>
+                  <Text
+                    style={{
+                      fontWeight: 'bold',
+                      fontSize: 15,
+                      marginBottom: 15,
+                    }}>
+                    I acknowledge that I have read and understood and agree with
+                    the Handover Certificate Terms and Conditions. I have fully
+                    understood the Duty Category of the work platforms. Any
+                    breach of the Handover Certificate Terms and Conditions may
+                    result in an infringement of "Decommission of Scaffold
+                    Notice" being issued. Any breach of the Handover Certificate
+                    may lead to injury or death.
+                  </Text>
+                </View>
+                <TextInputGroup inputFields={userData} />
+                <View style={{width: '90%', marginBottom: 50}}>
+                  <FilePicker />
+                </View>
 
-              {/* <SignatureScreen /> */}
-              <MySignatureCanvas
-                onBegin={handleCanvasBegin}
-                onEnd={handleCanvasEnd}
-              />
+                {/* <SignatureScreen /> */}
+                <MySignatureCanvas
+                  onBegin={handleCanvasBegin}
+                  onEnd={handleCanvasEnd}
+                />
 
-              <MySignatureCanvas
-                onBegin={handleCanvasBegin}
-                onEnd={handleCanvasEnd}
-              />
-              <TouchableOpacity onPress={() => handleSubmit()}>
-                <Text>Submit</Text>
-              </TouchableOpacity>
-              <ButtonGreen text="Submit" />
-            </View>
-          )}
-        </Formik>
+                <MySignatureCanvas
+                  onBegin={handleCanvasBegin}
+                  onEnd={handleCanvasEnd}
+                />
+
+                <TouchableOpacity onPress={() => handleSubmit()}>
+                  <Text>Submit</Text>
+                </TouchableOpacity>
+                <ButtonGreen text="Submit" />
+              </View>
+            )}
+          </Formik>
+        </ViewShot>
+        <TouchableOpacity onPress={captureScreenshot}>
+          <Text>generate pdf</Text>
+        </TouchableOpacity>
+        {screenshotUri && (
+          <Image
+            source={{uri: screenshotUri}}
+            style={{width: '100%', aspectRatio: 1}}
+          />
+        )}
+        <TouchableOpacity onPress={generatePdfAndDownload}>
+          <Text>generate pdf</Text>
+        </TouchableOpacity>
+       
       </ScrollView>
     </View>
   );

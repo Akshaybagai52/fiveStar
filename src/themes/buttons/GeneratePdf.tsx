@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import {
   Text,
   TouchableHighlight,
@@ -6,6 +6,8 @@ import {
   Alert
 } from 'react-native';
 import RNHTMLtoPDF from 'react-native-html-to-pdf';
+import ViewShot from 'react-native-view-shot';
+import RNFS from 'react-native-fs';
 
 const GeneratePdf: React.FC = () => {
   const createPDF = async () => {
@@ -18,7 +20,7 @@ const GeneratePdf: React.FC = () => {
     try {
       let file = await RNHTMLtoPDF.convert(options);
       // console.log(file.filePath);
-     Alert.alert(file.filePath);
+    //  Alert.alert(file.filePath);
     console.log(file.filePath);
     } catch (error) {
       console.error('Error creating PDF:', error);
