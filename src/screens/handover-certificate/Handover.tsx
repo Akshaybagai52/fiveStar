@@ -19,24 +19,73 @@ import {MySignatureCanvas} from '../../themes/buttons/SignatureCanvas';
 import FilePicker from '../../themes/buttons/FilePicker';
 import {Formik, Form} from 'formik'; // Import Formik and Form
 import * as Yup from 'yup';
+import GeneratePdf from '../../themes/buttons/GeneratePdf';
 // import SignatureCanvas from '../../themes/buttons/SignatureCanvas';
 
 const loadingCapacity: CheckboxItem[] = [
-  {label: 'LIGHT 225 KG', status: 'unchecked'},
-  {label: 'MEDIUM 450 KG', status: 'unchecked'},
-  {label: 'HEAVY 675 KG', status: 'unchecked'},
-  {label: 'SPECIAL DUTY', status: 'unchecked'},
+  {
+    label: 'LIGHT 225 KG',
+    status: 'unchecked',
+    name: 'scaffoldDetails.drawingsSupplied.light225',
+  },
+  {
+    label: 'MEDIUM 450 KG',
+    status: 'unchecked',
+    name: 'scaffoldDetails.drawingsSupplied.Medium450',
+  },
+  {
+    label: 'HEAVY 675 KG',
+    status: 'unchecked',
+    name: 'scaffoldDetails.drawingsSupplied.heavy675',
+  },
+  {
+    label: 'SPECIAL DUTY',
+    status: 'unchecked',
+    name: 'scaffoldDetails.drawingsSupplied.specialDuty',
+  },
 ];
 
 const elevations: CheckboxItem[] = [
-  {label: 'East Elevation', status: 'unchecked'},
-  {label: 'West Elevation', status: 'unchecked'},
-  {label: 'North Elevation', status: 'unchecked'},
-  {label: 'South Elevation', status: 'unchecked'},
-  {label: 'Variation works', status: 'unchecked'},
-  {label: 'Whole Project', status: 'unchecked'},
-  {label: 'Whole Level', status: 'unchecked'},
-  {label: 'Whole House', status: 'unchecked'},
+  {
+    label: 'East Elevation',
+    status: 'unchecked',
+    name: 'scaffoldDetails.elevations.east',
+  },
+  {
+    label: 'West Elevation',
+    status: 'unchecked',
+    name: 'scaffoldDetails.elevations.west',
+  },
+  {
+    label: 'North Elevation',
+    status: 'unchecked',
+    name: 'scaffoldDetails.elevations.north',
+  },
+  {
+    label: 'South Elevation',
+    status: 'unchecked',
+    name: 'scaffoldDetails.elevations.south',
+  },
+  {
+    label: 'Variation works',
+    status: 'unchecked',
+    name: 'scaffoldDetails.elevations.variationWorks',
+  },
+  {
+    label: 'Whole Project',
+    status: 'unchecked',
+    name: 'scaffoldDetails.elevations.wholeProject',
+  },
+  {
+    label: 'Whole Level',
+    status: 'unchecked',
+    name: 'scaffoldDetails.elevations.wholeLevel',
+  },
+  {
+    label: 'Whole House',
+    status: 'unchecked',
+    name: 'scaffoldDetails.elevations.wholeHouse',
+  },
 ];
 const options: Option[] = [
   {label: 'Erection', value: 'Erection'},
@@ -72,73 +121,74 @@ const Handover = () => {
     {
       label: 'What"s the Project ID ?',
       showAsterisk: true,
-      name: 'projectId',
+      name: 'projectDetails.projectId',
     },
     {
       label: 'Which Building and what Level ?',
-      name: 'buildingLevel',
+      name: 'projectDetails.buildingLevel',
     },
     {
       label: 'What"s the name of Customer or Builder ?',
-      name: 'nameOfBuilder',
+      name: 'projectDetails.nameOfBuilder',
     },
     {
       label: 'Customer ABN',
-      name: 'customerABN',
+      name: 'projectDetails.customerABN',
     },
     {
       label: 'How would you describe the work completed ?',
       showAsterisk: true,
       multiline: true,
       numberOfLines: 4,
-      name: 'workCompletion',
+      name: 'projectDetails.workCompletion',
     },
   ];
   const scaffoldData: Partial<InputField>[] = [
     {
       label: 'Scaffold length',
-      onChangeText: text => handlescaffoldChange('fullName', text),
+      name: 'scaffoldDetails.inputDetails.scaffoldLength',
     },
     {
       label: 'No. of Bays long',
-      onChangeText: text => handlescaffoldChange('email', text),
+      name: 'scaffoldDetails.inputDetails.numberOfBays',
     },
     {
       label: 'Scaffold Height',
-      onChangeText: text => handlescaffoldChange('phoneNumber', text),
+      name: 'scaffoldDetails.inputDetails.scaffoldHeight',
     },
     {
       label: 'No. of Lifts Above Base Lift',
-      onChangeText: text => handlescaffoldChange('phoneNumber', text),
+      name: 'scaffoldDetails.inputDetails.numberOfLifts',
     },
   ];
   const userPersonalData: Partial<InputField>[] = [
     {
       label: 'Name of authorised Customer Representative ',
-      onChangeText: text => handlescaffoldChange('fullName', text),
       showAsterisk: true,
+      name: 'signatures.customerName'
     },
     {
       label: 'Write your HRWL number (High Risk Work Licence number)',
-      onChangeText: text => handlescaffoldChange('email', text),
+      name: 'signatures.HRWLNumber'
     },
     {
       label: 'Write your Customer email for them to receive a pdf copy',
-      onChangeText: text => handlescaffoldChange('phoneNumber', text),
+      name: 'signatures.customerEmail'
     },
     {
       label: 'Write your email to receive a pdf copy',
-      onChangeText: text => handlescaffoldChange('phoneNumber', text),
+      name: 'signatures.customerEmail2'
     },
     {
       label: 'Handover Date and Time ',
-      onChangeText: text => handlescaffoldChange('phoneNumber', text),
       showAsterisk: true,
+      name: 'signatures.Date&Time'
     },
     {
       label: 'Name of authorised Customer Representative ',
-      onChangeText: text => handlescaffoldChange('phoneNumber', text),
       showAsterisk: true,
+      name: 'signatures.customerName2'
+
     },
   ];
   const [selectedValue, setSelectedValue] = useState<string>('option1');
@@ -150,41 +200,6 @@ const Handover = () => {
   const [checkboxes, setCheckboxes] = useState<CheckboxItem[]>(loadingCapacity);
   const [elevationData, setElevationData] =
     useState<CheckboxItem[]>(elevations);
-
-  // const handleInputChange = (fieldName: string, text: string) => {
-  //   setFormData(prevFormData => {
-  //     return prevFormData.map(field => {
-  //       if (field.label === fieldName) {
-  //         return {...field, value: text};
-  //       }
-  //       return field;
-  //     });
-  //   });
-  // };
-  const handlescaffoldChange = (fieldName: string, text: string) => {
-    setScaffold(prevFormData => {
-      return prevFormData.map(field => {
-        if (field.label === fieldName) {
-          return {...field, value: text};
-        }
-        return field;
-      });
-    });
-  };
-  // const handleUserData = (fieldName: string, text: string) => {
-  //   setUserData(prevFormData => {
-  //     return prevFormData.map(field => {
-  //       if (field.label === fieldName) {
-  //         return {...field, value: text};
-  //       }
-  //       return field;
-  //     });
-  //   });
-  // };
-
-  // const handleSelect = (value: string) => {
-  //   setSelectedValue(value);
-  // };
 
   const handleCheckboxPress = (label: string) => {
     // @ts-ignore
@@ -232,12 +247,22 @@ const Handover = () => {
   };
 
   const initialValues = {
-    selectedOption: '',
-    projectId: '',
-    buildingLevel: '',
-    nameOfBuilder: '',
-    customerABN: '',
-    workCompletion: '',
+    projectDetails: {
+      certificationRelation: {
+        selectedOption: '',
+      },
+      projectId: '',
+      buildingLevel: '',
+      nameOfBuilder: '',
+      customerABN: '',
+      workCompletion: '',
+    },
+    scaffoldDetails: {
+      drawingsSupplied: {},
+      elevations: {},
+      inputDetails: {},
+    },
+    signatures: {},
   };
   // const handleSubmit = (values: any) => {
   //   // Handle form submission...
@@ -251,7 +276,6 @@ const Handover = () => {
           initialValues={initialValues}
           enableReinitialize={true}
           onSubmit={values => {
-            // Handle form submission here using values object
             console.log(values);
           }}>
           {({handleSubmit, values}) => (
@@ -298,7 +322,7 @@ const Handover = () => {
                 <Text>Choose One</Text>
                 <RadioGroup
                   options={options}
-                  name="selectedValue"
+                  name="projectDetails.certificationRelation.selectedOption"
                 />
               </View>
               <View>
@@ -339,10 +363,10 @@ const Handover = () => {
                   Is scaffold built as per Drawings Supplied ?
                 </Text>
 
-                {/* <CheckBox
+                <CheckBox
                   checkboxes={checkboxes}
-                  // onPress={handleCheckboxPress}
-                /> */}
+                  onPress={handleCheckboxPress}
+                />
               </View>
               <View style={{marginTop: 15}}>
                 <Text style={{fontSize: 18, fontWeight: 'bold'}}>
@@ -350,11 +374,11 @@ const Handover = () => {
                 </Text>
                 <CheckBox
                   checkboxes={elevationData}
-                  // onPress={handleElevationDataPress}
+                  onPress={handleElevationDataPress}
                 />
               </View>
               <View>
-                {/* <TextInputGroup inputFields={scaffold} /> */}
+                <TextInputGroup inputFields={scaffold} />
               </View>
               <View style={{marginBottom: 15, marginTop: 15}}>
                 <CustomHeader text="Signatures" />
@@ -375,12 +399,11 @@ const Handover = () => {
                   injury or death.
                 </Text>
               </View>
-              <View>
-                {/* <TextInputGroup inputFields={userData} /> */}
-              </View>
+             <TextInputGroup inputFields={userData} />
               <View style={{width: '90%', marginBottom: 50}}>
                 <FilePicker />
               </View>
+              <GeneratePdf />
 
               {/* <SignatureScreen /> */}
               <MySignatureCanvas

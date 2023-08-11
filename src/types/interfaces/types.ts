@@ -15,4 +15,5 @@ export interface InputField {
 export interface CheckboxItem {
   label: string;
   status: 'checked' | 'unchecked' | 'indeterminate';
+  name: string;
 }
