@@ -1,26 +1,30 @@
-import React, {useState} from 'react';
-import {View} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {View, Platform} from 'react-native';
 import AudioRecorderPlayer from 'react-native-audio-recorder-player';
 import {Button, ProgressBar, Text} from 'react-native-paper';
+import RNFetchBlob from 'rn-fetch-blob';
+import RNFS from 'react-native-fs'; // Import RNFS
+import {decode} from 'base-64';
+import axios from 'axios';
+
 const audioRecorderPlayer = new AudioRecorderPlayer();
 
 const Recorder = () => {
-  const [recordSecs, setRecordSecs] = useState(0);
   const [recordTime, setRecordTime] = useState('');
   const [currentPositionSec, setCurrentPositionSec] = useState(0);
   const [currentDurationSec, setCurrentDurationSec] = useState(0);
-  const [playTime, setPlayTime] = useState('');
-  const [duration, setDuration] = useState('');
+
 
   // after
   const [isRecording, setIsRecording] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [audioData, setAudioData] = useState<ArrayBuffer | null>(null);
 
   const onStartRecord = async () => {
     const result = await audioRecorderPlayer.startRecorder();
     setIsRecording(true);
     audioRecorderPlayer.addRecordBackListener(e => {
-      setRecordSecs(e.currentPosition);
+      // setRecordSecs(e.currentPosition);
       setRecordTime(audioRecorderPlayer.mmssss(Math.floor(e.currentPosition)));
     });
     console.log(result);
@@ -31,9 +35,55 @@ const Recorder = () => {
     audioRecorderPlayer.removeRecordBackListener();
     setIsRecording(false);
 
-    setRecordSecs(0);
+    // setRecordSecs(0);
     console.log(result);
+    if (Platform.OS === 'ios') {
+      const response = await RNFetchBlob.fs.readFile(result, 'base64');
+      const audioArrayBuffer = base64ToArrayBuffer(response);
+      setAudioData(audioArrayBuffer); // Store the audio data
+    } else {
+      const audioArrayBuffer = await RNFS.readFile(result, 'base64');
+      setAudioData(base64ToArrayBuffer(audioArrayBuffer));
+      // console.log("Base64 Audio Data:", audioArrayBuffer);
+    }
   };
+  useEffect(() => {
+    if (!audioData) {
+      return;
+    }
+    const uint8Array = new Uint8Array(audioData);
+    // @ts-ignore
+    const blob = new Blob([uint8Array], {type: 'audio/mpeg'});
+
+    const formData = new FormData();
+    formData.append('audioFile', blob);
+
+    axios
+      .post(
+        'https://api.fivestaraccess.com.au/handover_certificate.php',
+        FormData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        },
+      )
+      .then(res => {
+        console.log('status', res);
+      })
+      .catch(err => {
+        console.log('errr', err);
+      });
+  }, [audioData]);
+  function base64ToArrayBuffer(base64: string) {
+    const binaryString = decode(base64);
+    const length = binaryString.length;
+    const bytes = new Uint8Array(length);
+    for (let i = 0; i < length; i++) {
+      bytes[i] = binaryString.charCodeAt(i);
+    }
+    return bytes.buffer;
+  }
 
   const onStartPlay = async () => {
     console.log('onStartPlay');
@@ -42,8 +92,8 @@ const Recorder = () => {
     audioRecorderPlayer.addPlayBackListener(e => {
       setCurrentPositionSec(e.currentPosition);
       setCurrentDurationSec(e.duration);
-      setPlayTime(audioRecorderPlayer.mmssss(Math.floor(e.currentPosition)));
-      setDuration(audioRecorderPlayer.mmssss(Math.floor(e.duration)));
+      // setPlayTime(audioRecorderPlayer.mmssss(Math.floor(e.currentPosition)));
+      // setDuration(audioRecorderPlayer.mmssss(Math.floor(e.duration)));
       setIsPlaying(true);
     });
   };
@@ -69,7 +119,8 @@ const Recorder = () => {
           justifyContent: 'space-between',
           width: '90%',
         }}>
-        <Button  rippleColor="#e0aaff"
+        <Button
+          rippleColor="#e0aaff"
           icon={isRecording ? 'stop' : 'record'}
           onPress={isRecording ? onStopRecord : onStartRecord}
           disabled={isPlaying}
@@ -88,7 +139,7 @@ const Recorder = () => {
         <ProgressBar
           progress={currentPositionSec / currentDurationSec}
           color="#112D4E"
-          style={{ height: 8, borderRadius: 5, marginTop: 10, width: '90%' }}
+          style={{height: 8, borderRadius: 5, marginTop: 10, width: '90%'}}
         />
       )}
       <View
@@ -98,7 +149,8 @@ const Recorder = () => {
           width: '90%',
           justifyContent: 'space-between',
         }}>
-        <Button  rippleColor="#e0aaff"
+        <Button
+          rippleColor="#e0aaff"
           icon={'play-circle'}
           onPress={onStartPlay}
           disabled={isRecording}
@@ -106,15 +158,17 @@ const Recorder = () => {
           mode="contained">
           Play
         </Button>
-        <Button rippleColor="#e0aaff"
+        <Button
+          rippleColor="#e0aaff"
           icon={'play-pause'}
-          onPress={onPausePlay }
+          onPress={onPausePlay}
           disabled={isRecording}
           // style={{width: '90%'}}
           mode="contained">
           Pause
         </Button>
-        <Button rippleColor="#e0aaff"
+        <Button
+          rippleColor="#e0aaff"
           icon={'restart'}
           onPress={onStopPlay}
           disabled={isRecording}
@@ -122,7 +176,6 @@ const Recorder = () => {
           mode="contained">
           Restart
         </Button>
-        
       </View>
 
       {/* <Text>Duration: {duration}</Text> */}
