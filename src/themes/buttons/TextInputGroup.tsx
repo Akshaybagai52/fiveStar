@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, TextInput, StyleSheet } from 'react-native';
 import { Text } from 'react-native-paper';
-import { Field } from 'formik';
+import { Field,ErrorMessage } from 'formik';
 
 interface TextInputGroupProps {
   inputFields: Partial<{
@@ -25,7 +25,7 @@ const TextInputGroup: React.FC<TextInputGroupProps> = ({ inputFields }) => {
           </Text>
           <Field name={inputField.name}>
             
-          {({ field, form }: {field: any; form: any}) => (            
+          {({ field, form, meta }: {field: any; form: any, meta: any}) => (            
               <>
               {/* {console.log(form)} */}
               <TextInput
@@ -36,6 +36,12 @@ const TextInputGroup: React.FC<TextInputGroupProps> = ({ inputFields }) => {
                 multiline={inputField.multiline}
                 numberOfLines={inputField.numberOfLines}
               />
+              {/* {meta.touched && meta.error ? <Text>heyshsdfsf</Text>: null} */}
+               <ErrorMessage
+                  name={inputField.name}
+                  component={Text} // Use your own Text component
+                  style={styles.errorText} // Apply your error styling
+                />
               </>
             )}
           </Field>
@@ -64,6 +70,9 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingHorizontal: 10,
   },
+  errorText: {
+    color: 'red',
+  }
 });
 
 export default TextInputGroup;

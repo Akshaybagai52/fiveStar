@@ -1,5 +1,12 @@
-import {View, ScrollView, TouchableOpacity, Image, Alert} from 'react-native';
-import {Button, Text} from 'react-native-paper';
+import {
+  View,
+  ScrollView,
+  TouchableOpacity,
+  Image,
+  Alert,
+  
+} from 'react-native';
+import {Button, Text,ActivityIndicator} from 'react-native-paper';
 import React, {useState, useRef} from 'react';
 import {myStyles} from './styles';
 import RadioGroup, {Option} from '../../themes/buttons/RadioButtons';
@@ -188,7 +195,7 @@ const Handover = () => {
     {
       label: 'Handover Date and Time ',
       showAsterisk: true,
-      name: 'signatures.Date&Time',
+      name: 'signatures.DateTime',
     },
     {
       label: 'Name of authorised Customer Representative ',
@@ -267,47 +274,73 @@ const Handover = () => {
       elevations: {},
       inputDetails: {},
     },
-    signatures: {},
+    signatures: {
+      customerName: '',
+      HRWLNumber: '',
+      customerEmail2: '',
+      customerEmail: '',
+      DateTime: '',
+      customerName2: '',
+    },
   };
   // const handleSubmit = (values: any) => {
   //   // Handle form submission...
   //   console.log(values);
   // };
+  const validationSchema = Yup.object({
+    projectDetails: Yup.object().shape({
+      projectId: Yup.string().required('Project ID is required'),
+      buildingLevel: Yup.string(),
+      nameOfBuilder: Yup.string(),
+      customerABN: Yup.string(),
+      workCompletion: Yup.string().required('Work completion is required'),
+    }),
+    signatures: Yup.object().shape({
+      customerName: Yup.string().required('Name is required'),
+      HRWLNumber: Yup.string(),
+      customerEmail: Yup.string().email('Invalid email'),
+      customerEmail2: Yup.string().email('Invalid email'),
+      DateTime: Yup.string().required('Handover Date and Time is required'),
+      customerName2: Yup.string().required('Name is required'),
+    }),
+  });
   const viewShotRef = useRef<ViewShot>(null);
-  const [screenshotUri, setScreenshotUri] = useState<string | null>(null);
-  const [generatedPdf, setGeneratedPdf] = useState<string | null>(null);
+  const [screenshotUri, setScreenshotUri] = useState<null | string | undefined>(
+    null,
+  );
+  // const [generatedPdf, setGeneratedPdf] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
-  const captureScreenshot = () => {
-    // @ts-ignore
-    viewShotRef.current
-      ?.capture()
-      .then(uri => {
-        console.log('Screenshot captured:', uri);
-        setScreenshotUri(uri); // Store the URI in state
-      })
-      .catch(error => {
-        console.error('Error capturing screenshot:', error);
-      });
-  };
-  const generatePdfAndDownload = async () => {
-    if (!screenshotUri) {
-      return;
-    }
-
-    const base64Image = await RNFS.readFile(screenshotUri, 'base64');
-    const imageSrc = `data:image/png;base64,${base64Image}`;
-
-    const options = {
-      html: `<img src="${imageSrc}" />`,
-      fileName: 'screenshot',
-      directory: 'Documents',
-    };
-
+  const captureScreenshot = async () => {
     try {
-      const pdf = await RNHTMLtoPDF.convert(options);
-      Alert.alert('PDF generated:', pdf.filePath);
+      setLoading(true);
+      // @ts-ignore
+      const uri = await viewShotRef.current?.capture();
+      console.log('Screenshot captured:', uri);
+      if (!uri) {
+        return;
+      }
+      const base64Image = await RNFS.readFile(uri, 'base64');
+      const imageSrc = `data:image/png;base64,${base64Image}`;
+
+      const options = {
+        html: `<img src="${imageSrc}" />`,
+        fileName: 'screenshot',
+        directory: 'Documents',
+      };
+
+      try {
+        const pdf = await RNHTMLtoPDF.convert(options);
+        console.log('pdf generated successfully');
+
+        Alert.alert('PDF generated:', pdf.filePath);
+      } catch (error) {
+        console.error('Error generating PDF:', error);
+      }
     } catch (error) {
-      console.error('Error generating PDF:', error);
+      console.error('Error capturing screenshot:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -318,8 +351,9 @@ const Handover = () => {
           <Formik
             initialValues={initialValues}
             enableReinitialize={true}
-            onSubmit={values => {
-              console.log(values);
+            validationSchema={validationSchema}
+            onSubmit={async values => {
+              await captureScreenshot();
             }}>
             {({handleSubmit, values}) => (
               <View style={{backgroundColor: '#fff'}}>
@@ -457,29 +491,18 @@ const Handover = () => {
                 <MySignatureCanvas
                   onBegin={handleCanvasBegin}
                   onEnd={handleCanvasEnd}
-                />
-
-                <TouchableOpacity onPress={() => handleSubmit()}>
-                  <Text>Submit</Text>
-                </TouchableOpacity>
-                <ButtonGreen text="Submit" />
+                />            
+                <ButtonGreen text="Submit" onPress={handleSubmit}/>
               </View>
             )}
           </Formik>
         </ViewShot>
-        <TouchableOpacity onPress={captureScreenshot}>
-          <Text>generate pdf</Text>
-        </TouchableOpacity>
-        {screenshotUri && (
-          <Image
-            source={{uri: screenshotUri}}
-            style={{width: '100%', aspectRatio: 1}}
-          />
-        )}
-        <TouchableOpacity onPress={generatePdfAndDownload}>
-          <Text>generate pdf</Text>
-        </TouchableOpacity>
-       
+        {loading && <View style={myStyles.activityContainer}>
+        <ActivityIndicator animating={true} size="large" color="#c7fe1a" style={myStyles.activityIndicator} />
+
+
+        </View>} 
+        {/* {loading && <ActivityIndicator animating={true} size="large" color="blue" />}  */}
       </ScrollView>
     </View>
   );

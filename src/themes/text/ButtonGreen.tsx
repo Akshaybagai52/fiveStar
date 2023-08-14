@@ -4,11 +4,12 @@ import React from 'react';
 
 interface buttonGreenProps {
   text: string;
+  onPress:any;
 }
 
-export const ButtonGreen : React.FC<buttonGreenProps> = ({text}) => {
+export const ButtonGreen : React.FC<buttonGreenProps> = ({text, onPress}) => {
   return (
-    <TouchableOpacity style={styles.button}>
+    <TouchableOpacity style={styles.button} onPress={onPress}>
       <Text style={styles.buttonText}>{text}</Text>
     </TouchableOpacity>
   );
