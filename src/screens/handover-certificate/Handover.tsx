@@ -26,6 +26,7 @@ import {MySignatureCanvas} from '../../themes/buttons/SignatureCanvas';
 import FilePicker from '../../themes/buttons/FilePicker';
 import {Formik, Form} from 'formik'; // Import Formik and Form
 import * as Yup from 'yup';
+import axios from 'axios';
 // generate pdf
 
 import RNHTMLtoPDF from 'react-native-html-to-pdf';
@@ -33,6 +34,7 @@ import ViewShot from 'react-native-view-shot';
 import {useCallback} from 'react';
 import RNFS from 'react-native-fs';
 import PDF from 'react-native-pdf';
+import { HandoverFormValues } from '../../types/interfaces/types';
 // import SignatureCanvas from '../../themes/buttons/SignatureCanvas';
 
 const loadingCapacity: CheckboxItem[] = [
@@ -111,7 +113,7 @@ const options: Option[] = [
     value: 'Other Works - mention in Notes below',
   },
 ];
-// const scaffoldData: InputField[] =
+
 
 const Handover = () => {
   // Scroll View start
@@ -258,7 +260,7 @@ const Handover = () => {
     });
   };
 
-  const initialValues = {
+  const initialValues: HandoverFormValues = {
     projectDetails: {
       certificationRelation: {
         selectedOption: '',
@@ -283,10 +285,22 @@ const Handover = () => {
       customerName2: '',
     },
   };
-  // const handleSubmit = (values: any) => {
-  //   // Handle form submission...
-  //   console.log(values);
-  // };
+  const handleSubmit1 = async (values:HandoverFormValues) => {
+    try {
+      const formData = new FormData();
+      formData.append('projectDetails', JSON.stringify(values.projectDetails));
+      formData.append('scaffoldDetails', JSON.stringify(values.scaffoldDetails));
+      formData.append('signatures', JSON.stringify(values.signatures));
+      const response = await axios.post('https://api.fivestaraccess.com.au/handover_certificate.php', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      console.log('Post Response:', response.data);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
   const validationSchema = Yup.object({
     projectDetails: Yup.object().shape({
       projectId: Yup.string().required('Project ID is required'),
@@ -308,7 +322,6 @@ const Handover = () => {
   const [screenshotUri, setScreenshotUri] = useState<null | string | undefined>(
     null,
   );
-  // const [generatedPdf, setGeneratedPdf] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
   const captureScreenshot = async () => {
@@ -492,7 +505,7 @@ const Handover = () => {
                   onBegin={handleCanvasBegin}
                   onEnd={handleCanvasEnd}
                 />            
-                <ButtonGreen text="Submit" onPress={handleSubmit}/>
+                <ButtonGreen text="Submit" onPress={() => console.log(values)}/>
               </View>
             )}
           </Formik>
