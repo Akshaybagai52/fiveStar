@@ -1,10 +1,11 @@
 import { View, Image, StyleSheet, TouchableOpacity, Text } from 'react-native';
 // import { Text } from 'react-native-paper';
-import React from 'react'
+import React, {useState} from 'react'
 
 const GetStarted = ({ navigation }:any) => {
+  
   const handleGetStartedPress = () => {
-    navigation.navigate('Handover');
+    navigation.navigate('Login');
 };
   return (
     <View style={styles.container}>
