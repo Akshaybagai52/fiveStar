@@ -5,7 +5,7 @@ import React, {useState} from 'react'
 const GetStarted = ({ navigation }:any) => {
   
   const handleGetStartedPress = () => {
-    navigation.navigate('Login');
+    navigation.navigate('Handover');
 };
   return (
     <View style={styles.container}>
@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
       position: 'absolute',
       bottom: 20,
       right: 20,
-      backgroundColor: '#112D4E',
+      backgroundColor: '#00BFFF',
       padding: 15,
       borderRadius: 5,
   },

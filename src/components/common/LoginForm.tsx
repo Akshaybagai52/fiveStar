@@ -11,12 +11,11 @@ import {
   Dimensions,
   Alert,
 } from 'react-native';
-import { ToggleButton } from 'react-native-paper';
+import {ToggleButton} from 'react-native-paper';
 const screenHeight = Dimensions.get('window').height;
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 const Login = ({navigation}: any) => {
-  
   const [firstName, setFirstName] = React.useState('');
   const [email, setEmail] = React.useState('');
   const [showPassword, setShowPassword] = React.useState(false);
@@ -77,15 +76,13 @@ const Login = ({navigation}: any) => {
     },
     passwordInput: {
       flexDirection: 'row',
-  
     },
     eyeIcon: {
       position: 'absolute', // Step 2: Set position to absolute
       top: '50%', // Step 2: Vertically center the component at 50% from the top of the parent
-      transform: [{ translateY: -20 }], // Step 3: Move the component up by half of its own height
-     
-      right: 15
-  
+      transform: [{translateY: -20}], // Step 3: Move the component up by half of its own height
+
+      right: 15,
     },
     title: {
       fontSize: 24,
@@ -105,7 +102,7 @@ const Login = ({navigation}: any) => {
       paddingHorizontal: 12,
       marginBottom: 15,
       width: '100%',
-      
+      color: isDarkMode ? '#fff' : '#333',
     },
     submitButton: {
       backgroundColor: '#00BFFF',
@@ -145,28 +142,27 @@ const Login = ({navigation}: any) => {
       position: 'absolute',
       top: 0,
       right: 15,
-    }
+    },
   });
 
   return (
     <View style={styles.parent}>
-       <ToggleButton
-      icon={isDarkMode ? "weather-sunny" : "theme-light-dark"}
-      iconColor={isDarkMode ? 'white': 'black'}
-      value="bluetooth"
-      // status={isDarkMode}
-      onPress={toggleDarkMode}
-      style={styles.darkMode}
-    />
+      <ToggleButton
+        icon={isDarkMode ? 'weather-sunny' : 'theme-light-dark'}
+        iconColor={isDarkMode ? 'white' : 'black'}
+        value="bluetooth"
+        onPress={toggleDarkMode}
+        style={styles.darkMode}
+      />
       <View style={styles.container}>
-     
         <Text style={styles.title}>Login</Text>
         <TextInput
           style={styles.input}
           placeholder="Email Address"
           value={firstName}
           onChangeText={setFirstName}
-          placeholderTextColor={isDarkMode ? "white":'black' }
+          placeholderTextColor={isDarkMode ? 'white' : 'black'}
+          
         />
 
         <View style={styles.passwordInput}>
@@ -176,7 +172,8 @@ const Login = ({navigation}: any) => {
             value={email}
             onChangeText={setEmail}
             secureTextEntry={!showPassword}
-            placeholderTextColor={isDarkMode ? "white":'black' }
+            placeholderTextColor={isDarkMode ? 'white' : 'black'}
+            
           />
           <TouchableOpacity
             style={styles.eyeIcon}
@@ -185,7 +182,7 @@ const Login = ({navigation}: any) => {
               name={showPassword ? 'eye' : 'eye-slash'}
               size={20}
               // color="#000"
-              color={isDarkMode ? 'white': 'black'}
+              color={isDarkMode ? 'white' : 'black'}
             />
           </TouchableOpacity>
         </View>
@@ -209,7 +206,5 @@ const Login = ({navigation}: any) => {
     </View>
   );
 };
-
-
 
 export default Login;
