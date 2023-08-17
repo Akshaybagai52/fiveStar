@@ -505,7 +505,7 @@ const Handover = () => {
                   onBegin={handleCanvasBegin}
                   onEnd={handleCanvasEnd}
                 />            
-                <ButtonGreen text="Submit" onPress={() => console.log(values)}/>
+                <ButtonGreen text="Submit" onPress={handleSubmit}/>
               </View>
             )}
           </Formik>
