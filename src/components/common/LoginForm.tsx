@@ -105,7 +105,7 @@ const Login = ({navigation}: any) => {
       color: isDarkMode ? '#fff' : '#333',
     },
     submitButton: {
-      backgroundColor: '#00BFFF',
+      backgroundColor: '#c7fe1a',
       paddingVertical: 12,
       paddingHorizontal: 20,
       borderRadius: 8,
@@ -113,7 +113,7 @@ const Login = ({navigation}: any) => {
       marginTop: 15,
     },
     submitButtonText: {
-      color: 'white',
+      color: 'black',
       fontSize: 16,
       fontWeight: 'bold',
     },
