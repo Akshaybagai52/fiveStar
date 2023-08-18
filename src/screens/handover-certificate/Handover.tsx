@@ -287,15 +287,21 @@ const Handover = () => {
   };
   const handleSubmit1 = async (values:HandoverFormValues) => {
     try {
-      const formData = new FormData();
-      formData.append('projectDetails', JSON.stringify(values.projectDetails));
-      formData.append('scaffoldDetails', JSON.stringify(values.scaffoldDetails));
-      formData.append('signatures', JSON.stringify(values.signatures));
-      const response = await axios.post('https://api.fivestaraccess.com.au/handover_certificate.php', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
+      const requestData = {
+        projectDetails: values.projectDetails,
+        scaffoldDetails: values.scaffoldDetails,
+        signatures: values.signatures,
+      };
+  
+      const response = await axios.post(
+        'https://api.fivestaraccess.com.au/handover_certificate.php',
+        requestData,
+        {
+          headers: {
+            'Content-Type': 'application/json', 
+          },
+        }
+      );
       console.log('Post Response:', response.data);
     } catch (error) {
       console.error('Error:', error);
@@ -367,6 +373,7 @@ const Handover = () => {
             validationSchema={validationSchema}
             onSubmit={async values => {
               await captureScreenshot();
+              await handleSubmit1(values)
             }}>
             {({handleSubmit, values}) => (
               <View style={{backgroundColor: '#fff'}}>

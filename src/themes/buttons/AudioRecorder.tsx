@@ -6,6 +6,7 @@ import RNFetchBlob from 'rn-fetch-blob';
 import RNFS from 'react-native-fs'; // Import RNFS
 import {decode} from 'base-64';
 import axios from 'axios';
+import Voice from '@react-native-voice/voice';
 
 const audioRecorderPlayer = new AudioRecorderPlayer();
 
@@ -14,15 +15,21 @@ const Recorder = () => {
   const [currentPositionSec, setCurrentPositionSec] = useState(0);
   const [currentDurationSec, setCurrentDurationSec] = useState(0);
 
-
   // after
   const [isRecording, setIsRecording] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [audioData, setAudioData] = useState<ArrayBuffer | null>(null);
+  // const [recognizedText, setRecognizedText] = useState('');
+  
+  // Voice.onSpeechResults = (results:any) => {
+  //   setRecognizedText(results[0]);
+    
+  // };
 
   const onStartRecord = async () => {
     const result = await audioRecorderPlayer.startRecorder();
     setIsRecording(true);
+    // await Voice.start('en-US');
     audioRecorderPlayer.addRecordBackListener(e => {
       // setRecordSecs(e.currentPosition);
       setRecordTime(audioRecorderPlayer.mmssss(Math.floor(e.currentPosition)));
@@ -33,10 +40,11 @@ const Recorder = () => {
   const onStopRecord = async () => {
     const result = await audioRecorderPlayer.stopRecorder();
     audioRecorderPlayer.removeRecordBackListener();
+    // await Voice.stop();
     setIsRecording(false);
 
     // setRecordSecs(0);
-    console.log(result);
+    // console.log(result);
     if (Platform.OS === 'ios') {
       const response = await RNFetchBlob.fs.readFile(result, 'base64');
       const audioArrayBuffer = base64ToArrayBuffer(response);
@@ -176,9 +184,9 @@ const Recorder = () => {
           mode="contained">
           Restart
         </Button>
-      </View>
+      </View>    
 
-      {/* <Text>Duration: {duration}</Text> */}
+      {/* <Text>Recognized Text: {recognizedText}</Text> */}
     </View>
   );
 };
