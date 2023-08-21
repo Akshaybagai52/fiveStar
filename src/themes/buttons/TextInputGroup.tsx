@@ -1,11 +1,12 @@
-import React from 'react';
-import { View, TextInput, StyleSheet } from 'react-native';
-import { Text } from 'react-native-paper';
-import { Field,ErrorMessage } from 'formik';
+import React, {useEffect, useState} from 'react';
+import {View, TextInput, StyleSheet} from 'react-native';
+import {Text} from 'react-native-paper';
+import {Field, ErrorMessage} from 'formik';
+import {useSelector} from 'react-redux';
 
 interface TextInputGroupProps {
   inputFields: Partial<{
-    name: string; // Add the name field
+    name: any; // Add the name field
     label: string;
     placeholder: string;
     showAsterisk?: boolean;
@@ -14,7 +15,15 @@ interface TextInputGroupProps {
   }>[];
 }
 
-const TextInputGroup: React.FC<TextInputGroupProps> = ({ inputFields }) => {
+const TextInputGroup: React.FC<TextInputGroupProps> = ({inputFields}) => {
+  const [recordedValue, setRecordedValue] = useState<string>('')
+  const audioVoiceValue = useSelector((state:any) => state?.speech?.audioVoice);
+  useEffect(() => {
+    if(audioVoiceValue?.length){
+      setRecordedValue(audioVoiceValue[0])
+    }
+
+  },[audioVoiceValue]);
   return (
     <View>
       {inputFields.map((inputField, index) => (
@@ -24,24 +33,31 @@ const TextInputGroup: React.FC<TextInputGroupProps> = ({ inputFields }) => {
             {inputField.showAsterisk && <Text style={styles.asterisk}>*</Text>}
           </Text>
           <Field name={inputField.name}>
-            
-          {({ field, form, meta }: {field: any; form: any, meta: any}) => (            
+            {({field, form, meta}: {field: any; form: any; meta: any}) => (
               <>
-              {/* {console.log(form)} */}
-              <TextInput
-                value={field.value}
-                style={styles.textInput}
-                onChangeText={(e:any) => form.setFieldValue(inputField.name,e)}
-                placeholder={inputField.placeholder}
-                multiline={inputField.multiline}
-                numberOfLines={inputField.numberOfLines}
-              />
-              {/* {meta.touched && meta.error ? <Text>heyshsdfsf</Text>: null} */}
-               <ErrorMessage
-                  name={inputField.name}
-                  component={Text} // Use your own Text component
-                  style={styles.errorText} // Apply your error styling
+                {/* {console.log(form)} */}
+                <TextInput
+                  value={ inputField.name==="projectDetails.workCompletion" ? recordedValue : field.value}
+                  style={styles.textInput}
+                  onChangeText={(e: any) =>{
+                    form.setFieldValue(inputField.name, e)
+                    if (inputField.name === "projectDetails.workCompletion") {
+                      setRecordedValue(e); // Update recordedValue when user types
+                    }
+                  }
+                  }
+                  placeholder={inputField.placeholder}
+                  multiline={inputField.multiline}
+                  numberOfLines={inputField.numberOfLines}
                 />
+                      {/* <Text>{recordedValue}EETETE</Text> */}
+
+                {/* {meta.touched && meta.error ? <Text>heyshsdfsf</Text>: null} */}
+                {/* <ErrorMessage
+                  name={inputField.name}
+                  component={Text ?? ""} // Use your own Text component
+                  style={styles.errorText} // Apply your error styling
+                /> */}
               </>
             )}
           </Field>
@@ -72,7 +88,7 @@ const styles = StyleSheet.create({
   },
   errorText: {
     color: 'red',
-  }
+  },
 });
 
 export default TextInputGroup;
