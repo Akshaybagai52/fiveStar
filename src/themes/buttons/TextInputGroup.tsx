@@ -16,14 +16,42 @@ interface TextInputGroupProps {
 }
 
 const TextInputGroup: React.FC<TextInputGroupProps> = ({inputFields}) => {
-  const [recordedValue, setRecordedValue] = useState<string>('')
-  const audioVoiceValue = useSelector((state:any) => state?.speech?.audioVoice);
-  useEffect(() => {
-    if(audioVoiceValue?.length){
-      setRecordedValue(audioVoiceValue[0])
-    }
+  const [inputValues, setInputValues] = useState<{[name: string]: string}>({});
 
-  },[audioVoiceValue]);
+  const speechReducerValues = useSelector((state: any) => state?.speech);
+  const addingZero = (time: number) => {
+    return time >= 10 ? time : `0${time}`;
+  };
+  const currentTime = new Date();
+  const currentHours = currentTime.getHours();
+  const currentMinutes = currentTime.getMinutes();
+  const currentSeconds = currentTime.getSeconds();
+  const hourseIn12 = currentHours >= 12 ? currentHours - 12 : currentHours;
+  const amPm = currentHours >= 12 ? 'PM' : 'AM';
+
+  const time = `${addingZero(hourseIn12)} : ${addingZero(
+    currentMinutes,
+  )} : ${addingZero(currentSeconds)} ${amPm}`;
+  console.log(addingZero(hourseIn12))
+
+  // console.log(typeof(time), "time")
+  // console.log(userInfo)
+  useEffect(() => {
+    setInputValues(prevInputValues => ({
+      ...prevInputValues,
+      'projectDetails.workCompletion': speechReducerValues.audioVoice[0],
+      'signatures.customerEmail2': speechReducerValues.userInformation.email,
+      'signatures.customerName': speechReducerValues.userInformation.name,
+      'signatures.DateTime': time,
+    }));
+  }, [speechReducerValues.audioVoice]);
+  const handleInputChange = (name: string, value: string) => {
+    setInputValues(prevInputValues => ({
+      ...prevInputValues,
+      [name]: value,
+    }));
+  };
+  // console.log(inputValues)
   return (
     <View>
       {inputFields.map((inputField, index) => (
@@ -37,27 +65,16 @@ const TextInputGroup: React.FC<TextInputGroupProps> = ({inputFields}) => {
               <>
                 {/* {console.log(form)} */}
                 <TextInput
-                  value={ inputField.name==="projectDetails.workCompletion" ? recordedValue : field.value}
+                  value={inputValues[inputField.name]}
                   style={styles.textInput}
-                  onChangeText={(e: any) =>{
-                    form.setFieldValue(inputField.name, e)
-                    if (inputField.name === "projectDetails.workCompletion") {
-                      setRecordedValue(e); // Update recordedValue when user types
-                    }
-                  }
-                  }
+                  onChangeText={(e: any) => {
+                    form.setFieldValue(inputField.name, e);
+                    handleInputChange(inputField.name, e);
+                  }}
                   placeholder={inputField.placeholder}
                   multiline={inputField.multiline}
                   numberOfLines={inputField.numberOfLines}
                 />
-                      {/* <Text>{recordedValue}EETETE</Text> */}
-
-                {/* {meta.touched && meta.error ? <Text>heyshsdfsf</Text>: null} */}
-                {/* <ErrorMessage
-                  name={inputField.name}
-                  component={Text ?? ""} // Use your own Text component
-                  style={styles.errorText} // Apply your error styling
-                /> */}
               </>
             )}
           </Field>

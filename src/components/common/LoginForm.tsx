@@ -14,12 +14,16 @@ import {
 import {ToggleButton} from 'react-native-paper';
 const screenHeight = Dimensions.get('window').height;
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { useDispatch } from 'react-redux';
+import { updateUserInfo } from '../../redux/mainSlice';
 
 const Login = ({navigation}: any) => {
   const [firstName, setFirstName] = React.useState('');
   const [email, setEmail] = React.useState('');
   const [showPassword, setShowPassword] = React.useState(false);
   const [isDarkMode, setIsDarkMode] = React.useState(false);
+
+  const dispatch = useDispatch()
 
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
@@ -45,6 +49,7 @@ const Login = ({navigation}: any) => {
       })
       .then(res => {
         const status = res.data.status;
+        dispatch(updateUserInfo(res.data))
 
         if (status === 'approved') {
           navigation.navigate('Handover');
