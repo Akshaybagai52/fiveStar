@@ -43,27 +43,29 @@ export default function SpeechRecognitionScreen() {
       console.error(e);
     }
   }
-  console.log(results, 'results123');
+
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+  
+      // backgroundColor: '#F5FCFF',
+    },
+    buttonStyles: {
+      alignSelf: 'flex-start',
+      backgroundColor: isListening ? '#dc3545': '#6750A4'
+    }
+  });
+
 
   return (
     <View style={styles.container}>
-      <Text >Press the button and start speaking.</Text>
-      {/* <Button
-        title={isListening ? 'Stop Recognizing' : 'Start Recognizing'}
-        onPress={toggleListening}
-      /> */}
-      <Button mode='contained' icon={isListening ? 'stop' : 'record'} onPress={toggleListening}>{isListening ? 'Stop Recognizing' : 'Start Recognizing'}</Button>
-      {/* <Text>Results:</Text>
-      <Text>{results}</Text> */}
+      
+      <Button mode='contained' icon={isListening ? 'stop' : 'record'} style={styles.buttonStyles} onPress={toggleListening}>{isListening ? 'Stop Recognizing' : 'Start Recognizing'}</Button>
+      
     </View>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-});
+

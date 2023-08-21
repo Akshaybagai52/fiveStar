@@ -2,8 +2,8 @@ import {createSlice} from '@reduxjs/toolkit';
 
 const initialState: any = {
   audioVoice: [],
+  userInformation: {},
 };
-
 
 const speechSlice = createSlice({
   name: 'speech',
@@ -12,8 +12,11 @@ const speechSlice = createSlice({
     updateResults: (state, action) => {
       state.audioVoice = [action.payload];
     },
+    updateUserInfo: (state, action) => {
+      state.userInformation = action.payload;
+    },
   },
 });
-export const {updateResults} = speechSlice.actions;
+export const {updateResults, updateUserInfo} = speechSlice.actions;
 
 export default speechSlice.reducer;
