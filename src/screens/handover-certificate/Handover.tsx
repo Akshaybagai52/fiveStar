@@ -1,13 +1,6 @@
-import {
-  View,
-  ScrollView,
-  TouchableOpacity,
-  Image,
-  Alert,
-  
-} from 'react-native';
-import {Button, Text,ActivityIndicator} from 'react-native-paper';
-import React, {useState, useRef} from 'react';
+import {View, ScrollView, TouchableOpacity, Image, Alert} from 'react-native';
+import {Button, Text, ActivityIndicator} from 'react-native-paper';
+import React, {useState, useRef, useEffect} from 'react';
 import {myStyles} from './styles';
 import RadioGroup, {Option} from '../../themes/buttons/RadioButtons';
 import TextInputGroup from '../../themes/buttons/TextInputGroup';
@@ -34,7 +27,8 @@ import ViewShot from 'react-native-view-shot';
 import {useCallback} from 'react';
 import RNFS from 'react-native-fs';
 import PDF from 'react-native-pdf';
-import { HandoverFormValues } from '../../types/interfaces/types';
+import {HandoverFormValues} from '../../types/interfaces/types';
+import {useSelector} from 'react-redux';
 // import SignatureCanvas from '../../themes/buttons/SignatureCanvas';
 
 const loadingCapacity: CheckboxItem[] = [
@@ -113,7 +107,6 @@ const options: Option[] = [
     value: 'Other Works - mention in Notes below',
   },
 ];
-
 
 const Handover = () => {
   // Scroll View start
@@ -285,22 +278,22 @@ const Handover = () => {
       customerName2: '',
     },
   };
-  const handleSubmit1 = async (values:HandoverFormValues) => {
+  const handleSubmit1 = async (values: HandoverFormValues) => {
     try {
       const requestData = {
         projectDetails: values.projectDetails,
         scaffoldDetails: values.scaffoldDetails,
         signatures: values.signatures,
       };
-  
+
       const response = await axios.post(
         'https://api.fivestaraccess.com.au/handover_certificate.php',
         requestData,
         {
           headers: {
-            'Content-Type': 'application/json', 
+            'Content-Type': 'application/json',
           },
-        }
+        },
       );
       console.log('Post Response:', response.data);
     } catch (error) {
@@ -362,7 +355,6 @@ const Handover = () => {
       setLoading(false);
     }
   };
-
   return (
     <View style={{padding: 20, backgroundColor: '#fff'}}>
       <ScrollView ref={scrollViewRef} scrollEnabled>
@@ -373,7 +365,7 @@ const Handover = () => {
             validationSchema={validationSchema}
             onSubmit={async values => {
               await captureScreenshot();
-              await handleSubmit1(values)
+              await handleSubmit1(values);
             }}>
             {({handleSubmit, values}) => (
               <View style={{backgroundColor: '#fff'}}>
@@ -511,17 +503,22 @@ const Handover = () => {
                 <MySignatureCanvas
                   onBegin={handleCanvasBegin}
                   onEnd={handleCanvasEnd}
-                />            
-                <ButtonGreen text="Submit" onPress={handleSubmit}/>
+                />
+                <ButtonGreen text="Submit" onPress={handleSubmit} />
               </View>
             )}
           </Formik>
         </ViewShot>
-        {loading && <View style={myStyles.activityContainer}>
-        <ActivityIndicator animating={true} size="large" color="#c7fe1a" style={myStyles.activityIndicator} />
-
-
-        </View>} 
+        {loading && (
+          <View style={myStyles.activityContainer}>
+            <ActivityIndicator
+              animating={true}
+              size="large"
+              color="#c7fe1a"
+              style={myStyles.activityIndicator}
+            />
+          </View>
+        )}
         {/* {loading && <ActivityIndicator animating={true} size="large" color="blue" />}  */}
       </ScrollView>
     </View>
