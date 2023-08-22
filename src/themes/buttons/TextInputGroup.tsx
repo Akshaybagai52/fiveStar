@@ -32,7 +32,7 @@ const TextInputGroup: React.FC<TextInputGroupProps> = ({inputFields}) => {
   const time = `${addingZero(hourseIn12)} : ${addingZero(
     currentMinutes,
   )} : ${addingZero(currentSeconds)} ${amPm}`;
-  console.log(addingZero(hourseIn12))
+  // console.log(addingZero(hourseIn12))
 
   // console.log(typeof(time), "time")
   // console.log(userInfo)
