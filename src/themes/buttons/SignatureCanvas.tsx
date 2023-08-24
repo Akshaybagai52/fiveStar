@@ -3,7 +3,7 @@ import {View, StyleSheet, Image} from 'react-native';
 import SignatureCanvas, {SignatureViewRef} from 'react-native-signature-canvas';
 import {Button} from 'react-native-paper';
 
-export const MySignatureCanvas = ({onBegin, onEnd}: any) => {
+export const MySignatureCanvas = ({onBegin, onEnd, signature, setSignature}: any) => {
   const [signatureImage, setSignatureImage] = useState<string>('');
   const signatureRef = useRef<SignatureViewRef>(null); // Create a ref for the signature canvas
   // const handleOK = (signature) => {
@@ -26,11 +26,9 @@ export const MySignatureCanvas = ({onBegin, onEnd}: any) => {
     }
   };
   const handleOK = (signature: any) => {
-    console.log(signature);
+    setSignature(signature)
+    // console.log(signature);
   };
-  // useEffect(() => {
-  //   console.log(signatureImage);
-  // }, [signatureImage]);
 
   return (
     <View>
@@ -53,7 +51,7 @@ export const MySignatureCanvas = ({onBegin, onEnd}: any) => {
         </Button>
         <Button
           rippleColor="#e0aaff"
-          icon="delete"
+          icon="content-save"
           onPress={handleGetSignature}
           mode="contained">
           Save Signature

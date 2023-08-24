@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -14,27 +14,15 @@ import DocumentPicker, {
   DocumentPickerResponse,
 } from 'react-native-document-picker';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+interface FilePickerProps {
+  selectedFiles: DocumentPickerResponse[];
+  setSelectedFiles: React.Dispatch<React.SetStateAction<DocumentPickerResponse[]>>;
+}
 
-const FilePicker: React.FC = () => {
+const FilePicker: React.FC<FilePickerProps> = ({ selectedFiles, setSelectedFiles }) => {
   const [multipleFile, setMultipleFile] = useState<DocumentPickerResponse[]>(
     [],
   );
-
-  // const selectOneFile = async () => {
-  //   try {
-  //     const res = await DocumentPicker.pick({
-  //       type: [DocumentPicker.types.allFiles],
-  //     });
-  //   //   setSingleFile(res);
-  //   } catch (err) {
-  //     if (DocumentPicker.isCancel(err)) {
-  //       Alert.alert('Canceled from single doc picker');
-  //     } else {
-  //       Alert.alert('Unknown Error: ' + JSON.stringify(err));
-  //       throw err;
-  //     }
-  //   }
-  // };
 
   const selectMultipleFile = async () => {
     try {
@@ -60,37 +48,17 @@ const FilePicker: React.FC = () => {
     return text.length > 6 ? text.substring(0, 6) + "..." : text;
   }
 
+  useEffect(() => {
+    setSelectedFiles(multipleFile);
+  }, [multipleFile]);
+
+
 
 
   return (
     <SafeAreaView style={{flex: 1}}>
       <Text style={styles.titleText}>Upload Your File</Text>
       <View style={styles.container}>
-        {/* <TouchableOpacity
-          activeOpacity={0.5}
-          style={styles.buttonStyle}
-          onPress={selectOneFile}
-        >
-          <Text style={{ marginRight: 10, fontSize: 19 }}>
-            Click here to pick one file
-          </Text>
-          <Image
-            source={{
-              uri: 'https://img.icons8.com/offices/40/000000/attach.png',
-            }}
-            style={styles.imageIconStyle}
-          />
-        </TouchableOpacity> */}
-        {/* <Text style={styles.textStyle}>
-          File Name: {singleFile?.name || ''}
-          {'\n'}
-          Type: {singleFile?.type || ''}
-          {'\n'}
-          File Size: {singleFile?.size || ''}
-          {'\n'}
-          URI: {singleFile?.uri || ''}
-          {'\n'}
-        </Text> */}
         <View style={styles.divider} />
         <TouchableOpacity
           activeOpacity={0.5}
@@ -110,15 +78,6 @@ const FilePicker: React.FC = () => {
           <View style={{flexWrap: 'wrap', flexDirection: 'row'}}>
             {multipleFile.map((item, index) => (
               <View key={index}>
-                {/* <Text style={styles.textStyle}> */}
-                {/* File Name: {item.name || ''} */}
-                {/* {'\n'} */}
-                {/* Type: {item.type || ''}
-                {'\n'}
-                File Size: {item.size || ''}
-                {'\n'} */}
-                {/* URI: {item.uri || ''} */}
-                {/* {'\n'} */}
                 <Image
                   source={{uri: item.uri}}
                   style={{

@@ -29,6 +29,10 @@ import RNFS from 'react-native-fs';
 import PDF from 'react-native-pdf';
 import {HandoverFormValues} from '../../types/interfaces/types';
 import {useSelector} from 'react-redux';
+import { DocumentPickerResponse } from 'react-native-document-picker';
+import RNFetchBlob from 'rn-fetch-blob';
+
+
 // import SignatureCanvas from '../../themes/buttons/SignatureCanvas';
 
 const loadingCapacity: CheckboxItem[] = [
@@ -207,6 +211,11 @@ const Handover = () => {
   const [checkboxes, setCheckboxes] = useState<CheckboxItem[]>(loadingCapacity);
   const [elevationData, setElevationData] =
     useState<CheckboxItem[]>(elevations);
+    const [selectedFiles, setSelectedFiles] = useState<DocumentPickerResponse[]>([]);
+    const [signatures, setSignatures] = useState({
+      signature1: '',
+      signature2: '',
+    });
 
   const handleCheckboxPress = (label: string) => {
     // @ts-ignore
@@ -280,10 +289,16 @@ const Handover = () => {
   };
   const handleSubmit1 = async (values: HandoverFormValues) => {
     try {
+      const base64Images = await Promise.all(selectedFiles.map(async file => {
+        const base64 = await RNFetchBlob.fs.readFile(file.uri, 'base64');
+        return `data:${file.type};base64,${base64}`;
+      }));
       const requestData = {
         projectDetails: values.projectDetails,
         scaffoldDetails: values.scaffoldDetails,
         signatures: values.signatures,
+        imagesAttached: base64Images,
+        signature: signatures,
       };
 
       const response = await axios.post(
@@ -296,6 +311,8 @@ const Handover = () => {
         },
       );
       console.log('Post Response:', response.data);
+      console.log('signature', signatures)
+      // console.log(base64Images);
     } catch (error) {
       console.error('Error:', error);
     }
@@ -313,7 +330,7 @@ const Handover = () => {
       HRWLNumber: Yup.string(),
       customerEmail: Yup.string().email('Invalid email'),
       customerEmail2: Yup.string().email('Invalid email'),
-      DateTime: Yup.string().required('Handover Date and Time is required'),
+      // DateTime: Yup.string().required('Handover Date and Time is required'),
       customerName2: Yup.string().required('Name is required'),
     }),
   });
@@ -491,20 +508,24 @@ const Handover = () => {
                 </View>
                 <TextInputGroup inputFields={userData} />
                 <View style={{width: '90%', marginBottom: 50}}>
-                  <FilePicker />
+                  <FilePicker selectedFiles={selectedFiles} setSelectedFiles={setSelectedFiles} />
                 </View>
 
                 {/* <SignatureScreen /> */}
                 <MySignatureCanvas
                   onBegin={handleCanvasBegin}
                   onEnd={handleCanvasEnd}
+                  signature={signatures}
+                  setSignature={(signature:any) => setSignatures(prevSignatures => ({...prevSignatures, signature1: signature}))}
                 />
 
                 <MySignatureCanvas
                   onBegin={handleCanvasBegin}
                   onEnd={handleCanvasEnd}
+                  signature={signatures}
+                  setSignature={(signature:any) => setSignatures(prevSignatures => ({...prevSignatures, signature2: signature}))}
                 />
-                <ButtonGreen text="Submit" onPress={handleSubmit} />
+                <ButtonGreen text="Submit" onPress={handleSubmit}  />
               </View>
             )}
           </Formik>
