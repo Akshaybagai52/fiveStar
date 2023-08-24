@@ -52,7 +52,7 @@ const Login = ({navigation}: any) => {
         dispatch(updateUserInfo(res.data))
 
         if (status === 'approved') {
-          navigation.navigate('Handover');
+          navigation.navigate('HandoverDrawer');
         } else {
           Alert.alert('Login Failed', 'Invalid Details.');
         }

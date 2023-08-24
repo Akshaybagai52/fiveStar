@@ -75,6 +75,11 @@ const TextInputGroup: React.FC<TextInputGroupProps> = ({inputFields}) => {
                   multiline={inputField.multiline}
                   numberOfLines={inputField.numberOfLines}
                 />
+                <ErrorMessage
+                  name={inputField.name}
+                  component={Text} // Use your own Text component
+                  style={styles.errorText} // Apply your error styling
+                />
               </>
             )}
           </Field>

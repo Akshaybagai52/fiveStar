@@ -5,15 +5,25 @@ import GetStarted from '../screens/getstarted/GetStarted';
 import Handover from '../screens/handover-certificate/Handover';
 import Login from '../components/common/LoginForm';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+// import {useSelector} from 'react-redux';
+
 
 
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
+// const speechReducerValues = useSelector((state: any) => state?.speech);
+
 
 export function HandoverDrawer() {
     return (
-      <Drawer.Navigator>
-        <Drawer.Screen name="Handover" component={Handover} />
+      <Drawer.Navigator screenOptions={{
+        drawerStyle: {
+        //   backgroundColor: '#c6cbef',
+          width: "85%",
+        },
+      }}>
+        <Drawer.Screen name="Hello" component={Handover} />
+        <Drawer.Screen name="Handover" component={Handover}  />
       </Drawer.Navigator>
     );
   }
@@ -27,18 +37,4 @@ export function HandoverDrawer() {
     );
   }
 
-function DrawerNavigation() {
-  return (
-    <Drawer.Navigator>
-      <Drawer.Screen
-        name="GetStarted"
-        component={GetStarted}
-        options={{ title: 'Welcome',  drawerIcon: () => null }}
-      />
-      <Drawer.Screen name="Login" component={Login}  options={{ drawerIcon: () => null }}/>
-      <Drawer.Screen name="Handover" component={Handover} />
-    </Drawer.Navigator>
-  );
-}
 
-// export default DrawerNavigation;
