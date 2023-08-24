@@ -5,6 +5,8 @@ import GetStarted from '../screens/getstarted/GetStarted';
 import Handover from '../screens/handover-certificate/Handover';
 import Login from '../components/common/LoginForm';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import Home from '../screens/home/Home';
+import { Text } from 'react-native-paper';
 // import {useSelector} from 'react-redux';
 
 
@@ -22,7 +24,7 @@ export function HandoverDrawer() {
           width: "85%",
         },
       }}>
-        <Drawer.Screen name="Hello" component={Handover} />
+        <Drawer.Screen name="Home" component={Home} />
         <Drawer.Screen name="Handover" component={Handover}  />
       </Drawer.Navigator>
     );
