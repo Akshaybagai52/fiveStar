@@ -63,3 +63,8 @@ export interface HandoverFormValues {
   scaffoldDetails: ScaffoldDetails;
   signatures: Signatures;
 }
+
+export interface WindowDimension {
+  width: number;
+  height:number ;
+}
