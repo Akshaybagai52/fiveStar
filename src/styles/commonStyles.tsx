@@ -4,17 +4,75 @@ import { WindowDimension } from "../types/interfaces/types";
 
 
 const commonStyles = StyleSheet.create({
-    container: {
+    commonContainer: {
+      padding: 40,
       flex: 1,
-      backgroundColor: '#ffffff',
-      alignItems: 'center',
-      justifyContent: 'center',
     },
-    textHeading: {
-    //   fontSize: windowWidth > 500 ? 30 : 20,
-    
+    // heading styles ***************************
+    heading32: {
+      fontSize : 32,
       fontWeight: 'bold',
-      color: '#fff'
+    },
+    heading42: {
+      fontSize : 42,
+      fontWeight: 'bold',
+    },
+    heading26: {
+      fontSize: 26,
+      fontWeight: 'bold'
+    },
+    // color styles ***************************
+    textDarkBlue: {
+      color: '#37517e',
+    },
+    textCenter: {
+      textAlign:'center'
+    },
+    alignSelfCenter: {
+      alignSelf: 'center'
+    },
+    // text size *********************************
+    text24: {
+      fontSize : 24,
+    },
+    text16: {
+      fontSize: 16
+    },
+    
+    rowCenter: {
+      flexDirection:"row",
+      alignItems :"center"
+    },
+    // spacing styles *******************************
+    pleft5: {
+      paddingLeft: 5
+    },
+    mb15: {
+      marginBottom: 15
+    },
+    mt5: {
+      marginTop: 5
+    },
+    mTop15: {
+      marginTop: 15,
+    },
+    card: {
+      backgroundColor: 'white',
+      borderRadius: 8,
+      paddingVertical: 45,
+      paddingHorizontal: 25,
+      width: '100%',
+      marginVertical: 10,
+    },
+    shadowProp: {
+      shadowColor: '#171717',
+      shadowOffset: {width: -2, height: 4},
+      shadowOpacity: 0.2,
+      shadowRadius: 3,
+    },
+    elevation: {
+      elevation: 5,
+      shadowColor: '#47b2e4',
     },
   });
   
