@@ -5,7 +5,7 @@ import { WindowDimension } from "../types/interfaces/types";
 
 const commonStyles = StyleSheet.create({
     commonContainer: {
-      padding: 40,
+      padding: 25,
       flex: 1,
     },
     // heading styles ***************************
@@ -31,12 +31,18 @@ const commonStyles = StyleSheet.create({
     alignSelfCenter: {
       alignSelf: 'center'
     },
+    fontBold: {
+      fontWeight: 'bold'
+    },
     // text size *********************************
     text24: {
       fontSize : 24,
     },
     text16: {
       fontSize: 16
+    },
+    text20: {
+      fontSize: 20
     },
     
     rowCenter: {
@@ -56,6 +62,9 @@ const commonStyles = StyleSheet.create({
     mTop15: {
       marginTop: 15,
     },
+    mL25: {
+      marginLeft:25
+    },
     card: {
       backgroundColor: 'white',
       borderRadius: 8,
@@ -74,6 +83,9 @@ const commonStyles = StyleSheet.create({
       elevation: 5,
       shadowColor: '#47b2e4',
     },
+    flexRow: {
+      flexDirection: 'row'
+    }
   });
   
   export default commonStyles;

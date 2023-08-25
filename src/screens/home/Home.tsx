@@ -54,6 +54,26 @@ const data = [
 ];
 
 import Carousel from 'react-native-reanimated-carousel';
+import TeamCard from '../../components/common/TeamCard';
+
+let imgData = [
+  require('../../assets/carousel/build0.jpg'),
+  require('../../assets/carousel/build1.jpg'),
+  require('../../assets/carousel/build2.jpeg'),
+  require('../../assets/carousel/build3.jpg'),
+  require('../../assets/carousel/build4.jpg'),
+  require('../../assets/carousel/build5.jpeg'),
+  require('../../assets/carousel/build6.jpg'),
+  require('../../assets/carousel/build7.jpg'),
+  require('../../assets/carousel/build8.jpg'),
+  require('../../assets/carousel/build9.jpg'),
+];
+const teamData = [
+  {img: require('../../assets/home/team-1.jpg'), name: 'Gareth Collin',occupation: 'Project Manager'},
+  {img: require('../../assets/home/team-2.jpg'), name: 'Daniel Antoun',occupation: 'Project Manager'},
+  {img: require('../../assets/home/team-3.jpg'), name: 'Jason Hong',occupation: 'Accounting & Admin Manager'},
+  {img: require('../../assets/home/team-4.jpg'), name: 'Louie Takchi',occupation: 'Project Manager'},
+]
 const Home = () => {
   const {height: windowHeight, width: windowWidth}: WindowDimension =
     useWindowDimensions();
@@ -214,26 +234,52 @@ const Home = () => {
           <TestimonialCard data={data} />
         </View>
         <View style={[{flex: 1}, commonStyles.commonContainer]}>
+          <Text
+            style={[
+              windowWidth > 500
+                ? commonStyles.heading42
+                : commonStyles.heading32,
+              commonStyles.textDarkBlue,
+              commonStyles.textCenter,
+              commonStyles.mb15,
+            ]}>
+            PORTFOLIO
+
+          </Text>
           <Carousel
             loop
-            width={width - 80}
-            height={width / 2}
+            width={width - 40}
+            height={width / 1.5}
             autoPlay={false}
-            data={[...new Array(6).keys()]}
+            data={[...new Array(10).keys()]}
             scrollAnimationDuration={1000}
-            // onSnapToItem={(index) => console.log('current index:', index)}
-            // customAnimation={}
+            withAnimation={{type: 'timing', config: {}}}
+            mode='parallax'
+            // vertical={true}
             renderItem={({index}) => (
               <View>
                 <Image
-                  source={
-                   require(`../../assets/home/building.jpg`)
-                  }
-                  style={{width: '100%', height: '100%'}}
+                  source={imgData[index]}
+                  style={{width: '100%', height: '100%', objectFit: 'cover'}}
                 />
               </View>
             )}
           />
+        </View>
+        <View style={commonStyles.commonContainer}>
+        <Text
+            style={[
+              windowWidth > 500
+                ? commonStyles.heading42
+                : commonStyles.heading32,
+              commonStyles.textDarkBlue,
+              commonStyles.textCenter,
+              commonStyles.mb15,
+            ]}>
+            Team
+
+          </Text>
+          <TeamCard teamData={teamData} />
         </View>
       </ScrollView>
     </View>
