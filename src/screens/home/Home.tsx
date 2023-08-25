@@ -1,22 +1,63 @@
 import {
   View,
-  Text,
   StyleSheet,
   ScrollView,
   useWindowDimensions,
   Image,
+  Dimensions,
 } from 'react-native';
+
 import React from 'react';
 interface WindowDimension {
   width: number;
   height: number;
 }
-import commonStyles from '../../styles/CommonStyles';
-import {Button} from 'react-native-paper';
+import {Button, Text} from 'react-native-paper';
+import Checkmark from 'react-native-vector-icons/Ionicons';
+import commonStyles from '../../styles/commonStyles';
+import TestimonialCard from '../../components/common/TestimonialCard';
+const data = [
+  {
+    icon: 'dots-triangle',
+    heading: 'King Partner',
+    description:
+      'Five Star Scaffolding exceeded our expectations on several projects across Sydney metro area! We recommend their services without any hesitation...',
+  },
+  {
+    icon: 'dots-hexagon',
+    heading: 'GARETH COLLIN',
+    title: 'Project Manager',
+    description:
+      'We have found Five Star Scaffolding very professional and reliable. Their prompt attention to our requirements is very much appreciated. Regards, Steve-Watt Constructions.',
+  },
+  {
+    icon: 'dots-circle',
+    heading: 'DANIEL ANTOUN',
+    title: 'Project Manager',
+    description:
+      'I have used the service of Five Star Scaffolding for a few projects now. I am very satisfied with their service and their prices are reasonable. I wouldn’t hesitate recommending them to other builders and developers.',
+  },
+  {
+    icon: 'dots-grid',
+    heading: 'JASON HONG',
+    title: 'Accounting & Admin Manager',
+    description:
+      'We are very satisfied with FIVE STAR SCAFFOLDING! the team at FSS is always on time allowing us to confidently keep to our schedule. FIVE STAR SCAFFOLDING has a great team that works in a very well organised manner.',
+  },
+  {
+    icon: 'dots-square',
+    heading: 'LOUIE TAKCHI',
+    title: 'Project Manager',
+    description:
+      'It was a pleasure dealing with Five Star Scaffolding for our Carlingford project. From their competitive pricing, creativity in overcoming site constraints, reliability in delivery, erection and dismantling to responding to urgent changes, our building challenge was mad all that much simpler by using Five Star Scaffolding.',
+  },
+];
 
+import Carousel from 'react-native-reanimated-carousel';
 const Home = () => {
   const {height: windowHeight, width: windowWidth}: WindowDimension =
     useWindowDimensions();
+  const width = Dimensions.get('window').width;
 
   // console.log(Math.floor(windowHeight))
   // console.log(windowWidth)
@@ -54,10 +95,10 @@ const Home = () => {
       alignSelf: 'flex-start',
     },
     buttonContainer: {
-        marginTop: 25,
-        flexDirection: 'row',
-        justifyContent: 'space-between'
-    }
+      marginTop: 25,
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+    },
   });
   return (
     <View>
@@ -82,13 +123,117 @@ const Home = () => {
               Get Started
             </Button>
             <Button
-            icon='play-circle'
+              icon="play-circle"
               mode="outlined"
-              textColor='white'              
+              textColor="white"
               style={styles.buttonStyles}>
               Watch Now
             </Button>
           </View>
+        </View>
+        <View>
+          <View style={[commonStyles.commonContainer]}>
+            <Text
+              style={[
+                windowWidth > 500
+                  ? commonStyles.heading42
+                  : commonStyles.heading32,
+                commonStyles.textDarkBlue,
+                commonStyles.textCenter,
+              ]}>
+              ABOUT US
+            </Text>
+            <Text style={[commonStyles.text16, commonStyles.mTop15]}>
+              In addition to scaffolding, Five Star can provide
+            </Text>
+            <View style={[commonStyles.rowCenter, commonStyles.mTop15]}>
+              <Checkmark
+                name="checkmark-done-circle-sharp"
+                color="#47b2e4"
+                size={27}
+              />
+              <Text style={[commonStyles.text16, commonStyles.pleft5]}>
+                Qualified onsite workforce
+              </Text>
+            </View>
+            <View style={[commonStyles.rowCenter]}>
+              <Checkmark
+                name="checkmark-done-circle-sharp"
+                color="#47b2e4"
+                size={27}
+              />
+              <Text style={[commonStyles.text16, commonStyles.pleft5]}>
+                Swinging stages
+              </Text>
+            </View>
+            <View style={[commonStyles.rowCenter]}>
+              <Checkmark
+                name="checkmark-done-circle-sharp"
+                color="#47b2e4"
+                size={27}
+              />
+              <Text style={[commonStyles.text16, commonStyles.pleft5]}>
+                Man and Material hoists
+              </Text>
+            </View>
+            <View>
+              <Text style={[commonStyles.mTop15, commonStyles.text16]}>
+                We believe there is always more than one way to do anything and
+                over the years, our willingness to be guided by our clients has
+                opened up fresh possibilities and continued innovation. Though
+                we consider ourselves to be experts in the provision of
+                scaffolding supply and installation, we are keen to allow the
+                flow of information to be inward as well as outward. We also
+                make a point of staying informed of new developments in
+                scaffolding products and installation methods, OH&S legislation,
+                safety compliance and other aspects that improve how we do
+                business.
+              </Text>
+              <Button
+                mode="elevated"
+                style={[styles.buttonStyles, commonStyles.mTop15]}
+                textColor="#47b2e4"
+                rippleColor="#47b2e4">
+                Learn More
+              </Button>
+            </View>
+          </View>
+        </View>
+        <View style={[commonStyles.commonContainer]}>
+          <Text
+            style={[
+              windowWidth > 500
+                ? commonStyles.heading42
+                : commonStyles.heading32,
+              commonStyles.textDarkBlue,
+              commonStyles.textCenter,
+              commonStyles.mb15,
+            ]}>
+            TESTIMONIALS
+          </Text>
+          <TestimonialCard data={data} />
+        </View>
+        <View style={[{flex: 1}, commonStyles.commonContainer]}>
+          <Carousel
+            loop
+            width={width - 80}
+            height={width / 2}
+            autoPlay={false}
+            data={[...new Array(6).keys()]}
+            scrollAnimationDuration={1000}
+            // onSnapToItem={(index) => console.log('current index:', index)}
+            // customAnimation={}
+            renderItem={({index}) => (
+              <View>
+                <Image
+                  source={
+                   require(`../../assets/home/building.jpg`)
+                  }
+                  style={{width: '100%', height: '100%'}}
+                />
+              </View>
+            )}
+          />
         </View>
       </ScrollView>
     </View>
