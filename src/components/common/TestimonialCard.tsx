@@ -6,9 +6,9 @@ import commonStyles from '../../styles/commonStyles';
 const TestimonialCard = ({data}: any) => {
   return (
     <>
-      {data.map((item: any) => {
+      {data.map((item: any, index:number) => {
         return (
-          <View
+          <View key={index}
             style={[
               commonStyles.card,
               commonStyles.shadowProp,
