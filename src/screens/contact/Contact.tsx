@@ -1,8 +1,12 @@
-import {View, ScrollView} from 'react-native';
+import {View, ScrollView, Platform, KeyboardAvoidingView} from 'react-native';
 import {Text} from 'react-native-paper';
 import React from 'react';
 import commonStyles from '../../styles/commonStyles';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import {Formik} from 'formik';
+import * as yup from 'yup';
+import {TextInput} from 'react-native';
+import {Keyboard} from 'react-native';
 const locationData = [
   {
     icon: 'location-on',
@@ -22,6 +26,18 @@ const locationData = [
 ];
 
 const Contact = () => {
+  const initialValues = {
+    name: '',
+    email: '',
+    subject: '',
+    message: '',
+  };
+  const validationSchema = yup.object({
+    name: yup.string().required('Name is required'),
+    email: yup.string().required('Name is required'),
+    subject: yup.string().required('Subject can"t be empty '),
+    message: yup.string().required('message is required'),
+  });
   return (
     <View style={[commonStyles.commonContainer]}>
       <ScrollView>
@@ -51,13 +67,13 @@ const Contact = () => {
                 ]}>
                 <Icon
                   name={item.icon}
-                  size={40}
+                  size={34}
                   color="#47b2e4"
                   style={[commonStyles.mR10]}
                 />
                 <View>
                   <Text
-                    style={[commonStyles.heading26, commonStyles.textDarkBlue, ]}>
+                    style={[commonStyles.heading22, commonStyles.textDarkBlue]}>
                     {item.title}
                   </Text>
                   <Text>{item.description}</Text>
@@ -65,6 +81,30 @@ const Contact = () => {
               </View>
             );
           })}
+        </View>
+        <View
+          style={[
+            commonStyles.card,
+            commonStyles.shadowProp,
+            commonStyles.elevation,
+          ]}>
+          <Formik
+            initialValues={initialValues}
+            validationSchema={validationSchema}
+            onSubmit={() => console.log('first')}>
+            {({isSubmitting, handleChange}) => (
+              <KeyboardAvoidingView
+                behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{flex:1}}>
+                <View>
+                  <TextInput
+                    onChangeText={handleChange('name')}
+                    placeholder="Email"
+                    style={commonStyles.textInput}
+                  />
+                </View>
+              </KeyboardAvoidingView>
+            )}
+          </Formik>
         </View>
       </ScrollView>
     </View>
