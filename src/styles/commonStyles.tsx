@@ -1,5 +1,6 @@
 import { StyleSheet, useWindowDimensions } from "react-native";
 import { WindowDimension } from "../types/interfaces/types";
+import { black } from "react-native-paper/lib/typescript/src/styles/themes/v2/colors";
 // const { height:windowHeight, width:windowWidth }: WindowDimension = useWindowDimensions();
 
 
@@ -19,6 +20,10 @@ const commonStyles = StyleSheet.create({
     },
     heading26: {
       fontSize: 26,
+      fontWeight: 'bold'
+    },
+    heading22: {
+      fontSize: 22,
       fontWeight: 'bold'
     },
     // color styles ***************************
@@ -91,7 +96,17 @@ const commonStyles = StyleSheet.create({
     },
     flexRow: {
       flexDirection: 'row'
-    }
+    },
+    textInput: {
+      minHeight: 40,
+      borderWidth: 1,
+      borderColor: '#ccc',
+      borderRadius: 8,
+      paddingHorizontal: 10,
+    },
+    errorText: {
+      color: 'red',
+    },
   });
   
   export default commonStyles;
