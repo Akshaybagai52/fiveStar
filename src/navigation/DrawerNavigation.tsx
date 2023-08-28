@@ -7,6 +7,7 @@ import Login from '../components/common/LoginForm';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Home from '../screens/home/Home';
 import { Text } from 'react-native-paper';
+import Contact from '../screens/contact/Contact';
 // import {useSelector} from 'react-redux';
 
 
@@ -26,6 +27,7 @@ export function HandoverDrawer() {
       }}>
         <Drawer.Screen name="Home" component={Home} />
         <Drawer.Screen name="Handover" component={Handover}  />
+        <Drawer.Screen name="Help Center" component={Contact}  />
       </Drawer.Navigator>
     );
   }
@@ -35,6 +37,7 @@ export function HandoverDrawer() {
       <Stack.Navigator>
         <Stack.Screen name="GetStarted" component={GetStarted} options={{ title: 'Welcome' }} />
         <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
+        <Stack.Screen name="Help Center" component={Contact} options={{ headerShown: false }} />
       </Stack.Navigator>
     );
   }

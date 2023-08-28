@@ -74,13 +74,17 @@ const teamData = [
   {img: require('../../assets/home/team-3.jpg'), name: 'Jason Hong',occupation: 'Accounting & Admin Manager'},
   {img: require('../../assets/home/team-4.jpg'), name: 'Louie Takchi',occupation: 'Project Manager'},
 ]
-const Home = () => {
+const Home = ({ navigation }:any) => {
   const {height: windowHeight, width: windowWidth}: WindowDimension =
     useWindowDimensions();
   const width = Dimensions.get('window').width;
 
-  // console.log(Math.floor(windowHeight))
-  // console.log(windowWidth)
+  // const contactUs = ({ navigation }:any) => {
+  
+    const handleGetContact = () => {
+      navigation.navigate('Help Center');
+  // }
+}
   const styles = StyleSheet.create({
     container: {
       flex: 1,
@@ -280,6 +284,9 @@ const Home = () => {
 
           </Text>
           <TeamCard teamData={teamData} />
+        </View>
+        <View style={commonStyles.commonContainer}>
+        <Button mode='contained' onPress={handleGetContact}>Contact</Button>
         </View>
       </ScrollView>
     </View>

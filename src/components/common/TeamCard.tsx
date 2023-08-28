@@ -5,9 +5,9 @@ import commonStyles from '../../styles/commonStyles';
 import Icon from 'react-native-vector-icons/Entypo';
 
 const TeamCard = ({teamData}: any) => {
-  return teamData.map((item: any) => {
+  return teamData.map((item: any, index:number) => {
     return (
-      <View style={[commonStyles.elevation, commonStyles.card]}>
+      <View style={[commonStyles.elevation, commonStyles.card]} key={index}>
         <View style={[commonStyles.flexRow]}>
           <Image
             source={item.img}

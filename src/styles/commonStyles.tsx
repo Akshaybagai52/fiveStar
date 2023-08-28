@@ -34,7 +34,7 @@ const commonStyles = StyleSheet.create({
     fontBold: {
       fontWeight: 'bold'
     },
-    // text size *********************************
+    // text size *******************************
     text24: {
       fontSize : 24,
     },
@@ -64,6 +64,12 @@ const commonStyles = StyleSheet.create({
     },
     mL25: {
       marginLeft:25
+    },
+    mR10: {
+      marginRight: 10
+    },
+    mR5: {
+      marginRight: 5
     },
     card: {
       backgroundColor: 'white',
