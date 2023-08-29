@@ -100,14 +100,14 @@ const commonStyles = StyleSheet.create({
     textInput: {
       minHeight: 50,
       borderWidth: 1,
-      borderColor: '#ccc',
+      // borderColor: '#ccc',
       borderRadius: 8,
       paddingHorizontal: 10,
     },
     textArea: {
       minHeight: 150,
       borderWidth: 1,
-      borderColor: '#ccc',
+      // borderColor: '#ccc',
       borderRadius: 8,
       paddingHorizontal: 10,
       justifyContent: "flex-start"
