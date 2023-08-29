@@ -1,12 +1,18 @@
-import {View, ScrollView, Platform, KeyboardAvoidingView} from 'react-native';
-import {Text} from 'react-native-paper';
+import {
+  View,
+  ScrollView,
+  StyleSheet,
+  Platform,
+  KeyboardAvoidingView,
+} from 'react-native';
+import {Button, Text} from 'react-native-paper';
 import React from 'react';
 import commonStyles from '../../styles/commonStyles';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {Formik} from 'formik';
 import * as yup from 'yup';
 import {TextInput} from 'react-native';
-import {Keyboard} from 'react-native';
+import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 const locationData = [
   {
     icon: 'location-on',
@@ -26,6 +32,33 @@ const locationData = [
 ];
 
 const Contact = () => {
+  const styles = StyleSheet.create({
+    buttonStyles: {
+      alignSelf: 'flex-start',
+    },
+    buttonContainer: {
+      marginTop: 25,
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+    },
+    mapContainer: {
+      marginVertical: 20,
+      height: 300,
+      borderWidth: 1,
+      borderColor: '#ccc',
+      borderRadius: 8,
+      overflow: 'hidden',
+    },
+    map: {
+      ...StyleSheet.absoluteFillObject,
+    },
+    mapTitle: {
+      fontSize: 24,
+      fontWeight: 'bold',
+      marginBottom: 10,
+      textAlign: 'center',
+    },
+  });
   const initialValues = {
     name: '',
     email: '',
@@ -38,6 +71,12 @@ const Contact = () => {
     subject: yup.string().required('Subject can"t be empty '),
     message: yup.string().required('message is required'),
   });
+  const initialRegion = {
+    latitude: 37.78825,
+    longitude: -122.4324,
+    latitudeDelta: 0.0922,
+    longitudeDelta: 0.0421,
+  };
   return (
     <View style={[commonStyles.commonContainer]}>
       <ScrollView>
@@ -81,6 +120,19 @@ const Contact = () => {
               </View>
             );
           })}
+          <View style={styles.mapContainer}>
+            <Text style={styles.mapTitle}>Company's Location</Text>
+            <MapView style={styles.map} initialRegion={initialRegion}>
+              <Marker
+                coordinate={{
+                  latitude: 37.78825,
+                  longitude: -122.4324,
+                }}
+                title="Marker Title"
+                description="Marker Description"
+              />
+            </MapView>
+          </View>
         </View>
         <View
           style={[
@@ -94,14 +146,44 @@ const Contact = () => {
             onSubmit={() => console.log('first')}>
             {({isSubmitting, handleChange}) => (
               <KeyboardAvoidingView
-                behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{flex:1}}>
-                <View>
+                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+                style={{flex: 1}}>
+                <View style={[{gap: 20}]}>
                   <TextInput
                     onChangeText={handleChange('name')}
                     placeholder="Email"
                     style={commonStyles.textInput}
+                    // placeholderTextColor="#47b2e4"
+                  />
+                  <TextInput
+                    onChangeText={handleChange('name')}
+                    placeholder="Name"
+                    style={commonStyles.textInput}
+                    // placeholderTextColor="#47b2e4"
+                  />
+                  <TextInput
+                    onChangeText={handleChange('name')}
+                    placeholder="Subject"
+                    style={commonStyles.textInput}
+                    // placeholderTextColor="#47b2e4"
+                  />
+                  <TextInput
+                    onChangeText={handleChange('name')}
+                    placeholder="Message"
+                    style={commonStyles.textArea}
+                    multiline={true}
+                    numberOfLines={4}
+                    // placeholderTextColor="#47b2e4"
                   />
                 </View>
+                <Button
+                  mode="elevated"
+                  style={[styles.buttonStyles, commonStyles.mTop15]}
+                  textColor="#47b2e4"
+                  rippleColor="#47b2e4"
+                  onPress={() => console.log('first')}>
+                  Send Message
+                </Button>
               </KeyboardAvoidingView>
             )}
           </Formik>

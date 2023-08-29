@@ -89,7 +89,6 @@ const Home = ({ navigation }:any) => {
     container: {
       flex: 1,
       height: Math.floor(windowHeight) - 80,
-      //   width: Math.floor(windowWidth),
       backgroundColor: '#37517e',
       alignContent: 'center',
       padding: 40,
@@ -97,7 +96,6 @@ const Home = ({ navigation }:any) => {
     homeImg: {
       height: windowWidth > 500 ? 450 : 250,
       width: windowWidth > 500 ? '65%' : '85%',
-      // objectFit: 'contain',
       alignSelf: 'center',
       marginTop: 60,
     },
