@@ -9,7 +9,7 @@ import {Button, Text} from 'react-native-paper';
 import React from 'react';
 import commonStyles from '../../styles/commonStyles';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import {Formik,ErrorMessage} from 'formik';
+import {Formik, ErrorMessage} from 'formik';
 import * as yup from 'yup';
 import {TextInput} from 'react-native';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
@@ -143,63 +143,96 @@ const Contact = () => {
           <Formik
             initialValues={initialValues}
             validationSchema={validationSchema}
-            onSubmit={(values) => console.log('first', values)}>
-           {({isSubmitting, handleChange, handleSubmit,touched, errors}) => {
-              const handlePress = () => {
-                handleSubmit(); // Call Formik's handleSubmit function here
+            onSubmit={(values) => {
+              console.log('first', values);
+            }}>
+            {({isSubmitting, handleChange, handleSubmit, touched, errors, resetForm}) => {
+              const handlePress =async () => {
+                await handleSubmit();
+                // resetForm(initialValues)
               };
               return (
+                <KeyboardAvoidingView
+                  behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+                  style={{flex: 1}}>
+                  <View style={[{gap: 20}]}>
+                    <TextInput
+                      onChangeText={handleChange('email')}
+                      placeholder="Email"
+                      style={[
+                        commonStyles.textInput,
+                        {
+                          borderColor:
+                            touched.email && errors.email ? 'red' : '#ccc',
+                        },
+                      ]}
+                    />
+                    {touched.email && errors.email && (
+                      <Text style={commonStyles.errorText}>{errors.email}</Text>
+                    )}
+                    {/* <ErrorMessage component={Text} /> */}
+                    <TextInput
+                      onChangeText={handleChange('name')}
+                      placeholder="Name"
+                      style={[
+                        commonStyles.textInput,
+                        {
+                          borderColor:
+                            touched.name && errors.name ? 'red' : '#ccc',
+                        },
+                      ]}
+                    />
+                    {touched.name && errors.name && (
+                      <Text style={commonStyles.errorText}>{errors.name}</Text>
+                    )}
 
-              <KeyboardAvoidingView
-                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-                style={{flex: 1}}>
-                <View style={[{gap: 20}]}>
-                  <TextInput
-                    onChangeText={handleChange('email')}
-                    placeholder="Email"
-                    style={[commonStyles.textInput, {borderColor: touched.email && errors.email ? 'red' : "#ccc"}]}
-                  />
-                  {touched.email && errors.email && (<Text style={commonStyles.errorText}>{errors.email}</Text>)}
-                  {/* <ErrorMessage component={Text} /> */}
-                  <TextInput
-                    onChangeText={handleChange('name')}
-                    placeholder="Name"
-                    style={[commonStyles.textInput, {borderColor: touched.name && errors.name ? 'red' : "#ccc"}]}
+                    <TextInput
+                      onChangeText={handleChange('subject')}
+                      placeholder="Subject"
+                      style={[
+                        commonStyles.textInput,
+                        {
+                          borderColor:
+                            touched.subject && errors.subject ? 'red' : '#ccc',
+                        },
+                      ]}
+                    />
+                    {touched.subject && errors.subject && (
+                      <Text style={commonStyles.errorText}>
+                        {errors.subject}
+                      </Text>
+                    )}
 
-                  />
-                  {touched.name && errors.name && (<Text style={commonStyles.errorText}>{errors.name}</Text>)}
-
-                  <TextInput
-                    onChangeText={handleChange('subject')}
-                    placeholder="Subject"
-                    style={[commonStyles.textInput, {borderColor: touched.subject && errors.subject ? 'red' : "#ccc"}]}
-
-                  />
-                  {touched.subject && errors.subject && (<Text style={commonStyles.errorText}>{errors.subject}</Text>)}
-
-                  <TextInput
-                    onChangeText={handleChange('message')}
-                    placeholder="Message"
-                    style={[commonStyles.textArea, {borderColor: touched.message && errors.message ? 'red' : "#ccc"}]}
-
-                    multiline={true}
-                    numberOfLines={4}
-                  />
-                  {touched.message && errors.message && (<Text style={commonStyles.errorText}>{errors.message}</Text>)}
-
-                </View>
-                <Button
-                  mode="elevated"
-                  style={[styles.buttonStyles, commonStyles.mTop15]}
-                  textColor="#47b2e4"
-                  rippleColor="#47b2e4"
-                  onPress={handlePress}
-          >
-                  Send Message
-                </Button>
-              </KeyboardAvoidingView>
-               )
-              }}
+                    <TextInput
+                      onChangeText={handleChange('message')}
+                      placeholder="Message"
+                      style={[
+                        commonStyles.textArea,
+                        {
+                          borderColor:
+                            touched.message && errors.message ? 'red' : '#ccc',
+                        },
+                      ]}
+                      multiline={true}
+                      numberOfLines={4}
+                    />
+                    {touched.message && errors.message && (
+                      <Text style={commonStyles.errorText}>
+                        {errors.message}
+                      </Text>
+                    )}
+                  </View>
+                  <Button
+                    mode="elevated"
+                    style={[styles.buttonStyles, commonStyles.mTop15]}
+                    textColor="#47b2e4"
+                    rippleColor="#47b2e4"
+                    onPress={handlePress}>
+                    Send Message
+                  </Button>
+                </KeyboardAvoidingView>
+              );
+            }}
           </Formik>
         </View>
       </ScrollView>
