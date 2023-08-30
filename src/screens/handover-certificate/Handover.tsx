@@ -342,7 +342,9 @@ const Handover = () => {
 
   const captureScreenshot = async () => {
     try {
-      setLoading(true);
+       setLoading(true);
+       // @ts-ignore
+       console.log("fsdfsdf",viewShotRef.current?.capture())
       // @ts-ignore
       const uri = await viewShotRef.current?.capture();
       console.log('Screenshot captured:', uri);
@@ -375,13 +377,15 @@ const Handover = () => {
   return (
     <View style={{padding: 20, backgroundColor: '#fff'}}>
       <ScrollView ref={scrollViewRef} scrollEnabled>
-        <ViewShot ref={viewShotRef} options={{format: 'jpg', quality: 1}}>
+      // @ts-ignore
+        <ViewShot ref={viewShotRef} options={{format: 'jpg', quality: 1}} >
           <Formik
             initialValues={initialValues}
             enableReinitialize={true}
-            validationSchema={validationSchema}
+            // validationSchema={validationSchema}
             onSubmit={async values => {
-              await captureScreenshot();
+              console.log(values)
+               await captureScreenshot();
               await handleSubmit1(values);
             }}>
             {({handleSubmit, values}) => (
