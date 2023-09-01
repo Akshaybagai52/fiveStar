@@ -31,6 +31,7 @@ import {HandoverFormValues} from '../../types/interfaces/types';
 import {useSelector} from 'react-redux';
 import { DocumentPickerResponse } from 'react-native-document-picker';
 import RNFetchBlob from 'rn-fetch-blob';
+import CustomAlert from '../../themes/buttons/Alert';
 
 
 // import SignatureCanvas from '../../themes/buttons/SignatureCanvas';
@@ -261,6 +262,11 @@ const Handover = () => {
       return updatedCheckboxes;
     });
   };
+  const [isCustomAlertVisible, setCustomAlertVisible] = useState(false);
+
+  const handleCustomAlertClose = () => {
+    setCustomAlertVisible(false);
+  };
 
   const initialValues: HandoverFormValues = {
     projectDetails: {
@@ -312,7 +318,8 @@ const Handover = () => {
       );
       console.log('Post Response:', response.data);
       console.log('signature', signatures)
-      // console.log(base64Images);
+      // Alert.alert("Document submitted successfully")
+      setCustomAlertVisible(true)
     } catch (error) {
       console.error('Error:', error);
     }
@@ -338,13 +345,12 @@ const Handover = () => {
   const [screenshotUri, setScreenshotUri] = useState<null | string | undefined>(
     null,
   );
+  
   const [loading, setLoading] = useState(false);
 
   const captureScreenshot = async () => {
     try {
        setLoading(true);
-       // @ts-ignore
-       console.log("fsdfsdf",viewShotRef.current?.capture())
       // @ts-ignore
       const uri = await viewShotRef.current?.capture();
       console.log('Screenshot captured:', uri);
@@ -377,7 +383,6 @@ const Handover = () => {
   return (
     <View style={{padding: 20, backgroundColor: '#fff'}}>
       <ScrollView ref={scrollViewRef} scrollEnabled>
-      // @ts-ignore
         <ViewShot ref={viewShotRef} options={{format: 'jpg', quality: 1}} >
           <Formik
             initialValues={initialValues}
@@ -385,7 +390,7 @@ const Handover = () => {
             // validationSchema={validationSchema}
             onSubmit={async values => {
               console.log(values)
-               await captureScreenshot();
+              //  await captureScreenshot();
               await handleSubmit1(values);
             }}>
             {({handleSubmit, values}) => (
@@ -529,6 +534,11 @@ const Handover = () => {
                   signature={signatures}
                   setSignature={(signature:any) => setSignatures(prevSignatures => ({...prevSignatures, signature2: signature}))}
                 />
+                <CustomAlert
+                 visible={isCustomAlertVisible}
+        title="Details submitted successfully"
+        message="Thank you for being with us"
+        onClose={handleCustomAlertClose} />
                 <ButtonGreen text="Submit" onPress={handleSubmit}  />
               </View>
             )}
