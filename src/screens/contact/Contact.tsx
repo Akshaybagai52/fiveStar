@@ -120,7 +120,7 @@ const Contact = () => {
               </View>
             );
           })}
-          <View style={styles.mapContainer}>
+          {/* <View style={styles.mapContainer}>
             <Text style={styles.mapTitle}>Company's Location</Text>
             <MapView style={styles.map} initialRegion={initialRegion}>
               <Marker
@@ -132,7 +132,7 @@ const Contact = () => {
                 description="Marker Description"
               />
             </MapView>
-          </View>
+          </View> */}
         </View>
         <View
           style={[
