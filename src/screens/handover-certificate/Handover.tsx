@@ -28,10 +28,27 @@ import {
   options,
   elevations,
   loadingCapacity,
-  initialValues
+  initialValues,
+  erectionData,
+  variationData,
+  inspectionData,
 } from '../../data/handoverData';
+import commonStyles from '../../styles/commonStyles';
 
 const Handover = () => {
+  // Scroll View End
+  const [checkboxes, setCheckboxes] = useState<CheckboxItem[]>(loadingCapacity);
+  const [elevationData, setElevationData] =
+    useState<CheckboxItem[]>(elevations);
+  const [selectedFiles, setSelectedFiles] = useState<DocumentPickerResponse[]>(
+    [],
+  );
+  const [signatures, setSignatures] = useState({
+    signature1: '',
+    signature2: '',
+  });
+  const [isCustomAlertVisible, setCustomAlertVisible] = useState(false);
+  const [loading, setLoading] = useState(false);
   // Scroll View start
   const scrollViewRef: any = useRef(null);
 
@@ -46,20 +63,6 @@ const Handover = () => {
       scrollViewRef.current.setNativeProps({scrollEnabled: true});
     }
   };
-
-  // Scroll View End
-  const [checkboxes, setCheckboxes] = useState<CheckboxItem[]>(loadingCapacity);
-  const [elevationData, setElevationData] =
-    useState<CheckboxItem[]>(elevations);
-  const [selectedFiles, setSelectedFiles] = useState<DocumentPickerResponse[]>(
-    [],
-  );
-  const [signatures, setSignatures] = useState({
-    signature1: '',
-    signature2: '',
-  });
-  const [isCustomAlertVisible, setCustomAlertVisible] = useState(false);
-  const [loading, setLoading] = useState(false);
 
   const handleCheckboxPress = (label: string) => {
     // @ts-ignore
@@ -110,7 +113,6 @@ const Handover = () => {
     setCustomAlertVisible(false);
   };
 
-  
   const handleSubmit1 = async (values: HandoverFormValues) => {
     try {
       const base64Images = await Promise.all(
@@ -121,6 +123,7 @@ const Handover = () => {
       );
       const requestData = {
         projectDetails: values.projectDetails,
+        selectedOptionData: values.projectDetails.certificationRelation.selectedOptionData,
         scaffoldDetails: values.scaffoldDetails,
         signatures: values.signatures,
         imagesAttached: base64Images,
@@ -136,8 +139,8 @@ const Handover = () => {
           },
         },
       );
-      console.log('Post Response:', response.data);
-      console.log('signature', signatures);
+      console.log('Post Response:', requestData);
+      // console.log('signature', values.projectDetails.certificationRelation);
       // Alert.alert("Document submitted successfully")
       setCustomAlertVisible(true);
     } catch (error) {
@@ -169,9 +172,9 @@ const Handover = () => {
           enableReinitialize={true}
           // validationSchema={validationSchema}
           onSubmit={async values => {
-           setLoading(true)
+            setLoading(true);
             await handleSubmit1(values);
-            setLoading(false)
+            setLoading(false);
           }}>
           {({handleSubmit, values}) => (
             <View style={{backgroundColor: '#fff'}}>
@@ -214,11 +217,52 @@ const Handover = () => {
                 <Text style={{fontSize: 19}}>
                   What is this Certificate Relating to ?
                 </Text>
-                <Text>Choose One</Text>
+                <Text>Choose One </Text>
                 <RadioGroup
                   options={options}
                   name="projectDetails.certificationRelation.selectedOption"
                 />
+                {values.projectDetails.certificationRelation.selectedOption ===
+                  'Erection' && (
+                  <View style={commonStyles.mTop15}>
+                    <CustomHeader text="Contract Work - Choose all relevant" />
+                    <CheckBox
+                      checkboxes={erectionData}
+                      onPress={handleElevationDataPress}
+                    />
+                  </View>
+                )}
+                {values.projectDetails.certificationRelation.selectedOption ===
+                  'Dismantle' && (
+                  <View style={commonStyles.mTop15}>
+                    <CustomHeader text="Contract Work - Choose all relevant" />
+                    <CheckBox
+                      checkboxes={erectionData}
+                      onPress={handleElevationDataPress}
+                    />
+                  </View>
+                )}
+                {values.projectDetails.certificationRelation.selectedOption ===
+                  'Variation_Works' && (
+                  <View style={commonStyles.mTop15}>
+                    <CustomHeader text="Variation Contract Works - Choose all relevant" />
+                    <CheckBox
+                      checkboxes={variationData}
+                      onPress={handleElevationDataPress}
+                    />
+                  </View>
+                )}
+                {values.projectDetails.certificationRelation.selectedOption ===
+                  'Inspection' && (
+                  <View style={commonStyles.mTop15}>
+                    <CustomHeader text="Inspection" />
+                    <CheckBox
+                      checkboxes={inspectionData}
+                      onPress={handleElevationDataPress}
+                    />
+                  </View>
+                )}
+                {values.projectDetails.certificationRelation.selectedOptionData.variation.dayLabourErection === "dayLabourErection" ? <Text> "hey"</Text> : <Text> "dsfhey"</Text>}
               </View>
               <View>
                 <TextInputGroup inputFields={initialFormData} />

@@ -15,13 +15,28 @@ export interface RadioOption {
 }
 
 export interface CheckboxItem {
-  label: string;
+  label?: string;
   status: 'checked' | 'unchecked' | 'indeterminate';
   name: string;
 }
 
+interface Erection {
+  erection: {
+    [key: string]: string;
+  };
+  inspection: {
+    [key: string]: string;
+  }
+  variation: {
+    [key: string]: string;
+
+  }
+}
+
 interface CertificationRelation {
   selectedOption: string;
+  selectedOptionData: Erection
+  
 }
 
 interface ProjectDetails {
