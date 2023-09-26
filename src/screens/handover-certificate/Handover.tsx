@@ -14,7 +14,7 @@ import {ButtonGreen} from '../../themes/text/ButtonGreen';
 import Recorder from '../../themes/buttons/AudioRecorder';
 import {MySignatureCanvas} from '../../themes/buttons/SignatureCanvas';
 import FilePicker from '../../themes/buttons/FilePicker';
-import {Formik} from 'formik';
+import {Field, Formik} from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
 import {HandoverFormValues} from '../../types/interfaces/types';
@@ -129,8 +129,8 @@ const Handover = () => {
         projectDetails: values.projectDetails,
         selectedOptionData:
         values.projectDetails.certificationRelation.selectedOptionData,
-        dismantleRadio: values.projectDetails.dismantleRadioData,
-        erectionRadio: values.projectDetails.erectionRadioData,
+        // dismantleRadio: values.projectDetails.dismantleRadioData,
+        // erectionRadio: values.projectDetails.erectionRadioData,
         scaffoldDetails: values.scaffoldDetails,
         signatures: values.signatures,
         imagesAttached: base64Images,
@@ -335,7 +335,8 @@ const Handover = () => {
                     options={erectionRadioData}
                     // name="projectDetails.certificationRelation.selectedOption"
                   />
-                  <AudioConverter />
+                  {/* <AudioConverter /> */}
+                  <Field name="projectDetails.scaffoldChecklist.speechToText" component={AudioConverter} />
 
                 </View>
               )}
@@ -347,7 +348,8 @@ const Handover = () => {
                     options={erectionRadioData}
                     // name="projectDetails.certificationRelation.selectedOption"
                   />
-                  <AudioConverter />
+                  {/* <AudioConverter /> */}
+                  <Field name="projectDetails.scaffoldChecklist.speechToText" component={AudioConverter} />
                 </View>
               )}
 

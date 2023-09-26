@@ -451,6 +451,7 @@ export const initialValues: HandoverFormValues = {
       ties_installed: '',
       building_scaffold: '',
       houesekeeping_area: '',
+      speechToText: ''
     },
     dismantleChecklist: {
       sufficient_ties: '',
