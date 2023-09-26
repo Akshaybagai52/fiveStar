@@ -32,8 +32,12 @@ import {
   erectionData,
   variationData,
   inspectionData,
+  erectionRadioData,
+  dismantleRadioData,
 } from '../../data/handoverData';
 import commonStyles from '../../styles/commonStyles';
+import RadioGroupButton from '../../themes/buttons/radioButtonGroup';
+import { AudioConverter } from '../../themes/buttons/speechToText';
 
 const Handover = () => {
   // Scroll View End
@@ -123,11 +127,15 @@ const Handover = () => {
       );
       const requestData = {
         projectDetails: values.projectDetails,
-        selectedOptionData: values.projectDetails.certificationRelation.selectedOptionData,
+        selectedOptionData:
+        values.projectDetails.certificationRelation.selectedOptionData,
+        dismantleRadio: values.projectDetails.dismantleRadioData,
+        erectionRadio: values.projectDetails.erectionRadioData,
         scaffoldDetails: values.scaffoldDetails,
         signatures: values.signatures,
         imagesAttached: base64Images,
         signature: signatures,
+
       };
 
       const response = await axios.post(
@@ -262,7 +270,7 @@ const Handover = () => {
                     />
                   </View>
                 )}
-                {values.projectDetails.certificationRelation.selectedOptionData.variation.dayLabourErection === "dayLabourErection" ? <Text> "hey"</Text> : <Text> "dsfhey"</Text>}
+                {/* {values.projectDetails.certificationRelation.selectedOptionData.variation.dayLabourErection === "dayLabourErection" ? <Text> "hey"</Text> : <Text> "dsfhey"</Text>} */}
               </View>
               <View>
                 <TextInputGroup inputFields={initialFormData} />
@@ -319,6 +327,41 @@ const Handover = () => {
               <View>
                 <TextInputGroup inputFields={scaffoldData} />
               </View>
+              {values.projectDetails.certificationRelation.selectedOption ===
+                'Erection' && (
+                <View style={commonStyles.mTop15}>
+                  <CustomHeader text="Checklist for Scaffold" />
+                  <RadioGroupButton
+                    options={erectionRadioData}
+                    // name="projectDetails.certificationRelation.selectedOption"
+                  />
+                  <AudioConverter />
+
+                </View>
+              )}
+              {values.projectDetails.certificationRelation.selectedOption ===
+                'Inspection' && (
+                <View style={commonStyles.mTop15}>
+                  <CustomHeader text="Checklist for Scaffold" />
+                  <RadioGroupButton
+                    options={erectionRadioData}
+                    // name="projectDetails.certificationRelation.selectedOption"
+                  />
+                  <AudioConverter />
+                </View>
+              )}
+
+              {values.projectDetails.certificationRelation.selectedOption ===
+                'Dismantle' && (
+                <View style={commonStyles.mTop15}>
+                  <CustomHeader text="Checklist for Scaffold" />
+                  <RadioGroupButton
+                    options={dismantleRadioData}
+                    // name="projectDetails.certificationRelation.selectedOption"
+                  />
+                </View>
+              )}
+
               <View style={{marginBottom: 15, marginTop: 15}}>
                 <CustomHeader text="Signatures" />
               </View>

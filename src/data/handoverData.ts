@@ -298,6 +298,101 @@ export const inspectionData: CheckboxItem[] = [
   },
 ];
 
+const threeOptions = [
+  {value: 'Yes', label: 'Yes'},
+  {value: 'No', label: 'No'},
+  {value: 'N/A', label: 'N/A'},
+
+]
+
+export const erectionRadioData = [
+  {
+    heading: '1. Take Photos of Inspected area attach to report with signed Handover.',
+    options: threeOptions,
+    name: 'projectDetails.scaffoldChecklist.inspected_area'
+  },
+  {
+    heading: '2. Jacks base plate centre to sole boards.',
+    options: threeOptions,
+    name: 'projectDetails.scaffoldChecklist.base_plate'
+  },
+  {
+    heading: '3. Face braces installed every 3rd bay',
+    options: threeOptions,
+    name: 'projectDetails.scaffoldChecklist.braces_installed'
+  },
+  {
+    heading: '4. End braces installed.',
+    options: threeOptions,
+    name: 'projectDetails.scaffoldChecklist.end_braces'
+  },
+  {
+    heading: '5. Kickboards installed correctly end bays fitted with external clips.',
+    options: threeOptions,
+    name: 'projectDetails.scaffoldChecklist.kickboards_installed'
+  },
+  {
+    heading: '6. Face of scaffold level and plump.',
+    options: threeOptions,
+    name: 'projectDetails.scaffoldChecklist.scaffold_level'
+  },
+  {
+    heading: '7. Strecher stair correct position infills, lap plates, stair bolts, scaff tag, Handdrails, step down at base, step off at floor level, correctly fitted.',
+    options: threeOptions,
+    name: 'projectDetails.scaffoldChecklist.strecher_stair'
+  },
+  {
+    heading: '8. Alloy stair correct position all handdrails secured with bolts step down in place scaff tag fitted',
+    options: threeOptions,
+    name: 'projectDetails.scaffoldChecklist.alloy_stair'
+  },
+  {
+    heading: '9. Chain and shade fitted correctly looks neat and tidy.',
+    options: threeOptions,
+    name: 'projectDetails.scaffoldChecklist.chain_shade'
+  },
+  {
+    heading: '10. Ties installed correct position.',
+    options: threeOptions,
+    name: 'projectDetails.scaffoldChecklist.ties_installed'
+  },
+  {
+    heading: '11. Check gap from face of Building scaffold in correct position.',
+    options: threeOptions,
+    name: 'projectDetails.scaffoldChecklist.building_scaffold'
+  },
+  {
+    heading: '12. Housekeeping has area been cleared of left-over material and left clean.',
+    options: threeOptions,
+    name: 'projectDetails.scaffoldChecklist.houesekeeping_area'
+  },
+
+]
+
+export const dismantleRadioData = [
+  {
+    heading: '1. Scaffold has sufficient ties remaining in place.',
+    options: threeOptions,
+    name: 'projectDetails.dismantleChecklist.sufficient_ties'
+  },
+  {
+    heading: '2. Scaffold has safe access for scaffolders to perfrom task.',
+    options: threeOptions,
+    name: 'projectDetails.dismantleChecklist.scaffolders_perform'
+  },
+  {
+    heading: '3. All structural components are in place (Braces, Transoms, ledgers)',
+    options: threeOptions,
+    name: 'projectDetails.dismantleChecklist.structural_components'
+  },
+  {
+    heading: '4. Scaffold has been physically blocked from unauthorized access where required.',
+    options: threeOptions,
+    name: 'projectDetails.dismantleChecklist.physically_blocked'
+  },
+
+]
+
 export const initialValues: HandoverFormValues = {
   projectDetails: {
     certificationRelation: {
@@ -343,6 +438,26 @@ export const initialValues: HandoverFormValues = {
     nameOfBuilder: '',
     customerABN: '',
     workCompletion: '',
+    scaffoldChecklist: {
+      inspected_area: '',
+      base_plate: '',
+      braces_installed: '',
+      end_braces: '',
+      kickboards_installed: '',
+      scaffold_level: '',
+      strecher_stair: '',
+      alloy_stair: '',
+      chain_shade: '',
+      ties_installed: '',
+      building_scaffold: '',
+      houesekeeping_area: '',
+    },
+    dismantleChecklist: {
+      sufficient_ties: '',
+      scaffolders_perform: '',
+      structural_components: '',
+      physically_blocked: '',
+    }
   },
   scaffoldDetails: {
     drawingsSupplied: {
