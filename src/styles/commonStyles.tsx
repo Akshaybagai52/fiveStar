@@ -54,6 +54,9 @@ const commonStyles = StyleSheet.create({
       flexDirection:"row",
       alignItems :"center"
     },
+    flexWrap: {
+      flexWrap: 'wrap'
+    },
     // spacing styles *******************************
     pleft5: {
       paddingLeft: 5

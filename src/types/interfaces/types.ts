@@ -26,22 +26,27 @@ interface Erection {
   };
   inspection: {
     [key: string]: string;
-  }
+  };
   variation: {
     [key: string]: string;
-
-  }
+  };
 }
 
 interface CertificationRelation {
   selectedOption: string;
-  selectedOptionData: Erection
-  
+  selectedOptionData: Erection;
 }
 
 interface ProjectDetails {
   certificationRelation: CertificationRelation;
   projectId: string;
+  erectionRadioData: {
+    [key: string]: string;
+  };
+  dismantleRadioData: {
+    [key: string]: string;
+  };
+
   buildingLevel: string;
   nameOfBuilder: string;
   customerABN: string;
