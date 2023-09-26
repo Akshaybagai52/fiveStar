@@ -6,16 +6,18 @@ import Voice, {
 } from '@react-native-voice/voice';
 import {Button} from 'react-native-paper';
 import commonStyles from '../../../styles/commonStyles';
+import { Field } from 'formik';
 
-export function AudioConverter() {
+export function AudioConverter({ field, form }: {field:any, form:any}) {
   const [results, setResults] = useState<string>('');
   const [isListening, setIsListening] = useState(false);
-  const [recognizedText, setRecognizedText] = useState<string>('');
+
   useEffect(() => {
     function onSpeechResults(e: SpeechResultsEvent) {
       console.log(e.value ? e.value[0] : '', 'e.value');
 
       setResults(e.value ? e.value[0] : '');
+      form.setFieldValue(field.name, e.value ? e.value[0] : ''); // Update the field value in Formik
     }
     function onSpeechError(e: SpeechErrorEvent) {
       console.error(e);
@@ -47,8 +49,6 @@ export function AudioConverter() {
       flex: 1,
       justifyContent: 'center',
       alignItems: 'center',
-
-      // backgroundColor: '#F5FCFF',
     },
     buttonStyles: {
       alignSelf: 'flex-start',
@@ -57,13 +57,13 @@ export function AudioConverter() {
   });
 
   function setRecognizedTextManually(text: string) {
-    setRecognizedText(text);
+    form.setFieldValue(field.name, text); // Update the field value in Formik
   }
 
   return (
     <View style={[styles.container, commonStyles.mTop15]}>
       <TextInput
-        value={recognizedText} // Step 4: Set the value to recognizedText
+        value={field.value} // Use the field value from Formik
         onChangeText={text => setRecognizedTextManually(text)} // Handle manual text input
         style={[commonStyles.textInput, {width: '100%', minHeight:90}, commonStyles.mb15]}
         multiline={true}
@@ -79,3 +79,6 @@ export function AudioConverter() {
     </View>
   );
 }
+
+// Usage in Formik form
+// <Field name="audioInput" component={AudioConverter} />
