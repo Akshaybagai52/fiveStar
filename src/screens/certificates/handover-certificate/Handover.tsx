@@ -2,25 +2,25 @@ import {View, ScrollView, TouchableOpacity, Image, Alert} from 'react-native';
 import {Text, ActivityIndicator} from 'react-native-paper';
 import React, {useState, useRef, useEffect} from 'react';
 import {myStyles} from './styles';
-import RadioGroup from '../../themes/buttons/RadioButtons';
-import TextInputGroup from '../../themes/buttons/TextInputGroup';
-import CustomHeader from '../../themes/text/TextWithGreenBg';
-import CheckBox from '../../themes/buttons/Checkbox';
-import {CheckboxItem} from '../../types/interfaces/types';
+import RadioGroup from '../../../themes/buttons/RadioButtons';
+import TextInputGroup from '../../../themes/buttons/TextInputGroup';
+import CustomHeader from '../../../themes/text/TextWithGreenBg';
+import CheckBox from '../../../themes/buttons/Checkbox';
+import {CheckboxItem} from '../../../types/interfaces/types';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Icon1 from 'react-native-vector-icons/FontAwesome5';
 import Icon2 from 'react-native-vector-icons/Feather';
-import {ButtonGreen} from '../../themes/text/ButtonGreen';
-import Recorder from '../../themes/buttons/AudioRecorder';
-import {MySignatureCanvas} from '../../themes/buttons/SignatureCanvas';
-import FilePicker from '../../themes/buttons/FilePicker';
+import {ButtonGreen} from '../../../themes/text/ButtonGreen';
+import Recorder from '../../../themes/buttons/AudioRecorder';
+import {MySignatureCanvas} from '../../../themes/buttons/SignatureCanvas';
+import FilePicker from '../../../themes/buttons/FilePicker';
 import {Field, Formik} from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
-import {HandoverFormValues} from '../../types/interfaces/types';
+import {HandoverFormValues} from '../../../types/interfaces/types';
 import {DocumentPickerResponse} from 'react-native-document-picker';
 import RNFetchBlob from 'rn-fetch-blob';
-import CustomAlert from '../../themes/buttons/Alert';
+import CustomAlert from '../../../themes/buttons/Alert';
 import {
   userPersonalData,
   initialFormData,
@@ -34,10 +34,10 @@ import {
   inspectionData,
   erectionRadioData,
   dismantleRadioData,
-} from '../../data/handoverData';
-import commonStyles from '../../styles/commonStyles';
-import RadioGroupButton from '../../themes/buttons/radioButtonGroup';
-import { AudioConverter } from '../../themes/buttons/speechToText';
+} from '../../../data/handoverData';
+import commonStyles from '../../../styles/commonStyles';
+import RadioGroupButton from '../../../themes/buttons/radioButtonGroup';
+import { AudioConverter } from '../../../themes/buttons/speechToText';
 
 const Handover = () => {
   // Scroll View End

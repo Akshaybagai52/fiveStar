@@ -2,12 +2,13 @@
 import React from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import GetStarted from '../screens/getstarted/GetStarted';
-import Handover from '../screens/handover-certificate/Handover';
+import Handover from '../screens/certificates/handover-certificate/Handover';
 import Login from '../components/common/LoginForm';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Home from '../screens/home/Home';
 import { Text } from 'react-native-paper';
 import Contact from '../screens/contact/Contact';
+import { Damaged } from '../screens/certificates/damagedOrMissing';
 // import {useSelector} from 'react-redux';
 
 
@@ -27,6 +28,7 @@ export function HandoverDrawer() {
       }}>
         <Drawer.Screen name="Home" component={Home} />
         <Drawer.Screen name="Handover" component={Handover}  />
+        <Drawer.Screen name="Damaged" component={Damaged}  />
         <Drawer.Screen name="Help Center" component={Contact}  />
       </Drawer.Navigator>
     );

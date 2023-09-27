@@ -33,14 +33,14 @@ interface Erection {
 }
 
 interface CertificationRelation {
-  selectedOption: string;
-  selectedOptionData: Erection;
+  selectedOption?: string;
+  selectedOptionData?: Erection;
 }
 
 interface ProjectDetails {
   certificationRelation: CertificationRelation;
   projectId: string;
-  erectionRadioData: {
+  erectionRadioData?: {
     [key: string]: string;
   };
   dismantleRadioData: {

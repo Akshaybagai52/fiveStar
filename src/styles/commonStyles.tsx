@@ -116,6 +116,11 @@ const commonStyles = StyleSheet.create({
       justifyContent: "flex-start"
 
     },
+    headingText: {
+      fontSize: 24,
+      fontWeight: 'bold',
+      color: "#14274E"        
+  },
     errorText: {
       color: 'red',
     },
