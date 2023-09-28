@@ -90,3 +90,34 @@ export interface WindowDimension {
   width: number;
   height: number;
 }
+
+export interface Reporting {
+  reportingCheck: {
+    damaged_Components: string;
+    missing_order: string;
+  }
+  menon_job: string;
+  estimated_time: string;
+  total_hours: string;
+  extra_truck: string;
+  comments: string;
+
+
+}
+
+export interface DamagedSignature {
+  your_name: string;
+  subcontractor_name: string;
+  supervisor_name: string;
+  date_time: string;
+  supervisor_email: string;
+
+}
+
+export interface DamagedFormValues {
+  projectId: string;
+  reporting: Reporting;
+  signatures: DamagedSignature;
+  
+
+}

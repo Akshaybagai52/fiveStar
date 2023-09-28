@@ -8,130 +8,32 @@ import {
 } from 'react-native';
 import {Text, ActivityIndicator} from 'react-native-paper';
 import React, {useState, useRef, useEffect} from 'react';
-// import {myStyles} from './styles';
-import RadioGroup from '../../../themes/buttons/RadioButtons';
+
 import TextInputGroup from '../../../themes/buttons/TextInputGroup';
 import CustomHeader from '../../../themes/text/TextWithGreenBg';
 import CheckBox from '../../../themes/buttons/Checkbox';
-import {CheckboxItem, InputField} from '../../../types/interfaces/types';
-// import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-// import Icon1 from 'react-native-vector-icons/FontAwesome5';
-// import Icon2 from 'react-native-vector-icons/Feather';
+import {CheckboxItem, DamagedFormValues, InputField} from '../../../types/interfaces/types';
+
 import {ButtonGreen} from '../../../themes/text/ButtonGreen';
-import Recorder from '../../../themes/buttons/AudioRecorder';
 import {MySignatureCanvas} from '../../../themes/buttons/SignatureCanvas';
 import FilePicker from '../../../themes/buttons/FilePicker';
 import {Field, Formik} from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
-import {HandoverFormValues} from '../../../types/interfaces/types';
 import {DocumentPickerResponse} from 'react-native-document-picker';
 import RNFetchBlob from 'rn-fetch-blob';
 import CustomAlert from '../../../themes/buttons/Alert';
-import {
-  //   userPersonalData,
-  //   initialFormData,
-  //   scaffoldData,
-  options,
-  elevations,
-  //   loadingCapacity,
-//   initialValues,
-  erectionData,
-  variationData,
-  inspectionData,
-  erectionRadioData,
-  //   dismantleRadioData,
-} from '../../../data/handoverData';
 import commonStyles from '../../../styles/commonStyles';
 import RadioGroupButton from '../../../themes/buttons/radioButtonGroup';
 import {AudioConverter} from '../../../themes/buttons/speechToText';
 import Address from '../../../components/common/Address';
-import { initialValues } from '../../../data/Damaged';
-
-// DATA
-const initialFormData: Partial<InputField>[] = [
-  {
-    label: 'What"s the Project ID ?',
-    showAsterisk: true,
-    name: 'projectDetails.projectId',
-    multiline: true,
-    numberOfLines: 5,
-  },
-];
-const loadingCapacity: CheckboxItem[] = [
-  {
-    label: 'Damaged Scaffold Components',
-    status: 'unchecked',
-    name: 'scaffoldDetails.drawingsSupplied.light225',
-  },
-  {
-    label: 'Missing Order Items',
-    status: 'unchecked',
-    name: 'scaffoldDetails.drawingsSupplied.Medium450',
-  },
-];
-export const scaffoldData: Partial<InputField>[] = [
-  {
-    label: 'Men on Job',
-    name: 'scaffoldDetails.inputDetails.scaffoldLength',
-  },
-  {
-    label: 'Hours Lost',
-    name: 'scaffoldDetails.inputDetails.numberOfBays',
-  },
-  {
-    label: 'Total Hours Lost',
-    name: 'scaffoldDetails.inputDetails.scaffoldHeight',
-  },
-];
-const dismantleRadioData = [
-  {
-    heading: 'Extra Truck',
-    options: [
-      {value: 'Yes', label: 'Yes'},
-      {value: 'No', label: 'No'},
-      {value: 'N/A', label: 'N/A'},
-    ],
-    name: 'projectDetails.dismantleChecklist.sufficient_ties',
-  },
-];
-
-const userPersonalData: Partial<InputField>[] = [
-  {
-    label: 'Your Name',
-    name: 'signatures.customerName',
-  },
-  {
-    label: 'Subcontractor Name',
-    name: 'signatures.HRWLNumber',
-  },
-  {
-    label: 'Supervisor Name (please select) ',
-    showAsterisk: true,
-    name: 'signatures.customerEmail',
-  },
-  {
-    label: 'Reporting Date and Time ',
-    showAsterisk: true,
-    name: 'signatures.customerEmail2',
-  },
-  {
-    label: 'Supervisors email (please select) ',
-    showAsterisk: true,
-    name: 'signatures.DateTime',
-  },
-  // {
-  //   label: 'Name of authorised Customer Representative ',
-  //   showAsterisk: true,
-  //   name: 'signatures.customerName2',
-  // },
-];
+import { dismantleRadioData, initialFormData, initialValues, loadingCapacity, scaffoldData, userPersonalData } from '../../../data/Damaged';
+import { DatePickers } from '../../../themes/buttons/datePicker';
+// import DatePickers from '../../../themes/buttons/datePicker';
 
 export const Damaged = () => {
   // Scroll View End
   const [checkboxes, setCheckboxes] = useState<CheckboxItem[]>(loadingCapacity);
-  const [elevationData, setElevationData] =
-    useState<CheckboxItem[]>(elevations);
   const [selectedFiles, setSelectedFiles] = useState<DocumentPickerResponse[]>(
     [],
   );
@@ -178,34 +80,12 @@ export const Damaged = () => {
       return updatedCheckboxes;
     });
   };
-  const handleElevationDataPress = (label: string) => {
-    // @ts-ignore
-    setElevationData(prevElevation => {
-      const updatedCheckboxes = prevElevation.map((elevation: CheckboxItem) => {
-        if (elevation.label === label) {
-          const newStatus =
-            elevation.status === 'checked'
-              ? 'unchecked'
-              : elevation.status === 'unchecked'
-              ? 'checked'
-              : 'indeterminate';
-          return {
-            ...elevation,
-            status: newStatus,
-          };
-        } else {
-          return elevation;
-        }
-      });
-      return updatedCheckboxes;
-    });
-  };
 
   const handleCustomAlertClose = () => {
     setCustomAlertVisible(false);
   };
 
-  const handleSubmit1 = async (values: HandoverFormValues) => {
+  const handleSubmit1 = async (values: DamagedFormValues) => {
     try {
       const base64Images = await Promise.all(
         selectedFiles.map(async file => {
@@ -214,16 +94,13 @@ export const Damaged = () => {
         }),
       );
       const requestData = {
-        projectDetails: values.projectDetails,
-        selectedOptionData:
-          values.projectDetails.certificationRelation.selectedOptionData,
-        // dismantleRadio: values.projectDetails.dismantleRadioData,
-        // erectionRadio: values.projectDetails.erectionRadioData,
-        scaffoldDetails: values.scaffoldDetails,
-        signatures: values.signatures,
+        values,
+        reportingCheck: values.reporting.reportingCheck,
         imagesAttached: base64Images,
         signature: signatures,
       };
+      // console.log(requestData, 'req');
+      
 
       const response = await axios.post(
         'https://fivestaraccess.com.au/custom_form/handover_native_app.php',
@@ -242,21 +119,27 @@ export const Damaged = () => {
       console.error('Error:', error);
     }
   };
-  const validationSchema = Yup.object({
-    projectDetails: Yup.object().shape({
-      projectId: Yup.string().required('Project ID is required'),
-      buildingLevel: Yup.string(),
-      nameOfBuilder: Yup.string(),
-      customerABN: Yup.string(),
-      workCompletion: Yup.string().required('Work completion is required'),
+  const validationSchema = Yup.object().shape({
+    projectId: Yup.string().required('Project ID is required'),
+  
+    reporting: Yup.object().shape({
+      reportingCheck: Yup.object().shape({
+        damaged_Components: Yup.string(),
+        missing_order: Yup.string(),
+      }),
+      menon_job: Yup.string(),
+      estimated_time: Yup.string(),
+      total_hours: Yup.string(),
+      extra_truck: Yup.string(),
+      comments: Yup.string().required('Comments is required'),
     }),
+  
     signatures: Yup.object().shape({
-      customerName: Yup.string().required('Name is required'),
-      HRWLNumber: Yup.string(),
-      customerEmail: Yup.string().email('Invalid email'),
-      customerEmail2: Yup.string().email('Invalid email'),
-      // DateTime: Yup.string().required('Handover Date and Time is required'),
-      customerName2: Yup.string().required('Name is required'),
+      your_name: Yup.string(),
+      subcontractor_name: Yup.string(),
+      supervisor_name: Yup.string().required('Supervisor Name is required'),
+      date_time: Yup.string().required('Date and Time is required'),
+      supervisor_email: Yup.string().email('Invalid email address').required('Supervisor Email is required'),
     }),
   });
 
@@ -266,7 +149,7 @@ export const Damaged = () => {
         <Formik
           initialValues={initialValues}
           enableReinitialize={true}
-          // validationSchema={validationSchema}
+          validationSchema={validationSchema}
           onSubmit={async values => {
             setLoading(true);
             await handleSubmit1(values);
@@ -295,9 +178,9 @@ export const Damaged = () => {
               <View>
                 <TextInputGroup inputFields={initialFormData} />
               </View>
-              <View style={{marginBottom: 15, marginTop: 15}}>
+              {/* <View style={{marginBottom: 15, marginTop: 15}}>
                 <Recorder />
-              </View>
+              </View> */}
               <View style={{margin: 15}}>
                 <CustomHeader text="What are you Reporting ?" />
               </View>
@@ -319,7 +202,7 @@ export const Damaged = () => {
                   // name="projectDetails.certificationRelation.selectedOption"
                 />
                 <Field
-                  name="projectDetails.scaffoldChecklist.speechToText"
+                  name="reporting.comments"
                   component={AudioConverter}
                 />
               </View>
@@ -339,6 +222,8 @@ export const Damaged = () => {
               </Text>
               <View style={commonStyles.mb15}>
                 <TextInputGroup inputFields={userPersonalData} />
+                <Text style={[commonStyles.text16, {marginBottom:5}, commonStyles.mTop15]}>Reporting Date And Time</Text>
+                <DatePickers name='signatures.date_time' />
               </View>
               <Text style={[commonStyles.text16, commonStyles.mb15]}>Your Signature (please sign)</Text>
 
