@@ -223,7 +223,7 @@ export const Damaged = () => {
               <View style={commonStyles.mb15}>
                 <TextInputGroup inputFields={userPersonalData} />
                 <Text style={[commonStyles.text16, {marginBottom:5}, commonStyles.mTop15]}>Reporting Date And Time</Text>
-                <DatePickers name='signatures.date_time' />
+                <DatePickers name='signatures.date_time' mode='datetime' />
               </View>
               <Text style={[commonStyles.text16, commonStyles.mb15]}>Your Signature (please sign)</Text>
 
