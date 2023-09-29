@@ -5,7 +5,9 @@ import DatePicker from 'react-native-date-picker';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import commonStyles from '../../../styles/commonStyles';
 
-export const DatePickers = ({ name }: { name: string }) => {
+// mode = datetime/time/date
+
+export const DatePickers = ({ name, mode }: { name: string; mode:any }) => {
   const [date, setDate] = useState<Date | null>(null);
   const [open, setOpen] = useState(false);
 
@@ -42,6 +44,7 @@ export const DatePickers = ({ name }: { name: string }) => {
           {open && (
             <DatePicker
               modal
+              mode={mode}
               open={open}
               date={date || new Date()} // Provide the current date as a fallback
               onConfirm={(selectedDate) => {
