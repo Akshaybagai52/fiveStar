@@ -38,6 +38,7 @@ import {
 import commonStyles from '../../../styles/commonStyles';
 import RadioGroupButton from '../../../themes/buttons/radioButtonGroup';
 import { AudioConverter } from '../../../themes/buttons/speechToText';
+import Address from '../../../components/common/Address';
 
 const Handover = () => {
   // Scroll View End
@@ -187,7 +188,7 @@ const Handover = () => {
           {({handleSubmit, values}) => (
             <View style={{backgroundColor: '#fff'}}>
               <View>
-                <View style={{padding: 10, marginBottom: 15}}>
+                {/* <View style={{padding: 10, marginBottom: 15}}>
                   <Text>
                     <Icon
                       name="office-building-marker"
@@ -208,7 +209,8 @@ const Handover = () => {
                     <Icon2 name="phone-call" size={20} color="#112D4E" /> (02)
                     9632 3466
                   </Text>
-                </View>
+                </View> */}
+                <Address />
                 <View style={{marginBottom: 20}}>
                   <Text style={{fontSize: 30, fontWeight: 'bold'}}>
                     Handover Certificate

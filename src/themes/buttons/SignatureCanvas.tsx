@@ -12,6 +12,7 @@ export const MySignatureCanvas = ({onBegin, onEnd, signature, setSignature}: any
   // };
   const handleClearSignature = () => {
     signatureRef.current?.clearSignature();
+    setSignature(''); 
   };
 
   const handleGetSignature = async () => {

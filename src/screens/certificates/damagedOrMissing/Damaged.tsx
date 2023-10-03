@@ -103,7 +103,7 @@ export const Damaged = () => {
       
 
       const response = await axios.post(
-        'https://fivestaraccess.com.au/custom_form/handover_native_app.php',
+        'https://fivestaraccess.com.au/custom_form/damaged_scaffold_app.php',
         requestData,
         {
           headers: {
