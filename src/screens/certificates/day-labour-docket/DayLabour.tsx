@@ -28,9 +28,6 @@ import {
   initialValues,
   erectionData,
   variationData,
-  // inspectionData,
-  // erectionRadioData,
-  // dismantleRadioData,
 } from '../../../data/dayLabour';
 import commonStyles from '../../../styles/commonStyles';
 import RadioGroupButton from '../../../themes/buttons/radioButtonGroup';
@@ -145,6 +142,7 @@ export const DayLabour = () => {
         }),
       );
       const requestData = {
+        
         projectDetails: {
           buildingLevel: values.projectDetails.building_level,
           date: values.projectDetails.date,
@@ -159,9 +157,9 @@ export const DayLabour = () => {
           purchaseOrder: values.projectDetails.purchase_order,
           workRelation: values.projectDetails.workRelation,
         },
-        scaffoldDetails: {
-          elevations: values.scaffoldDetails.elevations,
-        },
+        // scaffoldDetails: {
+        //   elevations: values.scaffoldDetails.elevations,
+        // },
         signatures: {
           authorised: values.signatures.authorised,
           capacityDesignation: values.signatures.capacity_designation,
@@ -172,21 +170,21 @@ export const DayLabour = () => {
         },
         workDetails: {
           elevationCheckbox: values.workDetails.elevationCheckbox,
-          workDescription: values.workDetails.workDescription,
+          workDescription: values.workDetails.workDescription.description,
         },
         imagesAttached: base64Images,
         signature: signatures,
       };
 
-      // const response = await axios.post(
-      //   'https://fivestaraccess.com.au/custom_form/handover_native_app.php',
-      //   requestData,
-      //   {
-      //     headers: {
-      //       'Content-Type': 'application/json',
-      //     },
-      //   },
-      // );
+      const response = await axios.post(
+        'https://fivestaraccess.com.au/custom_form/damaged_scaffold_app.php',
+        requestData,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
+      );
       console.log('Post Response:', requestData);
       // console.log('signature', values.projectDetails.certificationRelation);
       // Alert.alert("Document submitted successfully")
@@ -197,20 +195,26 @@ export const DayLabour = () => {
   };
   const validationSchema = Yup.object({
     projectDetails: Yup.object().shape({
-      projectId: Yup.string().required('Project ID is required'),
-      buildingLevel: Yup.string(),
-      nameOfBuilder: Yup.string(),
-      customerABN: Yup.string(),
-      workCompletion: Yup.string().required('Work completion is required'),
+      building_level: Yup.string(),
+      date: Yup.date(),
+      docketRelation: Yup.object().shape({ 
+        selectOption: Yup.string().required()
+      }),
+      hourlyLabour: Yup.string(),
+      variation: Yup.string(),
+      nameOf_customer: Yup.string().required('Name of customer is required'),
+      project_id: Yup.string().required('Project ID is required'),
+      purchaseOrder: Yup.string().required('Purchase order is required'),
+      workRelation: Yup.string(),
     }),
-    signatures: Yup.object().shape({
-      customerName: Yup.string().required('Name is required'),
-      HRWLNumber: Yup.string(),
-      customerEmail: Yup.string().email('Invalid email'),
-      customerEmail2: Yup.string().email('Invalid email'),
-      // DateTime: Yup.string().required('Handover Date and Time is required'),
-      customerName2: Yup.string().required('Name is required'),
-    }),
+    // signatures: Yup.object().shape({
+    //   nameDayLabourDocket: Yup.string().required('Name is required'),
+    //   capacityDesignation: Yup.string().required('capacity can"t be empty'),
+    //   emailReceiveCopy: Yup.string().email('Invalid email'),
+    //   // customerEmail2: Yup.string().email('Invalid email'),
+    //   // // DateTime: Yup.string().required('Handover Date and Time is required'),
+    //   // customerName2: Yup.string().required('Name is required'),
+    // }),
   });
   return (
     <View style={{padding: 20, backgroundColor: '#fff'}}>
@@ -235,7 +239,7 @@ export const DayLabour = () => {
                 </View>
                 <CustomHeader text="Project Details" />
                 <Text style={[{fontSize: 19}, commonStyles.mTop15]}>
-                  What is this Docket relating to ?*
+                  What is this Docket relating to ? <Text style={[commonStyles.errorText]}>*</Text>
                 </Text>
                 {/* <Text>Choose One </Text> */}
                 <RadioGroup
@@ -243,7 +247,7 @@ export const DayLabour = () => {
                   name="projectDetails.docketRelation.selectedOption"
                 />
                 {values.projectDetails.docketRelation.selectedOption ===
-                  'Variaton_works' && (
+                  'Variation_Works' && (
                   <View style={commonStyles.mTop15}>
                     <CustomHeader text="Variation Work" />
                     <CheckBox
@@ -264,7 +268,7 @@ export const DayLabour = () => {
                 )}
                 {/* {values.projectDetails.certificationRelation.selectedOptionData.variation.dayLabourErection === "dayLabourErection" ? <Text> "hey"</Text> : <Text> "dsfhey"</Text>} */}
               </View>
-              <View>
+              <View style={[commonStyles.mTop15]}>
                 <DatePickers name="projectDetails.date" mode="date" />
                 <TextInputGroup inputFields={initialFormData} />
               </View>
