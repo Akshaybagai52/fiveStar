@@ -10,6 +10,7 @@ import { Text } from 'react-native-paper';
 import Contact from '../screens/contact/Contact';
 import { Damaged } from '../screens/certificates/damagedOrMissing';
 import { DayLabour } from '../screens/certificates/day-labour-docket';
+import { SafetyToolbox } from '../screens/certificates/safety-toolbox-discussion';
 // import {useSelector} from 'react-redux';
 
 
@@ -31,6 +32,7 @@ export function HandoverDrawer() {
         <Drawer.Screen name="Handover" component={Handover}  />
         <Drawer.Screen name="Damaged" component={Damaged}  />
         <Drawer.Screen name="Day Labour Docket" component={DayLabour}  />
+        <Drawer.Screen name="Safety Toolbox Discussion" component={SafetyToolbox}  />
         <Drawer.Screen name="Help Center" component={Contact}  />
       </Drawer.Navigator>
     );

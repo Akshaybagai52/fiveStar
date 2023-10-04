@@ -67,6 +67,9 @@ const commonStyles = StyleSheet.create({
     mt5: {
       marginTop: 5
     },
+    mb5: {
+      marginBottom: 5
+    },
     mTop15: {
       marginTop: 15,
     },
