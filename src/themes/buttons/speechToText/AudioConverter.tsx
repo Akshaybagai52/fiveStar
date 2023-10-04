@@ -1,12 +1,11 @@
-import React, {useState, useEffect} from 'react';
-import {StyleSheet, Text, TextInput, View} from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Text, TextInput, View } from 'react-native';
 import Voice, {
   SpeechResultsEvent,
   SpeechErrorEvent,
 } from '@react-native-voice/voice';
-import {Button} from 'react-native-paper';
+import { Button } from 'react-native-paper';
 import commonStyles from '../../../styles/commonStyles';
-import { Field } from 'formik';
 
 export function AudioConverter({ field, form }: {field:any, form:any}) {
   const [results, setResults] = useState<string>('');
@@ -15,19 +14,21 @@ export function AudioConverter({ field, form }: {field:any, form:any}) {
   useEffect(() => {
     function onSpeechResults(e: SpeechResultsEvent) {
       console.log(e.value ? e.value[0] : '', 'e.value');
-
       setResults(e.value ? e.value[0] : '');
       form.setFieldValue(field.name, e.value ? e.value[0] : ''); // Update the field value in Formik
     }
+
     function onSpeechError(e: SpeechErrorEvent) {
       console.error(e);
     }
+
     Voice.onSpeechError = onSpeechError;
     Voice.onSpeechResults = onSpeechResults;
+
     return function cleanup() {
       Voice.destroy().then(Voice.removeAllListeners);
     };
-  }, []);
+  }, [field.name, form]);
 
   async function toggleListening() {
     try {
@@ -44,6 +45,11 @@ export function AudioConverter({ field, form }: {field:any, form:any}) {
     }
   }
 
+  function setRecognizedTextManually(text: string) {
+    setResults(text);
+    form.setFieldValue(field.name, text); // Update the field value in Formik
+  }
+
   const styles = StyleSheet.create({
     container: {
       flex: 1,
@@ -56,16 +62,12 @@ export function AudioConverter({ field, form }: {field:any, form:any}) {
     },
   });
 
-  function setRecognizedTextManually(text: string) {
-    form.setFieldValue(field.name, text); // Update the field value in Formik
-  }
-
   return (
     <View style={[styles.container, commonStyles.mTop15]}>
       <TextInput
-        value={field.value} // Use the field value from Formik
+        value={results} // Use the local state variable
         onChangeText={text => setRecognizedTextManually(text)} // Handle manual text input
-        style={[commonStyles.textInput, {width: '100%', minHeight:90}, commonStyles.mb15]}
+        style={[commonStyles.textInput, {width: '100%', minHeight: 90}, commonStyles.mb15]}
         multiline={true}
         numberOfLines={5}
       />
@@ -79,6 +81,3 @@ export function AudioConverter({ field, form }: {field:any, form:any}) {
     </View>
   );
 }
-
-// Usage in Formik form
-// <Field name="audioInput" component={AudioConverter} />

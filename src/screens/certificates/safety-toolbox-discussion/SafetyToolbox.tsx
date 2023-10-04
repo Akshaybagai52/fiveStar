@@ -22,24 +22,22 @@ import {
   userPersonalData,
   initialFormData,
   scaffoldData,
-  options,
-  elevations,
+  // options,
+  // elevations,
   loadingCapacity,
   initialValues,
-  erectionData,
-  variationData,
-} from '../../../data/dayLabour';
+  // erectionData,
+  // variationData,
+} from '../../../data/safetyToolbox';
 import commonStyles from '../../../styles/commonStyles';
-import RadioGroupButton from '../../../themes/buttons/radioButtonGroup';
 import {AudioConverter} from '../../../themes/buttons/speechToText';
 import Address from '../../../components/common/Address';
 import {DatePickers} from '../../../themes/buttons/datePicker';
 
-export const DayLabour = () => {
-  // Scroll View End
+export const SafetyToolbox = () => {
+
   const [checkboxes, setCheckboxes] = useState<CheckboxItem[]>(loadingCapacity);
-  const [elevationData, setElevationData] =
-    useState<CheckboxItem[]>(elevations);
+
   const [selectedFiles, setSelectedFiles] = useState<DocumentPickerResponse[]>(
     [],
   );
@@ -49,26 +47,8 @@ export const DayLabour = () => {
   });
   const [isCustomAlertVisible, setCustomAlertVisible] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [numFields, setNumFields] = useState(1);
-  const addField = () => {
-    if (numFields < 3) {
-      setNumFields(numFields + 1);
-    }
-  };
+ 
 
-  const renderAudioConverters = () => {
-    const audioConverters = [];
-    for (let i = 1; i <= numFields; i++) {
-      audioConverters.push(
-        <Field
-          key={`description-${i}`}
-          name={`workDetails.workDescription.description[${i - 1}]`}
-          component={AudioConverter}
-        />,
-      );
-    }
-    return audioConverters;
-  };
   // Scroll View start
   const scrollViewRef: any = useRef(null);
 
@@ -83,6 +63,8 @@ export const DayLabour = () => {
       scrollViewRef.current.setNativeProps({scrollEnabled: true});
     }
   };
+
+    // Scroll View End
 
   const handleCheckboxPress = (label: string) => {
     // @ts-ignore
@@ -106,28 +88,7 @@ export const DayLabour = () => {
       return updatedCheckboxes;
     });
   };
-  const handleElevationDataPress = (label: string) => {
-    // @ts-ignore
-    setElevationData(prevElevation => {
-      const updatedCheckboxes = prevElevation.map((elevation: CheckboxItem) => {
-        if (elevation.label === label) {
-          const newStatus =
-            elevation.status === 'checked'
-              ? 'unchecked'
-              : elevation.status === 'unchecked'
-              ? 'checked'
-              : 'indeterminate';
-          return {
-            ...elevation,
-            status: newStatus,
-          };
-        } else {
-          return elevation;
-        }
-      });
-      return updatedCheckboxes;
-    });
-  };
+  
 
   const handleCustomAlertClose = () => {
     setCustomAlertVisible(false);
@@ -142,36 +103,7 @@ export const DayLabour = () => {
         }),
       );
       const requestData = {
-        
-        projectDetails: {
-          building_level: values.projectDetails.building_level,
-          date: values.projectDetails.date,
-          selectedOption: values.projectDetails.docketRelation.selectedOption,
-          hourlyLabour:
-            values.projectDetails.docketRelation.selectedOptionData
-              .hourlyLabour,
-          variation:
-            values.projectDetails.docketRelation.selectedOptionData.variation,
-            nameOf_customer: values.projectDetails.nameOf_customer,
-            project_id: values.projectDetails.project_id,
-            purchase_order: values.projectDetails.purchase_order,
-            workRelation: values.projectDetails.workRelation,
-        },
-        // scaffoldDetails: {
-        //   elevations: values.scaffoldDetails.elevations,
-        // },
-        signatures: {
-          authorised: values.signatures.authorised,
-          capacity_designation: values.signatures.capacity_designation,
-          customer_Representative: values.signatures.customer_Representative,
-          customers_mail: values.signatures.customers_mail,
-          email_receive_copy: values.signatures.email_receive_copy,
-          name_day_labour_docket: values.signatures.name_day_labour_docket,
-        },
-        workDetails: {
-          elevationCheckbox: values.workDetails.elevationCheckbox,
-          description: values.workDetails.workDescription.description,
-        },
+        values,
         imagesAttached: base64Images,
         signature: signatures,
       };
@@ -197,23 +129,23 @@ export const DayLabour = () => {
     projectDetails: Yup.object().shape({
       building_level: Yup.string(),
       date: Yup.date(),
-      docketRelation: Yup.object().shape({ 
-        selectOption: Yup.string()
+      docketRelation: Yup.object().shape({
+        selectOption: Yup.string().required(),
       }),
       hourlyLabour: Yup.string(),
       variation: Yup.string(),
       nameOf_customer: Yup.string().required('Name of customer is required'),
       project_id: Yup.string().required('Project ID is required'),
-      purchaseOrder: Yup.string(),
+      purchaseOrder: Yup.string().required('Purchase order is required'),
       workRelation: Yup.string(),
     }),
     // signatures: Yup.object().shape({
-    //   authorised: Yup.string().required('Name is required'),
-    //   capacity_designation: Yup.string().required('capacity can"t be empty'),
-    //   email_receive_copy: Yup.string().email('Invalid email'),
-    //   customers_mail: Yup.string().email('Invalid email'),
-    //   name_day_labour_docket: Yup.string(),
-    //   customer_Representative: Yup.string(),
+    //   nameDayLabourDocket: Yup.string().required('Name is required'),
+    //   capacityDesignation: Yup.string().required('capacity can"t be empty'),
+    //   emailReceiveCopy: Yup.string().email('Invalid email'),
+    //   // customerEmail2: Yup.string().email('Invalid email'),
+    //   // // DateTime: Yup.string().required('Handover Date and Time is required'),
+    //   // customerName2: Yup.string().required('Name is required'),
     // }),
   });
   return (
@@ -234,19 +166,20 @@ export const DayLabour = () => {
                 <Address />
                 <View style={{marginBottom: 20}}>
                   <Text style={{fontSize: 30, fontWeight: 'bold'}}>
-                    DAY LABOUR DOCKET
+                    RECORD OF SAFETY TOOL BOX DISCUSSION
                   </Text>
                 </View>
                 <CustomHeader text="Project Details" />
                 <Text style={[{fontSize: 19}, commonStyles.mTop15]}>
-                  What is this Docket relating to ? <Text style={[commonStyles.errorText]}>*</Text>
+                  What Project Stage are you discussing about ? Choose all
+                  relevant* <Text style={[commonStyles.errorText]}>*</Text>
                 </Text>
                 {/* <Text>Choose One </Text> */}
-                <RadioGroup
-                  options={options}
-                  name="projectDetails.docketRelation.selectedOption"
+                <CheckBox
+                  checkboxes={loadingCapacity}
+                  onPress={handleCheckboxPress}
                 />
-                {values.projectDetails.docketRelation.selectedOption ===
+                {/* {values.projectDetails.docketRelation.selectedOption ===
                   'Variation_Works' && (
                   <View style={commonStyles.mTop15}>
                     <CustomHeader text="Variation Work" />
@@ -265,57 +198,70 @@ export const DayLabour = () => {
                       onPress={handleElevationDataPress}
                     />
                   </View>
-                )}
+                )} */}
                 {/* {values.projectDetails.certificationRelation.selectedOptionData.variation.dayLabourErection === "dayLabourErection" ? <Text> "hey"</Text> : <Text> "dsfhey"</Text>} */}
               </View>
               <View style={[commonStyles.mTop15]}>
+                <Text style={[commonStyles.text16, commonStyles.mb5]}>
+                  Date of Safety Tool Box Meeting *
+                </Text>
                 <DatePickers name="projectDetails.date" mode="date" />
                 <TextInputGroup inputFields={initialFormData} />
-              </View>
-              <View>
-                <Text style={{fontSize: 18, fontWeight: 'bold'}}>
-                  What was the work relating to ? Choose all relevant *
-                </Text>
-
-                <CheckBox
-                  checkboxes={checkboxes}
-                  onPress={handleCheckboxPress}
+                <Field
+                  name="projectDetails.work_description"
+                  component={AudioConverter}
                 />
-              </View>
-              <View style={{marginTop: 15}}>
-                <CustomHeader text="Work Details" />
-                <Text style={{fontSize: 18, fontWeight: 'bold'}}>
-                  On which elevations did you work ? Choose all applicable *
-                </Text>
-                <CheckBox
-                  checkboxes={elevationData}
-                  onPress={handleElevationDataPress}
-                />
-                <View>
-                  {renderAudioConverters()}
-                  {numFields < 3 && (
-                    <Button
-                      mode="elevated"
-                      style={[commonStyles.mTop15, {alignSelf: 'flex-end'}]}
-                      onPress={addField}>
-                      Add more Fields
-                    </Button>
-                  )}
-                  {/* <Button title="Submit" onPress={handleSubmit} /> */}
-                </View>
-                <View style={{width: '90%', marginBottom: 50}}>
+                <View style={{width: '90%', marginBottom: 20}}>
                   <FilePicker
                     selectedFiles={selectedFiles}
                     setSelectedFiles={setSelectedFiles}
                   />
                 </View>
               </View>
-              <View>
+
+              <View style={{marginTop: 15}}>
+                <CustomHeader text="Site Supervisor Comments & Suggestions Regarding Today's Work Activities" />
+                <Text
+                  style={[
+                    commonStyles.text20,
+                    commonStyles.fontBold,
+                    commonStyles.mTop15,
+                  ]}>
+                  Supervisors Notes *
+                </Text>
+                <Field
+                  name="projectDetails.supervisor_notes"
+                  component={AudioConverter}
+                />
+              </View>
+              <View style={[commonStyles.mTop15]}>
+                <CustomHeader text="Record of Attendees" />
                 <TextInputGroup inputFields={scaffoldData} />
+                <Text style={[commonStyles.text16, commonStyles.mb5]}>
+                  Signature 1
+                </Text>
+                <MySignatureCanvas
+                  onBegin={handleCanvasBegin}
+                  onEnd={handleCanvasEnd}
+                  signature={signatures}
+                  setSignature={(signature: any) =>
+                    setSignatures(prevSignatures => ({
+                      ...prevSignatures,
+                      signature2: signature,
+                    }))
+                  }
+                />
+                <Text style={[commonStyles.text16, commonStyles.mb5]}>
+                  Worker Feedback
+                </Text>
+                <Field
+                  name="record.additional_cmt"
+                  component={AudioConverter}
+                />
               </View>
 
               <View style={{marginBottom: 15, marginTop: 15}}>
-                <CustomHeader text="Signatures" />
+                <CustomHeader text="Supervisor/Team Leader Signatures" />
               </View>
               <View>
                 <Text
@@ -324,24 +270,14 @@ export const DayLabour = () => {
                     fontSize: 15,
                     marginBottom: 15,
                   }}>
-                  I confirm abovementioned works has been completed as
-                  authorised by Five Star Scaffolding
+                  I have conducted the Safety Tool Box disscussion at above site
+                  and I have truly and accurately recorded today's discussion.
                 </Text>
               </View>
               <TextInputGroup inputFields={userPersonalData} />
 
               {/* <SignatureScreen /> */}
-              <MySignatureCanvas
-                onBegin={handleCanvasBegin}
-                onEnd={handleCanvasEnd}
-                signature={signatures}
-                setSignature={(signature: any) =>
-                  setSignatures(prevSignatures => ({
-                    ...prevSignatures,
-                    signature1: signature,
-                  }))
-                }
-              />
+              <Text style={[commonStyles.text16, commonStyles.mb15]}>Signature of person completing this form</Text>
 
               <MySignatureCanvas
                 onBegin={handleCanvasBegin}
@@ -354,13 +290,6 @@ export const DayLabour = () => {
                   }))
                 }
               />
-              <Text style={[commonStyles.text16,commonStyles.fontBold, commonStyles.mb15]}>
-                This document is issued in accordance with the terms and
-                conditions of contract and constitutes formal notification of
-                variation, extension of time and any related additional cost
-                claims. This is a claim made under the Building and Construction
-                Industry Security of Payment Act 1999 NSW
-              </Text>
               <CustomAlert
                 visible={isCustomAlertVisible}
                 title="Details submitted successfully"
