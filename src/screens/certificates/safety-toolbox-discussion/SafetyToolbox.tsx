@@ -26,6 +26,10 @@ import {
   // elevations,
   loadingCapacity,
   initialValues,
+  firstListHeading,
+  topicFeedback,
+  secondListHeading,
+  scaffoldingData,
   // erectionData,
   // variationData,
 } from '../../../data/safetyToolbox';
@@ -33,9 +37,10 @@ import commonStyles from '../../../styles/commonStyles';
 import {AudioConverter} from '../../../themes/buttons/speechToText';
 import Address from '../../../components/common/Address';
 import {DatePickers} from '../../../themes/buttons/datePicker';
+import ListWithBullets from '../../../components/common/ListComp';
+import { TimePicker } from '../../../themes/buttons/timeCalculation';
 
 export const SafetyToolbox = () => {
-
   const [checkboxes, setCheckboxes] = useState<CheckboxItem[]>(loadingCapacity);
 
   const [selectedFiles, setSelectedFiles] = useState<DocumentPickerResponse[]>(
@@ -47,7 +52,6 @@ export const SafetyToolbox = () => {
   });
   const [isCustomAlertVisible, setCustomAlertVisible] = useState(false);
   const [loading, setLoading] = useState(false);
- 
 
   // Scroll View start
   const scrollViewRef: any = useRef(null);
@@ -64,7 +68,7 @@ export const SafetyToolbox = () => {
     }
   };
 
-    // Scroll View End
+  // Scroll View End
 
   const handleCheckboxPress = (label: string) => {
     // @ts-ignore
@@ -88,7 +92,6 @@ export const SafetyToolbox = () => {
       return updatedCheckboxes;
     });
   };
-  
 
   const handleCustomAlertClose = () => {
     setCustomAlertVisible(false);
@@ -104,6 +107,7 @@ export const SafetyToolbox = () => {
       );
       const requestData = {
         values,
+        stageDiscuss: values.projectDetails.stageDiscussion,
         imagesAttached: base64Images,
         signature: signatures,
       };
@@ -179,27 +183,7 @@ export const SafetyToolbox = () => {
                   checkboxes={loadingCapacity}
                   onPress={handleCheckboxPress}
                 />
-                {/* {values.projectDetails.docketRelation.selectedOption ===
-                  'Variation_Works' && (
-                  <View style={commonStyles.mTop15}>
-                    <CustomHeader text="Variation Work" />
-                    <CheckBox
-                      checkboxes={erectionData}
-                      onPress={handleElevationDataPress}
-                    />
-                  </View>
-                )}
-                {values.projectDetails.docketRelation.selectedOption ===
-                  'Hourly_labour' && (
-                  <View style={commonStyles.mTop15}>
-                    <CustomHeader text="Hourly Labour" />
-                    <CheckBox
-                      checkboxes={variationData}
-                      onPress={handleElevationDataPress}
-                    />
-                  </View>
-                )} */}
-                {/* {values.projectDetails.certificationRelation.selectedOptionData.variation.dayLabourErection === "dayLabourErection" ? <Text> "hey"</Text> : <Text> "dsfhey"</Text>} */}
+                
               </View>
               <View style={[commonStyles.mTop15]}>
                 <Text style={[commonStyles.text16, commonStyles.mb5]}>
@@ -207,6 +191,21 @@ export const SafetyToolbox = () => {
                 </Text>
                 <DatePickers name="projectDetails.date" mode="date" />
                 <TextInputGroup inputFields={initialFormData} />
+                <TimePicker mode='time' name='projectDetails.startTime' />
+
+                {values.projectDetails.stageDiscussion.Dismantle && (
+                  <ListWithBullets
+                    heading={firstListHeading}
+                    listText={topicFeedback}
+                  />
+                ) }
+                {values.projectDetails.stageDiscussion.Existing_Scaffold && (
+                  <ListWithBullets
+                    heading={secondListHeading}
+                    listText={scaffoldingData}
+                  />
+                )}
+
                 <Field
                   name="projectDetails.work_description"
                   component={AudioConverter}
@@ -277,7 +276,9 @@ export const SafetyToolbox = () => {
               <TextInputGroup inputFields={userPersonalData} />
 
               {/* <SignatureScreen /> */}
-              <Text style={[commonStyles.text16, commonStyles.mb15]}>Signature of person completing this form</Text>
+              <Text style={[commonStyles.text16, commonStyles.mb15]}>
+                Signature of person completing this form
+              </Text>
 
               <MySignatureCanvas
                 onBegin={handleCanvasBegin}
