@@ -1,4 +1,4 @@
-import { StyleSheet, useWindowDimensions } from "react-native";
+import { StyleSheet, useWindowDimensions, Platform } from "react-native";
 import { WindowDimension } from "../types/interfaces/types";
 import { black } from "react-native-paper/lib/typescript/src/styles/themes/v2/colors";
 // const { height:windowHeight, width:windowWidth }: WindowDimension = useWindowDimensions();
@@ -127,6 +127,9 @@ const commonStyles = StyleSheet.create({
     errorText: {
       color: 'red',
     },
+    androidPTop: {
+      paddingTop: Platform.OS === "android" ? 20 : 0,
+    }
   });
   
   export default commonStyles;

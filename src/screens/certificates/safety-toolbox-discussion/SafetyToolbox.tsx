@@ -62,6 +62,12 @@ export const SafetyToolbox = () => {
     }
   };
 
+  const TimeNames: any = {
+    startTime: 'projectDetails.start_time',
+    endTime: "projectDetails.finish_time",
+    duration: 'projectDetails.duration'
+  }
+
   const handleCanvasEnd = () => {
     if (scrollViewRef.current) {
       scrollViewRef.current.setNativeProps({scrollEnabled: true});
@@ -111,17 +117,18 @@ export const SafetyToolbox = () => {
         imagesAttached: base64Images,
         signature: signatures,
       };
+      console.log(requestData)
 
-      const response = await axios.post(
-        'https://fivestaraccess.com.au/custom_form/damaged_scaffold_app.php',
-        requestData,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        },
-      );
-      console.log('Post Response:', requestData);
+      // const response = await axios.post(
+      //   'https://fivestaraccess.com.au/custom_form/damaged_scaffold_app.php',
+      //   requestData,
+      //   {
+      //     headers: {
+      //       'Content-Type': 'application/json',
+      //     },
+      //   },
+      // );
+      // console.log('Post Response:', requestData);
       // console.log('signature', values.projectDetails.certificationRelation);
       // Alert.alert("Document submitted successfully")
       setCustomAlertVisible(true);
@@ -129,28 +136,33 @@ export const SafetyToolbox = () => {
       console.error('Error:', error);
     }
   };
-  const validationSchema = Yup.object({
+  const validationSchema = Yup.object().shape({
     projectDetails: Yup.object().shape({
-      building_level: Yup.string(),
-      date: Yup.date(),
-      docketRelation: Yup.object().shape({
-        selectOption: Yup.string().required(),
+      stageDiscussion: Yup.object().shape({
+        Dismantle: Yup.string().required('Dismantle is required'),
+        Existing_Scaffold: Yup.string().required('Existing Scaffold is required'),
       }),
-      hourlyLabour: Yup.string(),
-      variation: Yup.string(),
-      nameOf_customer: Yup.string().required('Name of customer is required'),
+      date: Yup.string().required('Date is required'),
       project_id: Yup.string().required('Project ID is required'),
-      purchaseOrder: Yup.string().required('Purchase order is required'),
-      workRelation: Yup.string(),
+      building_level: Yup.string(),
+      nameOf_customer: Yup.string().required('Customer Name is required'),
+      supervisor_name: Yup.string().required('Supervisor Name is required'),
+      number_of_attendence: Yup.string().required('Number of Attendance is required'),
+      start_time: Yup.string().required('Start Time is required'),
+      finish_time: Yup.string().required('Finish Time is required'),
+      duration: Yup.string().required('Duration is required'),
+      work_description: Yup.string().required('Work Description is required'),
     }),
-    // signatures: Yup.object().shape({
-    //   nameDayLabourDocket: Yup.string().required('Name is required'),
-    //   capacityDesignation: Yup.string().required('capacity can"t be empty'),
-    //   emailReceiveCopy: Yup.string().email('Invalid email'),
-    //   // customerEmail2: Yup.string().email('Invalid email'),
-    //   // // DateTime: Yup.string().required('Handover Date and Time is required'),
-    //   // customerName2: Yup.string().required('Name is required'),
-    // }),
+    supervisor_notes: Yup.string(),
+    record: Yup.object().shape({
+      name_1: Yup.string(),
+      additional_cmt: Yup.string().required('Additional Comment is required'),
+    }),
+    signatures: Yup.object().shape({
+      name_of_person: Yup.string().required('Name is required'),
+      email_receive_copy: Yup.string().email('Invalid email format').required('Email is required'),
+      subcontractor_email: Yup.string().email('Invalid email format').required('Subcontractor Email is required'),
+    }),
   });
   return (
     <View style={{padding: 20, backgroundColor: '#fff'}}>
@@ -158,7 +170,7 @@ export const SafetyToolbox = () => {
         <Formik
           initialValues={initialValues}
           enableReinitialize={true}
-          // validationSchema={validationSchema}
+          validationSchema={validationSchema}
           onSubmit={async values => {
             setLoading(true);
             await handleSubmit1(values);
@@ -191,7 +203,7 @@ export const SafetyToolbox = () => {
                 </Text>
                 <DatePickers name="projectDetails.date" mode="date" />
                 <TextInputGroup inputFields={initialFormData} />
-                <TimePicker mode='time' name='projectDetails.startTime' />
+                <TimePicker names={TimeNames} />
 
                 {values.projectDetails.stageDiscussion.Dismantle && (
                   <ListWithBullets

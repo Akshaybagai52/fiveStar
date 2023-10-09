@@ -11,13 +11,17 @@ import Contact from '../screens/contact/Contact';
 import { Damaged } from '../screens/certificates/damagedOrMissing';
 import { DayLabour } from '../screens/certificates/day-labour-docket';
 import { SafetyToolbox } from '../screens/certificates/safety-toolbox-discussion';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 // import {useSelector} from 'react-redux';
-import { List } from 'react-native-paper';
+import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
+import AllCertificates from '../screens/certificates/list-of-certificates/AllCertificates';
 
 
 
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
+const Tab = createMaterialBottomTabNavigator();
 // const speechReducerValues = useSelector((state: any) => state?.speech);
 
 
@@ -33,23 +37,7 @@ export function HandoverDrawer() {
         },
       }}>
         <Drawer.Screen name="Home" component={Home} />
-        {/* <List.Section title="Accordions">
-      <List.Accordion
-        title="Uncontrolled Accordion"
-        left={props => <List.Icon {...props} icon="folder" />}>
-        <List.Item title="First item" />
-        <List.Item title="Second item" />
-      </List.Accordion>
-
-      <List.Accordion
-        title="Controlled Accordion"
-        left={props => <List.Icon {...props} icon="folder" />}
-        expanded={expanded}
-        onPress={handlePress}>
-        <List.Item title="First item" />
-        <List.Item title="Second item" />
-      </List.Accordion>
-    </List.Section> */}
+        <Drawer.Screen name="Tabs" component={MyTabs} />
         
         <Drawer.Screen name="Handover" component={Handover}  />
         <Drawer.Screen name="Damaged" component={Damaged}  />
@@ -57,6 +45,56 @@ export function HandoverDrawer() {
         <Drawer.Screen name="Safety Toolbox Discussion" component={SafetyToolbox}  />
         <Drawer.Screen name="Help Center" component={Contact}  />
       </Drawer.Navigator>
+    );
+  }
+
+  export function CertificateStack() {
+    return (
+      <Stack.Navigator>
+        
+        <Stack.Screen name="AllCertificates" component={AllCertificates} />
+
+        <Stack.Screen name="Handover" component={Handover} />
+        <Stack.Screen name="Damaged" component={Damaged} />
+        <Stack.Screen name="Day Labour Docket" component={DayLabour} />
+        <Stack.Screen name="Safety Toolbox Discussion" component={SafetyToolbox} />
+      </Stack.Navigator>
+    );
+  }
+  
+  export function MyTabs() {
+    return (
+      <Tab.Navigator 
+      initialRouteName="Home"
+      activeColor="#FF8C00"
+      inactiveColor="#FCF6F5"
+      barStyle={{ backgroundColor: '#14274E' }}
+      shifting={true}
+      >
+        <Tab.Screen name="Home" component={Home} 
+         options={{
+          tabBarLabel: 'Home',
+          tabBarColor: 'blue',
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons name="home" color={ color } size={26} />
+          ),
+        }} />
+        <Tab.Screen name="Certificate" component={CertificateStack} options={{
+          tabBarLabel: 'Certificates',
+          tabBarColor: 'yellow',
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons name="file-certificate" color={color} size={26} />
+          ),
+        }} />
+        <Tab.Screen name="Help Center" component={Contact} options={{
+          tabBarLabel: 'Help',
+          tabBarIcon: ({ color }) => (
+            <MaterialIcons name="support-agent" color={color} size={26} />
+          ),
+          tabBarColor: 'red',
+          
+        }} />
+      </Tab.Navigator>
     );
   }
   
