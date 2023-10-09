@@ -32,16 +32,16 @@ export const initialFormData: Partial<InputField>[] = [
     showAsterisk: true,
     name: 'projectDetails.number_of_attendence',
   },
-  {
-    label: 'Start Time ',
-    showAsterisk: true,
-    name: 'projectDetails.number_of_attendence',
-  },
-  {
-    label: 'Finish Time ',
-    showAsterisk: true,
-    name: 'projectDetails.start_time',
-  },
+  // {
+  //   label: 'Start Time ',
+  //   showAsterisk: true,
+  //   name: 'projectDetails.number_of_attendence',
+  // },
+  // {
+  //   label: 'Finish Time ',
+  //   showAsterisk: true,
+  //   name: 'projectDetails.start_time',
+  // },
   
 ];
 
@@ -91,7 +91,7 @@ export const userPersonalData: Partial<InputField>[] = [
   {
     label: 'Name of person conducting this Safety Tool Box Discussion',
     showAsterisk: true,
-    name: 'signatures.name_day_labour_docket',
+    name: 'signatures.name_of_person',
   },
   {
     label: 'Write your email to receive a pdf copy ',
@@ -100,7 +100,7 @@ export const userPersonalData: Partial<InputField>[] = [
   },
   {
     label: 'Write your Subcontractors email for them to receive a pdf copy',
-    name: 'signatures.email_receive_copy ',
+    name: 'signatures.subcontractor_email ',
     showAsterisk: true,
   },
 ];

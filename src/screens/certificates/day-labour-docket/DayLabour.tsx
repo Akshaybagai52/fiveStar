@@ -177,7 +177,7 @@ export const DayLabour = () => {
       };
 
       const response = await axios.post(
-        'https://fivestaraccess.com.au/custom_form/damaged_scaffold_app.php',
+        'https://fivestaraccess.com.au/custom_form/daylabour_app.php',
         requestData,
         {
           headers: {
