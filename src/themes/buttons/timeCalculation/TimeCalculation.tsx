@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
-import {Button, View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {Button, View, Text, StyleSheet, TouchableOpacity, TextInput} from 'react-native';
 import DatePicker from 'react-native-date-picker';
-import {TextInput} from 'react-native-gesture-handler';
+// import {TextInput} from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Octicons';
 import commonStyles from '../../../styles/commonStyles';
 import {Field, useFormikContext} from 'formik';

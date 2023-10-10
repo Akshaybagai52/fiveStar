@@ -16,6 +16,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 // import {useSelector} from 'react-redux';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import AllCertificates from '../screens/certificates/list-of-certificates/AllCertificates';
+import { SafetyIncident } from '../screens/certificates/safety-incident';
 
 
 
@@ -58,6 +59,7 @@ export function HandoverDrawer() {
         <Stack.Screen name="Damaged" component={Damaged} />
         <Stack.Screen name="Day Labour Docket" component={DayLabour} />
         <Stack.Screen name="Safety Toolbox Discussion" component={SafetyToolbox} />
+        <Stack.Screen name="Safety Injured" component={SafetyIncident} />
       </Stack.Navigator>
     );
   }
