@@ -219,11 +219,11 @@ export const SafetyIncident = () => {
               </View>
               <View style={[commonStyles.mTop15]}>
                 <Text style={[commonStyles.text16, commonStyles.mb5]}>
-                Incident Date *
+                  Incident Date *
                 </Text>
-                <DatePickers name="projectDetails.date" mode="date" />
-                <TextInputGroup inputFields={initialFormData} />
-                <TimePicker names={TimeNames} />
+                <DatePickers name="date_of_incident" mode="date" />
+                {/* <TextInputGroup inputFields={initialFormData} />
+                <TimePicker names={TimeNames} /> */}
 
                 {values.projectDetails.stageDiscussion.Dismantle && (
                   <ListWithBullets

@@ -31,20 +31,19 @@ export const initialFormData: Partial<InputField>[] = [
 
 export const scaffoldData: Partial<InputField>[] = [
   {
-    label: 'Scaffold length',
+    label: 'Number of Men ',
+    showAsterisk: true,
     name: 'scaffoldDetails.inputDetails.scaffoldLength',
   },
   {
-    label: 'No. of Bays long',
+    label: 'Number of Hours Per Man ',
+    showAsterisk: true,
     name: 'scaffoldDetails.inputDetails.numberOfBays',
   },
   {
-    label: 'Scaffold Height',
+    label: 'Total Hours ',
+    showAsterisk: true,
     name: 'scaffoldDetails.inputDetails.scaffoldHeight',
-  },
-  {
-    label: 'No. of Lifts Above Base Lift',
-    name: 'scaffoldDetails.inputDetails.numberOfLifts',
   },
 ];
 export const userPersonalData: Partial<InputField>[] = [
@@ -65,7 +64,7 @@ export const userPersonalData: Partial<InputField>[] = [
   },
   {
     label: 'Write your Customer email for them to receive a pdf copy',
-    name: 'signatures.customerEmail2',
+    name: 'signatures.customers_mail',
   },
   {
     label: 'Customer representative capacity and designation ',
@@ -446,7 +445,6 @@ export const initialValues = {
     },
     workDescription: {
       description: [],
-      number: [],
     },
   },
   signatures: {
@@ -457,4 +455,7 @@ export const initialValues = {
     capacity_designation: '',
     customer_Representative: '',
   },
+  number: [{
+    number: ""
+  }],
 };

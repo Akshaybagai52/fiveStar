@@ -4,7 +4,7 @@ import React, {useState} from 'react';
 
 const GetStarted = ({navigation}: any) => {
   const handleGetStartedPress = () => {
-    navigation.navigate('MyTabs');
+    navigation.navigate('HandoverDrawer');
   };
   return (
     <View style={styles.container}>

@@ -81,7 +81,7 @@ export function HandoverDrawer() {
             <MaterialCommunityIcons name="home" color={ color } size={26} />
           ),
         }} />
-        <Tab.Screen name="Certificate" component={CertificateStack} options={{
+        <Tab.Screen name="AllCertificates" component={AllCertificates} options={{
           tabBarLabel: 'Certificates',
           tabBarColor: 'yellow',
           tabBarIcon: ({ color }) => (
