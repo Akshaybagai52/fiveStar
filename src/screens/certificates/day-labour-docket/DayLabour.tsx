@@ -34,6 +34,7 @@ import RadioGroupButton from '../../../themes/buttons/radioButtonGroup';
 import {AudioConverter} from '../../../themes/buttons/speechToText';
 import Address from '../../../components/common/Address';
 import {DatePickers} from '../../../themes/buttons/datePicker';
+import WorkCalculate from '../../../themes/buttons/work-calculation/WorkCalculate';
 
 export const DayLabour = () => {
   // Scroll View End
@@ -50,6 +51,14 @@ export const DayLabour = () => {
   const [isCustomAlertVisible, setCustomAlertVisible] = useState(false);
   const [loading, setLoading] = useState(false);
   const [numFields, setNumFields] = useState(1);
+  const [names, setNames] = useState<any>([{
+    "number1": '',
+    "number2": '',
+  }]);
+
+  const handleAddComponent = () => {
+    setNames([...names, { number1: '', number2: '', result: '' }]);
+  };
   const addField = () => {
     if (numFields < 3) {
       setNumFields(numFields + 1);
@@ -176,15 +185,15 @@ export const DayLabour = () => {
         signature: signatures,
       };
 
-      const response = await axios.post(
-        'https://fivestaraccess.com.au/custom_form/daylabour_app.php',
-        requestData,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        },
-      );
+      // const response = await axios.post(
+      //   'https://fivestaraccess.com.au/custom_form/daylabour_app.php',
+      //   requestData,
+      //   {
+      //     headers: {
+      //       'Content-Type': 'application/json',
+      //     },
+      //   },
+      // );
       console.log('Post Response:', requestData);
       // console.log('signature', values.projectDetails.certificationRelation);
       // Alert.alert("Document submitted successfully")
@@ -216,6 +225,7 @@ export const DayLabour = () => {
     //   customer_Representative: Yup.string(),
     // }),
   });
+  // let fieldName = 'workDetails.workDescription.number'
   return (
     <View style={{padding: 20, backgroundColor: '#fff'}}>
       <ScrollView ref={scrollViewRef} scrollEnabled>
@@ -312,6 +322,7 @@ export const DayLabour = () => {
               </View>
               <View>
                 <TextInputGroup inputFields={scaffoldData} />
+                <WorkCalculate number='number' />
               </View>
 
               <View style={{marginBottom: 15, marginTop: 15}}>
