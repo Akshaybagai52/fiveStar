@@ -39,6 +39,7 @@ import Address from '../../../components/common/Address';
 import {DatePickers} from '../../../themes/buttons/datePicker';
 import ListWithBullets from '../../../components/common/ListComp';
 import {TimePicker} from '../../../themes/buttons/timeCalculation';
+import { SelectPicker } from '../../../themes/buttons/selectDropdown';
 
 export const SafetyIncident = () => {
   const [checkboxes, setCheckboxes] = useState<CheckboxItem[]>(loadingCapacity);
@@ -206,6 +207,8 @@ export const SafetyIncident = () => {
                     and report procedures.
                   </Text>
                 </View>
+                
+                <SelectPicker />
                 {/* <CustomHeader text="Project Details" />
                 <Text style={[{fontSize: 19}, commonStyles.mTop15]}>
                   What Project Stage are you discussing about ? Choose all
@@ -219,12 +222,12 @@ export const SafetyIncident = () => {
               </View>
               <View style={[commonStyles.mTop15]}>
                 <Text style={[commonStyles.text16, commonStyles.mb5]}>
-                  Incident Date *
+                  Incident Date <Text style={[commonStyles.errorText]}>*</Text>
                 </Text>
                 <DatePickers name="date_of_incident" mode="date" />
                 {/* <TextInputGroup inputFields={initialFormData} />
                 <TimePicker names={TimeNames} /> */}
-
+{/* 
                 {values.projectDetails.stageDiscussion.Dismantle && (
                   <ListWithBullets
                     heading={firstListHeading}
@@ -236,9 +239,9 @@ export const SafetyIncident = () => {
                     heading={secondListHeading}
                     listText={scaffoldingData}
                   />
-                )}
+                )} */}
 
-                <Field
+                {/* <Field
                   name="projectDetails.work_description"
                   component={AudioConverter}
                 />
@@ -247,7 +250,7 @@ export const SafetyIncident = () => {
                     selectedFiles={selectedFiles}
                     setSelectedFiles={setSelectedFiles}
                   />
-                </View>
+                </View> */}
               </View>
 
               <View style={{marginTop: 15}}>

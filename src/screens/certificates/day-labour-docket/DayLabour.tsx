@@ -21,7 +21,7 @@ import CustomAlert from '../../../themes/buttons/Alert';
 import {
   userPersonalData,
   initialFormData,
-  scaffoldData,
+  // scaffoldData,
   options,
   elevations,
   loadingCapacity,
@@ -183,17 +183,18 @@ export const DayLabour = () => {
         },
         imagesAttached: base64Images,
         signature: signatures,
+        numbers: values.number
       };
 
-      // const response = await axios.post(
-      //   'https://fivestaraccess.com.au/custom_form/daylabour_app.php',
-      //   requestData,
-      //   {
-      //     headers: {
-      //       'Content-Type': 'application/json',
-      //     },
-      //   },
-      // );
+      const response = await axios.post(
+        'https://fivestaraccess.com.au/custom_form/daylabour_app.php',
+        requestData,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
+      );
       console.log('Post Response:', requestData);
       // console.log('signature', values.projectDetails.certificationRelation);
       // Alert.alert("Document submitted successfully")
@@ -321,7 +322,7 @@ export const DayLabour = () => {
                 </View>
               </View>
               <View>
-                <TextInputGroup inputFields={scaffoldData} />
+                {/* <TextInputGroup inputFields={scaffoldData} /> */}
                 <WorkCalculate number='number' />
               </View>
 
