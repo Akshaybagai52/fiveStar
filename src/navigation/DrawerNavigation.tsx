@@ -44,6 +44,8 @@ export function HandoverDrawer() {
         <Drawer.Screen name="Damaged" component={Damaged}  />
         <Drawer.Screen name="Day Labour Docket" component={DayLabour}  />
         <Drawer.Screen name="Safety Toolbox Discussion" component={SafetyToolbox}  />
+        <Stack.Screen name="Safety Injured" component={SafetyIncident} />
+
         <Drawer.Screen name="Help Center" component={Contact}  />
       </Drawer.Navigator>
     );

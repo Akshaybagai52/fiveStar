@@ -29,23 +29,23 @@ export const initialFormData: Partial<InputField>[] = [
 ];
 
 
-export const scaffoldData: Partial<InputField>[] = [
-  {
-    label: 'Number of Men ',
-    showAsterisk: true,
-    name: 'scaffoldDetails.inputDetails.scaffoldLength',
-  },
-  {
-    label: 'Number of Hours Per Man ',
-    showAsterisk: true,
-    name: 'scaffoldDetails.inputDetails.numberOfBays',
-  },
-  {
-    label: 'Total Hours ',
-    showAsterisk: true,
-    name: 'scaffoldDetails.inputDetails.scaffoldHeight',
-  },
-];
+// export const scaffoldData: Partial<InputField>[] = [
+//   {
+//     label: 'Number of Men ',
+//     showAsterisk: true,
+//     name: 'scaffoldDetails.inputDetails.scaffoldLength',
+//   },
+//   {
+//     label: 'Number of Hours Per Man ',
+//     showAsterisk: true,
+//     name: 'scaffoldDetails.inputDetails.numberOfBays',
+//   },
+//   {
+//     label: 'Total Hours ',
+//     showAsterisk: true,
+//     name: 'scaffoldDetails.inputDetails.scaffoldHeight',
+//   },
+// ];
 export const userPersonalData: Partial<InputField>[] = [
   {
     label: 'Name of person Issuing this Day Labour Docket ',
