@@ -26,10 +26,16 @@ import {
   // elevations,
   loadingCapacity,
   initialValues,
-  firstListHeading,
-  topicFeedback,
-  secondListHeading,
-  scaffoldingData,
+  data,
+  label,
+  incidentAddress,
+  supervisorName,
+  supervisorMail,
+  anyOneInjured,
+  checkboxData,
+  investigationOfficer,
+  measuresData,
+  dismantleRadioData,
   // erectionData,
   // variationData,
 } from '../../../data/safetyIncidents';
@@ -39,7 +45,9 @@ import Address from '../../../components/common/Address';
 import {DatePickers} from '../../../themes/buttons/datePicker';
 import ListWithBullets from '../../../components/common/ListComp';
 import {TimePicker} from '../../../themes/buttons/timeCalculation';
-import { SelectPicker } from '../../../themes/buttons/selectDropdown';
+import {SelectPicker} from '../../../themes/buttons/selectDropdown';
+import RadioGroupButton from '../../../themes/buttons/radioButtonGroup';
+import { SafetyFieldArray } from '../../../themes/buttons/fieldArray-safetyInjured';
 
 export const SafetyIncident = () => {
   const [checkboxes, setCheckboxes] = useState<CheckboxItem[]>(loadingCapacity);
@@ -114,9 +122,9 @@ export const SafetyIncident = () => {
       );
       const requestData = {
         values,
-        stageDiscuss: values.projectDetails.stageDiscussion,
-        imagesAttached: base64Images,
-        signature: signatures,
+        // stageDiscuss: values.projectDetails.stageDiscussion,
+        // imagesAttached: base64Images,
+        // signature: signatures,
       };
       console.log(requestData);
 
@@ -179,7 +187,7 @@ export const SafetyIncident = () => {
         <Formik
           initialValues={initialValues}
           enableReinitialize={true}
-          validationSchema={validationSchema}
+          // validationSchema={validationSchema}
           onSubmit={async values => {
             setLoading(true);
             await handleSubmit1(values);
@@ -207,27 +215,13 @@ export const SafetyIncident = () => {
                     and report procedures.
                   </Text>
                 </View>
-                
-                <SelectPicker />
-                {/* <CustomHeader text="Project Details" />
-                <Text style={[{fontSize: 19}, commonStyles.mTop15]}>
-                  What Project Stage are you discussing about ? Choose all
-                  relevant* <Text style={[commonStyles.errorText]}>*</Text>
-                </Text> */}
-                {/* <Text>Choose One </Text> */}
-                {/* <CheckBox
-                  checkboxes={loadingCapacity}
-                  onPress={handleCheckboxPress}
-                /> */}
               </View>
-              <View style={[commonStyles.mTop15]}>
+              <View style={[commonStyles.mTop15, commonStyles.mb15]}>
                 <Text style={[commonStyles.text16, commonStyles.mb5]}>
                   Incident Date <Text style={[commonStyles.errorText]}>*</Text>
                 </Text>
                 <DatePickers name="date_of_incident" mode="date" />
-                {/* <TextInputGroup inputFields={initialFormData} />
-                <TimePicker names={TimeNames} /> */}
-{/* 
+                {/* 
                 {values.projectDetails.stageDiscussion.Dismantle && (
                   <ListWithBullets
                     heading={firstListHeading}
@@ -245,32 +239,65 @@ export const SafetyIncident = () => {
                   name="projectDetails.work_description"
                   component={AudioConverter}
                 />
-                <View style={{width: '90%', marginBottom: 20}}>
-                  <FilePicker
-                    selectedFiles={selectedFiles}
-                    setSelectedFiles={setSelectedFiles}
-                  />
-                </View> */}
+                 */}
               </View>
-
-              <View style={{marginTop: 15}}>
-                <CustomHeader text="Site Supervisor Comments & Suggestions Regarding Today's Work Activities" />
-                <Text
-                  style={[
-                    commonStyles.text20,
-                    commonStyles.fontBold,
-                    commonStyles.mTop15,
-                  ]}>
-                  Supervisors Notes *
+              <SelectPicker label={label} data={data} />
+              <TextInputGroup inputFields={scaffoldData} />
+              <SelectPicker label={incidentAddress} data={data} />
+              <SelectPicker label={supervisorName} data={data} />
+              <SelectPicker label={supervisorMail} data={data} />
+              <View>
+                <Text style={[commonStyles.text16]}>
+                  How you would describe the incident ?{' '}
+                  <Text style={[commonStyles.errorText]}>*</Text>
                 </Text>
+
                 <Field
                   name="projectDetails.supervisor_notes"
                   component={AudioConverter}
                 />
               </View>
+              <View style={{width: '90%', marginBottom: 20}}>
+                <FilePicker
+                  selectedFiles={selectedFiles}
+                  setSelectedFiles={setSelectedFiles}
+                />
+              </View>
+              <SelectPicker label={anyOneInjured} data={data} />
+              {/* <TextInputGroup inputFields={} /> */}
+              <CheckBox
+                checkboxes={checkboxData}
+                onPress={handleCheckboxPress}
+              />
+              
+              {/* <Text>
+                Investigation commenced for MTI LTI SNM{' '}
+                <Text style={[commonStyles.errorText]}>*</Text>
+              </Text> */}
+              <SafetyFieldArray number='number' />
+
+              <RadioGroupButton options={dismantleRadioData} />
               <View style={[commonStyles.mTop15]}>
-                <CustomHeader text="Record of Attendees" />
-                <TextInputGroup inputFields={scaffoldData} />
+                <SelectPicker label={investigationOfficer} data={data} />
+              </View>
+              <Text style={[commonStyles.mb10, commonStyles.text16]}>
+                What measures were taken to prevent recurrence ?{' '}
+                <Text style={[commonStyles.errorText]}>*</Text>
+              </Text>
+              <CheckBox
+                checkboxes={measuresData}
+                onPress={handleCheckboxPress}
+              />
+              <FilePicker
+                selectedFiles={selectedFiles}
+                setSelectedFiles={setSelectedFiles}
+              />
+              <Field
+                name="projectDetails.supervisor_notes"
+                component={AudioConverter}
+              />
+              <View style={[commonStyles.mTop15]}>
+                <TextInputGroup inputFields={userPersonalData} />
                 <Text style={[commonStyles.text16, commonStyles.mb5]}>
                   Signature 1
                 </Text>
@@ -285,16 +312,15 @@ export const SafetyIncident = () => {
                     }))
                   }
                 />
-                <Text style={[commonStyles.text16, commonStyles.mb5]}>
+                {/* <Text style={[commonStyles.text16, commonStyles.mb5]}>
                   Worker Feedback
                 </Text>
                 <Field
                   name="record.additional_cmt"
                   component={AudioConverter}
-                />
+                /> */}
               </View>
-
-              <View style={{marginBottom: 15, marginTop: 15}}>
+              {/* <View style={{marginBottom: 15, marginTop: 15}}>
                 <CustomHeader text="Supervisor/Team Leader Signatures" />
               </View>
               <View>
@@ -308,14 +334,12 @@ export const SafetyIncident = () => {
                   and I have truly and accurately recorded today's discussion.
                 </Text>
               </View>
-              <TextInputGroup inputFields={userPersonalData} />
-
+              <TextInputGroup inputFields={userPersonalData} /> */}
               {/* <SignatureScreen /> */}
-              <Text style={[commonStyles.text16, commonStyles.mb15]}>
+              {/* <Text style={[commonStyles.text16, commonStyles.mb15]}>
                 Signature of person completing this form
-              </Text>
-
-              <MySignatureCanvas
+              </Text> */}
+              {/* <MySignatureCanvas
                 onBegin={handleCanvasBegin}
                 onEnd={handleCanvasEnd}
                 signature={signatures}
@@ -325,7 +349,7 @@ export const SafetyIncident = () => {
                     signature2: signature,
                   }))
                 }
-              />
+              /> */}
               <CustomAlert
                 visible={isCustomAlertVisible}
                 title="Details submitted successfully"
