@@ -17,6 +17,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import AllCertificates from '../screens/certificates/list-of-certificates/AllCertificates';
 import { SafetyIncident } from '../screens/certificates/safety-incident';
+import { ReportingUnsafe } from '../screens/certificates/reporting-unsafe-scaffold';
 
 
 
@@ -45,6 +46,7 @@ export function HandoverDrawer() {
         <Drawer.Screen name="Day Labour Docket" component={DayLabour}  />
         <Drawer.Screen name="Safety Toolbox Discussion" component={SafetyToolbox}  />
         <Stack.Screen name="Safety Injured" component={SafetyIncident} />
+        <Stack.Screen name="Reporting Unsafe Scaffolding" component={ReportingUnsafe} />
 
         <Drawer.Screen name="Help Center" component={Contact}  />
       </Drawer.Navigator>

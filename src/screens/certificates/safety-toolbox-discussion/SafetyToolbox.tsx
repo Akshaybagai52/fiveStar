@@ -119,18 +119,18 @@ export const SafetyToolbox = () => {
       };
       console.log(requestData)
 
-      // const response = await axios.post(
-      //   'https://fivestaraccess.com.au/custom_form/damaged_scaffold_app.php',
-      //   requestData,
-      //   {
-      //     headers: {
-      //       'Content-Type': 'application/json',
-      //     },
-      //   },
-      // );
-      // console.log('Post Response:', requestData);
-      // console.log('signature', values.projectDetails.certificationRelation);
-      // Alert.alert("Document submitted successfully")
+      const response = await axios.post(
+        'https://fivestaraccess.com.au/custom_form/safety_toolbox_app.php',
+        requestData,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+      console.log('Post Response:', requestData);
+      console.log('signature', values.projectDetails.certificationRelation);
+      Alert.alert("Document submitted successfully")
       setCustomAlertVisible(true);
     } catch (error) {
       console.error('Error:', error);
@@ -170,7 +170,7 @@ export const SafetyToolbox = () => {
         <Formik
           initialValues={initialValues}
           enableReinitialize={true}
-          validationSchema={validationSchema}
+          // validationSchema={validationSchema}
           onSubmit={async values => {
             setLoading(true);
             await handleSubmit1(values);

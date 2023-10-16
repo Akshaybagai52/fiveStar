@@ -12,7 +12,11 @@ import React, {useState, useRef, useEffect} from 'react';
 import TextInputGroup from '../../../themes/buttons/TextInputGroup';
 import CustomHeader from '../../../themes/text/TextWithGreenBg';
 import CheckBox from '../../../themes/buttons/Checkbox';
-import {CheckboxItem, DamagedFormValues, InputField} from '../../../types/interfaces/types';
+import {
+  CheckboxItem,
+  DamagedFormValues,
+  InputField,
+} from '../../../types/interfaces/types';
 
 import {ButtonGreen} from '../../../themes/text/ButtonGreen';
 import {MySignatureCanvas} from '../../../themes/buttons/SignatureCanvas';
@@ -28,11 +32,20 @@ import RadioGroupButton from '../../../themes/buttons/radioButtonGroup';
 import {AudioConverter} from '../../../themes/buttons/speechToText';
 import Address from '../../../components/common/Address';
 // import { dismantleRadioData, initialFormData, initialValues, loadingCapacity, scaffoldData, userPersonalData } from '../../../data/damaged';
-import { DatePickers } from '../../../themes/buttons/datePicker';
-import { dismantleRadioData, initialFormData, initialValues, loadingCapacity, scaffoldData, userPersonalData } from '../../../data/Damaged';
+import {DatePickers} from '../../../themes/buttons/datePicker';
+import {
+  dismantleRadioData,
+  initialFormData,
+  initialValues,
+  loadingCapacity,
+  loadingCapacity2,
+  loadingCapacity3,
+  scaffoldData,
+  userPersonalData,
+} from '../../../data/reportingUnsafeData';
 // import DatePickers from '../../../themes/buttons/datePicker';
 
-export const Damaged = () => {
+export const ReportingUnsafe = () => {
   // Scroll View End
   const [checkboxes, setCheckboxes] = useState<CheckboxItem[]>(loadingCapacity);
   const [selectedFiles, setSelectedFiles] = useState<DocumentPickerResponse[]>(
@@ -101,7 +114,6 @@ export const Damaged = () => {
         signature: signatures,
       };
       // console.log(requestData, 'req');
-      
 
       const response = await axios.post(
         'https://fivestaraccess.com.au/custom_form/damaged_scaffold_app.php',
@@ -122,7 +134,7 @@ export const Damaged = () => {
   };
   const validationSchema = Yup.object().shape({
     projectId: Yup.string().required('Project ID is required'),
-  
+
     reporting: Yup.object().shape({
       reportingCheck: Yup.object().shape({
         damaged_Components: Yup.string(),
@@ -134,13 +146,15 @@ export const Damaged = () => {
       extra_truck: Yup.string(),
       comments: Yup.string().required('Comments is required'),
     }),
-  
+
     signatures: Yup.object().shape({
       your_name: Yup.string(),
       subcontractor_name: Yup.string(),
       supervisor_name: Yup.string().required('Supervisor Name is required'),
       date_time: Yup.string().required('Date and Time is required'),
-      supervisor_email: Yup.string().email('Invalid email address').required('Supervisor Email is required'),
+      supervisor_email: Yup.string()
+        .email('Invalid email address')
+        .required('Supervisor Email is required'),
     }),
   });
 
@@ -162,7 +176,12 @@ export const Damaged = () => {
                 <Address />
                 <View style={{marginBottom: 20}}>
                   <Text style={{fontSize: 30, fontWeight: 'bold'}}>
-                    DAMAGED OR MISSING SCAFFOLD
+                    REPORT UNSAFE SCAFFOLDING
+                  </Text>
+                  <Text style={{fontSize: 20}}>
+                    Please use this form if you have seen an unsafe scaffolding
+                    structure. The FSS will receive and follow up on your
+                    reporting of unsafe scaffolding.
                   </Text>
                 </View>
                 <View
@@ -171,7 +190,10 @@ export const Damaged = () => {
                     padding: 10,
                     marginBottom: 10,
                   }}>
-                  <Text style={commonStyles.headingText}>Site Details</Text>
+                  <Text style={commonStyles.headingText}>
+                    Please provide as much details as you can using the fields
+                    below
+                  </Text>
                 </View>
 
                 {/* {values.projectDetails.certificationRelation.selectedOptionData.variation.dayLabourErection === "dayLabourErection" ? <Text> "hey"</Text> : <Text> "dsfhey"</Text>} */}
@@ -180,32 +202,49 @@ export const Damaged = () => {
                 <TextInputGroup inputFields={initialFormData} />
               </View>
               {/* <View style={{marginBottom: 15, marginTop: 15}}>
-                <Recorder />
-              </View> */}
+                  <Recorder />
+                </View> */}
               <View style={{margin: 15}}>
-                <CustomHeader text="What are you Reporting ?" />
+                <CustomHeader text="Potential Hazard: (tick appropriate from the list below)" />
               </View>
 
               <View>
                 <Text style={{fontSize: 18, fontWeight: 'bold'}}>
-                  1. What are you reporting*
+                  Fall From Height*
                 </Text>
 
                 <CheckBox
                   checkboxes={checkboxes}
                   onPress={handleCheckboxPress}
                 />
+                <Text style={{fontSize: 18, fontWeight: 'bold'}}>
+                  Falling Objects*
+                </Text>
+
+                <CheckBox
+                  checkboxes={loadingCapacity2}
+                  onPress={handleCheckboxPress}
+                />
+                <Text style={{fontSize: 18, fontWeight: 'bold'}}>
+                  Structural Integrity of Scaffold*
+                </Text>
+
+                <CheckBox
+                  checkboxes={loadingCapacity3}
+                  onPress={handleCheckboxPress}
+                />
               </View>
               <View>
-                <TextInputGroup inputFields={scaffoldData} />
+                {/* <TextInputGroup inputFields={scaffoldData} />
                 <RadioGroupButton
                   options={dismantleRadioData}
                   // name="projectDetails.certificationRelation.selectedOption"
-                />
-                <Field
-                  name="reporting.comments"
-                  component={AudioConverter}
-                />
+                /> */}
+                <Text style={[commonStyles.text16]}>
+                  If not listed above, please provide details of unsafe
+                  scaffolding
+                </Text>
+                <Field name="reporting.comments" component={AudioConverter} />
               </View>
               <View style={{width: '90%', marginBottom: 50}}>
                 <FilePicker
@@ -223,10 +262,38 @@ export const Damaged = () => {
               </Text>
               <View style={commonStyles.mb15}>
                 <TextInputGroup inputFields={userPersonalData} />
-                <Text style={[commonStyles.text16, {marginBottom:5}, commonStyles.mTop15]}>Reporting Date And Time</Text>
-                <DatePickers name='signatures.date_time' mode='datetime' />
+                <Text
+                  style={[
+                    commonStyles.text16,
+                    {marginBottom: 5},
+                    commonStyles.mTop15,
+                  ]}>
+                  The information supplied will remain confidential between the
+                  FSS and the above signed.
+                </Text>
+                <Text
+                  style={[
+                    commonStyles.text16,
+                    commonStyles.fontBold,
+                    commonStyles.mTop15,
+                  ]}>
+                  Please note: If you have seen a scaffold structure that you
+                  consider has a risk potential for serious injury, please
+                  report this immediately to FSS
+                </Text>
+                {/* <Text
+                  style={[
+                    commonStyles.text16,
+                    {marginBottom: 5},
+                    commonStyles.mTop15,
+                  ]}>
+                  Reporting Date And Time
+                </Text> */}
+                {/* <DatePickers name="signatures.date_time" mode="datetime" /> */}
               </View>
-              <Text style={[commonStyles.text16, commonStyles.mb15]}>Your Signature (please sign)</Text>
+              {/* <Text style={[commonStyles.text16, commonStyles.mb15]}>
+                Your Signature (please sign)
+              </Text>
 
               <MySignatureCanvas
                 onBegin={handleCanvasBegin}
@@ -238,7 +305,7 @@ export const Damaged = () => {
                     signature1: signature,
                   }))
                 }
-              />
+              /> */}
               <CustomAlert
                 visible={isCustomAlertVisible}
                 title="Details submitted successfully"
