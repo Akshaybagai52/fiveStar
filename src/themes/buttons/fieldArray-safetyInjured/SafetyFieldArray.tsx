@@ -4,9 +4,20 @@ import {FieldArray, useFormikContext} from 'formik';
 import commonStyles from '../../../styles/commonStyles';
 import {Button} from 'react-native-paper';
 import {colors} from '../../../colors/colors';
+import {SelectPicker} from '../selectDropdown';
+import {
+  alreadyEmployed,
+  alreadyEmployedData,
+  anyOneInjured,
+  data,
+  industry,
+  industryData,
+  occupation,
+  occupationData,
+} from '../../../data/safetyIncidents';
 
 interface SafetyProps {
-    number: any;
+  number: any;
 }
 
 export const SafetyFieldArray = ({number}: SafetyProps) => {
@@ -20,17 +31,18 @@ export const SafetyFieldArray = ({number}: SafetyProps) => {
             values?.number?.map((person: any, index: number) => (
               <View key={index}>
                 <Text style={[commonStyles.text16, commonStyles.mb5]}>
-                Name of Injured 1 <Text style={[commonStyles.errorText]}>*</Text>
+                  Name of Injured {index + 1}{' '}
+                  <Text style={[commonStyles.errorText]}>*</Text>
                 </Text>
                 <TextInput
-                  onChangeText={(text:any) => {
+                  onChangeText={(text: any) => {
                     setFieldValue(`${number}.${index}.name`, text);
                   }}
                   value={person.number1}
                   style={[commonStyles.commonTextInput, commonStyles.mb15]}
                 />
-                <Text style={[commonStyles.text16, commonStyles.mb5]}>
-                Occupation
+                {/* <Text style={[commonStyles.text16, commonStyles.mb5]}>
+                  Occupation
                 </Text>
 
                 <TextInput
@@ -48,9 +60,16 @@ export const SafetyFieldArray = ({number}: SafetyProps) => {
                   value={person.number2}
                   keyboardType="numeric"
                   style={[commonStyles.commonTextInput, commonStyles.mb15]}
-                />
+                /> */}
+
+                <SelectPicker label={occupation} data={occupationData} />
+
+                <SelectPicker label={alreadyEmployed} data={alreadyEmployedData} />
+
+
                 <Text style={[commonStyles.text16, commonStyles.mb5]}>
-                  Total Hours <Text style={[commonStyles.errorText]}>*</Text>
+                  Residential Address{' '}
+                  <Text style={[commonStyles.errorText]}>*</Text>
                 </Text>
 
                 <TextInput
@@ -65,13 +84,17 @@ export const SafetyFieldArray = ({number}: SafetyProps) => {
                   keyboardType="numeric"
                   style={[commonStyles.commonTextInput, commonStyles.mb15]}
                 />
-                <Button
-                  mode="contained-tonal"
-                  rippleColor={colors.riplePurple}
-                  onPress={() => remove(index)}
-                  style={[commonStyles.alignSelfEnd, commonStyles.mb15]}>
-                  Remove
-                </Button>
+                <SelectPicker label={industry} data={industryData} />
+
+                {index >= 1 && (
+                  <Button
+                    mode="contained-tonal"
+                    rippleColor={colors.riplePurple}
+                    onPress={() => remove(index)}
+                    style={[commonStyles.alignSelfEnd, commonStyles.mb15]}>
+                    Remove
+                  </Button>
+                )}
               </View>
             ))}
           <Button

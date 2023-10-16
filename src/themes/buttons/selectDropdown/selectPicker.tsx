@@ -11,7 +11,7 @@ interface Item {
 }
 interface labelProps {
   name: string;
-  showAsterisk: boolean;
+  showAsterisk?: boolean;
   label: string;
 }
 

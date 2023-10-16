@@ -36,6 +36,22 @@ export const investigationOfficer = {
   showAsterisk: true,
 };
 
+export const occupation = {
+  name: 'occupation',
+  label: 'Occupation',
+
+}
+export const industry = {
+  name: 'Industry',
+  label: 'Industry',
+
+}
+export const alreadyEmployed = {
+  name: 'Is Injured a FiveStar employee?',
+  label: 'Is Injured a FiveStar employee?',
+
+}
+
 export const initialFormData: Partial<InputField>[] = [
   {
     label: 'What"s the Project ID ?',
@@ -182,6 +198,28 @@ export const data = [
   {label: 'Banana3', value: 'banana3'},
   {label: 'Banana4', value: 'banana4'},
   {label: 'Banana5', value: 'banana5'},
+];
+
+export const occupationData = [
+  {label: 'Scaffolder', value: 'Scaffolder'},
+  {label: 'Driver', value: 'Driver'},
+  {label: 'Office Worker', value: 'Office Worker'},
+  {label: 'Store man', value: 'Store man'},
+  {label: 'Trade person', value: 'Trade person'},
+  {label: 'Other', value: 'Other'},
+];
+
+export const industryData = [
+  {label: 'Building and Construction', value: 'Building and Construction'},
+  {label: 'Mining', value: 'Mining'},
+  {label: 'Administrative', value: 'Administrative'},
+  {label: 'Support Services', value: 'Support Services'},
+  {label: 'Other', value: 'Other'},
+];
+
+export const alreadyEmployedData = [
+  {label: 'Yes', value: 'Yes'},
+  {label: 'No', value: 'No'},
 ];
 
 export const initialValues = {
