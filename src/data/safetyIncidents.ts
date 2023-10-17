@@ -37,17 +37,17 @@ export const investigationOfficer = {
 };
 
 export const occupation = {
-  name: 'occupation',
+  // name: 'occupation',
   label: 'Occupation',
 
 }
 export const industry = {
-  name: 'Industry',
+  // name: 'Industry',
   label: 'Industry',
 
 }
 export const alreadyEmployed = {
-  name: 'Is Injured a FiveStar employee?',
+  // name: 'Is Injured a FiveStar employee?',
   label: 'Is Injured a FiveStar employee?',
 
 }

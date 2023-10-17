@@ -40,7 +40,7 @@ import {
   loadingCapacity,
   loadingCapacity2,
   loadingCapacity3,
-  scaffoldData,
+  // scaffoldData,
   userPersonalData,
 } from '../../../data/reportingUnsafeData';
 // import DatePickers from '../../../themes/buttons/datePicker';
@@ -99,7 +99,7 @@ export const ReportingUnsafe = () => {
     setCustomAlertVisible(false);
   };
 
-  const handleSubmit1 = async (values: DamagedFormValues) => {
+  const handleSubmit1 = async (values:any) => {
     try {
       const base64Images = await Promise.all(
         selectedFiles.map(async file => {
@@ -109,14 +109,14 @@ export const ReportingUnsafe = () => {
       );
       const requestData = {
         values,
-        reportingCheck: values.reporting.reportingCheck,
+        // reportingCheck: values.reporting.reportingCheck,
         imagesAttached: base64Images,
-        signature: signatures,
+        // signature: signatures,
       };
       // console.log(requestData, 'req');
 
       const response = await axios.post(
-        'https://fivestaraccess.com.au/custom_form/damaged_scaffold_app.php',
+        'https://fivestaraccess.com.au/custom_form/unsafe_scaffolding_app.php',
         requestData,
         {
           headers: {
@@ -164,7 +164,7 @@ export const ReportingUnsafe = () => {
         <Formik
           initialValues={initialValues}
           enableReinitialize={true}
-          validationSchema={validationSchema}
+          // validationSchema={validationSchema}
           onSubmit={async values => {
             setLoading(true);
             await handleSubmit1(values);
@@ -214,7 +214,7 @@ export const ReportingUnsafe = () => {
                 </Text>
 
                 <CheckBox
-                  checkboxes={checkboxes}
+                  checkboxes={loadingCapacity}
                   onPress={handleCheckboxPress}
                 />
                 <Text style={{fontSize: 18, fontWeight: 'bold'}}>
@@ -244,7 +244,7 @@ export const ReportingUnsafe = () => {
                   If not listed above, please provide details of unsafe
                   scaffolding
                 </Text>
-                <Field name="reporting.comments" component={AudioConverter} />
+                <Field name="recording" component={AudioConverter} />
               </View>
               <View style={{width: '90%', marginBottom: 50}}>
                 <FilePicker

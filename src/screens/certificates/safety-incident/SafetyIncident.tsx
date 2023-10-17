@@ -47,7 +47,7 @@ import ListWithBullets from '../../../components/common/ListComp';
 import {TimePicker} from '../../../themes/buttons/timeCalculation';
 import {SelectPicker} from '../../../themes/buttons/selectDropdown';
 import RadioGroupButton from '../../../themes/buttons/radioButtonGroup';
-import { SafetyFieldArray } from '../../../themes/buttons/fieldArray-safetyInjured';
+import {SafetyFieldArray} from '../../../themes/buttons/fieldArray-safetyInjured';
 
 export const SafetyIncident = () => {
   const [checkboxes, setCheckboxes] = useState<CheckboxItem[]>(loadingCapacity);
@@ -122,6 +122,7 @@ export const SafetyIncident = () => {
       );
       const requestData = {
         values,
+        number: values.number
         // stageDiscuss: values.projectDetails.stageDiscussion,
         // imagesAttached: base64Images,
         // signature: signatures,
@@ -269,12 +270,12 @@ export const SafetyIncident = () => {
                 checkboxes={checkboxData}
                 onPress={handleCheckboxPress}
               />
-              
+
               {/* <Text>
                 Investigation commenced for MTI LTI SNM{' '}
                 <Text style={[commonStyles.errorText]}>*</Text>
               </Text> */}
-              <SafetyFieldArray number='number' />
+              <SafetyFieldArray number="number" />
 
               <RadioGroupButton options={dismantleRadioData} />
               <View style={[commonStyles.mTop15]}>

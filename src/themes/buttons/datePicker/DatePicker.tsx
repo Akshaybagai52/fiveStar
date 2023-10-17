@@ -58,7 +58,7 @@ export const DatePickers = ({ name, mode }: { name: string; mode:any }) => {
             />
           )}
           {/* Display error message */}
-          <ErrorMessage name={name} component={Text} style={commonStyles.errorText} />
+          <ErrorMessage name={name} component={Text}  />
         </>
       )}
     </Field>
