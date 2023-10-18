@@ -10,7 +10,7 @@ interface Item {
   value: string;
 }
 interface labelProps {
-  name: string;
+  name?: string;
   showAsterisk?: boolean;
   label: string;
 }
@@ -18,12 +18,14 @@ interface labelProps {
 interface SelectPickerProps {
   data: Item[];
   label: labelProps;
+  name?: string;
 }
 
-export function SelectPicker({data, label}: SelectPickerProps) {
+export function SelectPicker({data, label, name}: SelectPickerProps) {
   const [open, setOpen] = useState<boolean>(false);
   const [value, setValue] = useState<string | null>(null);
   const [items, setItems] = useState<Item[]>(data);
+  // console.log(label.name && label.name || name)
 
   // Update items when data prop changes
   useEffect(() => {
@@ -31,7 +33,7 @@ export function SelectPicker({data, label}: SelectPickerProps) {
   }, [data]);
 
   return (
-    <Field name={label?.name}>
+    <Field name={label.name ? label.name : name}>
       {({field, form}: {field: any; form: any}) => (
         <View style={[commonStyles.mb15]}>
           <Text style={[commonStyles.mb5, commonStyles.text16]}>
@@ -50,10 +52,14 @@ export function SelectPicker({data, label}: SelectPickerProps) {
               const selectedValue =
                 typeof newValue === 'function' ? newValue(undefined) : newValue;
               setValue(selectedValue);
-              form.setFieldValue(label?.name, selectedValue);
+              form.setFieldValue(
+                label.name ? label.name : name,
+                selectedValue,
+              );
             }}
             listMode="SCROLLVIEW"
             searchable={true}
+            style={[commonStyles.commonTextInput]}
           />
         </View>
       )}

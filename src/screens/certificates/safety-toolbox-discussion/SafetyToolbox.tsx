@@ -129,8 +129,8 @@ export const SafetyToolbox = () => {
         },
       );
       console.log('Post Response:', requestData);
-      console.log('signature', values.projectDetails.certificationRelation);
-      Alert.alert("Document submitted successfully")
+      // console.log('signature', values.projectDetails.certificationRelation);
+      // Alert.alert("Document submitted successfully")
       setCustomAlertVisible(true);
     } catch (error) {
       console.error('Error:', error);

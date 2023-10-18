@@ -15,6 +15,7 @@ import {
   occupation,
   occupationData,
 } from '../../../data/safetyIncidents';
+import { DatePickers } from '../datePicker';
 
 interface SafetyProps {
   number: any;
@@ -62,10 +63,15 @@ export const SafetyFieldArray = ({number}: SafetyProps) => {
                   style={[commonStyles.commonTextInput, commonStyles.mb15]}
                 /> */}
 
-                <SelectPicker label={occupation} data={occupationData} />
+                <SelectPicker label={occupation} name={`${number}.${index}.occupation`} data={occupationData} />
 
-                <SelectPicker label={alreadyEmployed} data={alreadyEmployedData} />
+                <SelectPicker
+                  label={alreadyEmployed}
+                  data={alreadyEmployedData}
+                  name={`${number}.${index}.fiveStarEmployee`}
+                />
 
+                <DatePickers mode={'date'} name={`${number}.${index}.dob`} />
 
                 <Text style={[commonStyles.text16, commonStyles.mb5]}>
                   Residential Address{' '}
@@ -75,16 +81,16 @@ export const SafetyFieldArray = ({number}: SafetyProps) => {
                 <TextInput
                   onChangeText={text =>
                     setFieldValue(
-                      `${number}.${index}.total`,
-                      person.number1 * person.number2,
+                      `${number}.${index}.address`,
+                      text,
                     )
                   }
-                  editable={false}
+                  // editable={false}
                   value={person?.total?.toString()}
-                  keyboardType="numeric"
+                  // keyboardType="numeric"
                   style={[commonStyles.commonTextInput, commonStyles.mb15]}
                 />
-                <SelectPicker label={industry} data={industryData} />
+                <SelectPicker label={industry} name={`${number}.${index}.industry`} data={industryData} />
 
                 {index >= 1 && (
                   <Button
@@ -100,7 +106,16 @@ export const SafetyFieldArray = ({number}: SafetyProps) => {
           <Button
             mode="contained"
             rippleColor={colors.riplePurple}
-            onPress={() => push({number1: '', number2: '', total: ''})}>
+            onPress={() =>
+              push({
+                name: '',
+                occupation: '',
+                fiveStarEmployee: '',
+                address: '',
+                industry: '',
+                Dob: '',
+              })
+            }>
             Add Person{' '}
           </Button>
         </View>

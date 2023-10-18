@@ -4,41 +4,41 @@ export const initialFormData: Partial<InputField>[] = [
   {
     label: 'Site Address ',
     showAsterisk: true,
-    name: 'projectId',
+    name: 'street_address',
   },
   {
     label: 'Email',
-    name: 'projectId',
+    name: 'project_supervisor_mail',
   },
   {
     label: 'Builder: (if known)',
-    name: 'projectId',
+    name: 'nameOf_customer',
   },
   {
     label: 'Scaffolding Company: (if known)',
-    name: 'projectId',
+    name: 'scaffolding_company',
   },
 ];
 export const loadingCapacity: CheckboxItem[] = [
   {
     label: 'Insufficient or non-existent Edge protection installed by PCBU/Builder',
     status: 'unchecked',
-    name: 'reporting.reportingCheck.damaged_Components',
+    name: 'fall_from_height.Protection_builder',
   },
   {
     label: 'Scaffold missing Edge protection, or not compliant',
     status: 'unchecked',
-    name: 'reporting.reportingCheck.missing_order1',
+    name: 'fall_from_height.Scaffold_missing',
   },
   {
     label: 'Hop up components missing or not compliant',
     status: 'unchecked',
-    name: 'reporting.reportingCheck.missing_order2',
+    name: 'fall_from_height.Components_missing',
   },
   {
     label: 'Scaffold erection/Dismantle system of work unsafe',
     status: 'unchecked',
-    name: 'reporting.reportingCheck.missing_order3',
+    name: 'fall_from_height.Scaffold_erection',
   },
 ];
 
@@ -46,17 +46,17 @@ export const loadingCapacity2: CheckboxItem[] = [
     {
       label: 'Containment screening missing or not compliant',
       status: 'unchecked',
-      name: 'reporting.reportingCheck.damaged_Components4',
+      name: 'falling_objects.Screening_missing',
     },
     {
       label: 'Kickboards missing or not compliant',
       status: 'unchecked',
-      name: 'reporting.reportingCheck.missing_order4',
+      name: 'falling_objects.Kickboard_missing',
     },
     {
       label: 'Scaffold containment screening height insufficient for the construction stage.',
       status: 'unchecked',
-      name: 'reporting.reportingCheck.missing_order5',
+      name: 'falling_objects.Construction_stage',
     },
   ];
 
@@ -64,27 +64,27 @@ export const loadingCapacity2: CheckboxItem[] = [
     {
       label: 'Bracing missing or not compliant',
       status: 'unchecked',
-      name: 'reporting.reportingCheck.damaged_Components0',
+      name: 'strctural_integrity.Bracing_missing',
     },
     {
       label: 'Ties missing or not compliant',
       status: 'unchecked',
-      name: 'reporting.reportingCheck.missing_order7',
+      name: 'strctural_integrity.Ties_missing',
     },
     {
       label: 'Scaffold components missing or not compliant',
       status: 'unchecked',
-      name: 'reporting.reportingCheck.missing_order8',
+      name: 'strctural_integrity.Component_missing',
     },
     {
       label: 'Mix and matched scaffold components.',
       status: 'unchecked',
-      name: 'reporting.reportingCheck.missing_order9',
+      name: 'strctural_integrity.Mix_matched',
     },
     {
         label: 'Condition of equipment / Damaged or rusted out components',
         status: 'unchecked',
-        name: 'reporting.reportingCheck.missing_order0',
+        name: 'strctural_integrity.Equipment_condition',
       },
   ];
 
@@ -92,15 +92,15 @@ export const userPersonalData: Partial<InputField>[] = [
   {
     label: 'Your Name',
     showAsterisk: true,
-    name: 'signatures.your_name',
+    name: 'your_name',
   },
   {
     label: 'Your Phone Number',
-    name: 'signatures.subcontractor_name',
+    name: 'your_number',
   },
   {
     label: 'Your Email Address ',
-    name: 'signatures.supervisor_name',
+    name: 'your_email',
   },
   // {
   //   label: 'Reporting Date and Time ',
@@ -113,20 +113,20 @@ export const userPersonalData: Partial<InputField>[] = [
 //     name: 'signatures.supervisor_email',
 //   },
 ];
-export const scaffoldData: Partial<InputField>[] = [
-  {
-    label: 'Men on Job',
-    name: 'reporting.menon_job',
-  },
-  {
-    label: 'Hours Lost',
-    name: 'reporting.estimated_time',
-  },
-  {
-    label: 'Total Hours Lost',
-    name: 'reporting.total_hours',
-  },
-];
+// export const scaffoldData: Partial<InputField>[] = [
+//   {
+//     label: 'Men on Job',
+//     name: 'reporting.menon_job',
+//   },
+//   {
+//     label: 'Hours Lost',
+//     name: 'reporting.estimated_time',
+//   },
+//   {
+//     label: 'Total Hours Lost',
+//     name: 'reporting.total_hours',
+//   },
+// ];
 export const dismantleRadioData = [
   {
     heading: 'Extra Truck',
@@ -165,32 +165,12 @@ export const initialValues  = {
         Equipment_condition: '',
     },
     recording: '',
-    imagesAttached: [],
+    // imagesAttached: [],
     your_name: '',
     your_number: '',
     your_email: '',
 
-    reporting: {
-      reportingCheck: {
-        damaged_Components: '',
-        missing_order: '',
-      },
-      menon_job: '',
-      estimated_time: '',
-      total_hours: '',
-      extra_truck: '',
-      comments: '',
-
-    },
-    signatures: {
-      your_name: '',
-      subcontractor_name: '',
-      supervisor_name: '',
-      date_time: '',
-      supervisor_email: '',
-    }
-    
- 
+     
   };
 
 
