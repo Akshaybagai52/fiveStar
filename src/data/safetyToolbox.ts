@@ -141,10 +141,13 @@ export const initialValues = {
   record: {
     name_1: '',
     additional_cmt: '',
+    data: [],
   },
   signatures: {
     name_of_person: '',
     email_receive_copy: '',
     subcontractor_email: '',
+    signature_img: '',
   },
+  names: [],
 };

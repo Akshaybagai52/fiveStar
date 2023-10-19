@@ -16,7 +16,7 @@ export const incidentAddress = {
   showAsterisk: true,
 };
 export const supervisorName = {
-  name: 'street_address',
+  name: 'manager_name',
   label: 'Name of your Supervisor and Manager responsible at workplace ',
   showAsterisk: true,
 };
@@ -268,6 +268,7 @@ export const initialValues = {
   number: [{
     number: ""
   }],
+  names: [],
 };
 
 // export const initialValues = {

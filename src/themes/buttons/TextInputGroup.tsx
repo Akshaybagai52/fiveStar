@@ -8,10 +8,10 @@ interface TextInputGroupProps {
   inputFields: Partial<{
     name: any; // Add the name field
     label: string;
-    placeholder: string;
+    placeholder?: string;
     showAsterisk?: boolean;
-    multiline: boolean;
-    numberOfLines: number;
+    multiline?: boolean;
+    numberOfLines?: number;
   }>[];
 }
 

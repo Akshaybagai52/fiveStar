@@ -2,9 +2,12 @@ import React, {useRef, useState, useEffect} from 'react';
 import {View, StyleSheet, Image} from 'react-native';
 import SignatureCanvas, {SignatureViewRef} from 'react-native-signature-canvas';
 import {Button} from 'react-native-paper';
+import { useFormikContext } from 'formik';
 
 export const MySignatureCanvas = ({onBegin, onEnd, signature, setSignature}: any) => {
   const [signatureImage, setSignatureImage] = useState<string>('');
+  const {values, setFieldValue} = useFormikContext<any>();
+
   const signatureRef = useRef<SignatureViewRef>(null); // Create a ref for the signature canvas
   // const handleOK = (signature) => {
   //   console.log(signature);
@@ -28,7 +31,8 @@ export const MySignatureCanvas = ({onBegin, onEnd, signature, setSignature}: any
   };
   const handleOK = (signature: any) => {
     setSignature(signature)
-     console.log(signature);
+    setFieldValue('formikSignature', signature)
+     console.log(signature , "signatuslkfklskdl");
   };
 
   return (
