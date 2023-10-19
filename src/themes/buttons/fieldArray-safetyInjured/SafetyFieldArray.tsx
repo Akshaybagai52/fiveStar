@@ -41,27 +41,7 @@ export const SafetyFieldArray = ({number}: SafetyProps) => {
                   }}
                   value={person.number1}
                   style={[commonStyles.commonTextInput, commonStyles.mb15]}
-                />
-                {/* <Text style={[commonStyles.text16, commonStyles.mb5]}>
-                  Occupation
-                </Text>
-
-                <TextInput
-                  onChangeText={(text: any) => {
-                    setFieldValue(`${number}.${index}.number2`, text);
-                    // getValue(person.number1, person.number2, index);
-
-                    setFieldValue(
-                      `${number}.${index}.total`,
-                      person.number1 * text,
-                    );
-                    console.log(person.total);
-                  }}
-                  // onChangeText={()=>getValue(text)}
-                  value={person.number2}
-                  keyboardType="numeric"
-                  style={[commonStyles.commonTextInput, commonStyles.mb15]}
-                /> */}
+                />           
 
                 <SelectPicker
                   label={occupation}

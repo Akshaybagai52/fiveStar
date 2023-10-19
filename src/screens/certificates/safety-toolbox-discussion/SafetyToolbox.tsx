@@ -176,11 +176,14 @@ export const SafetyToolbox = () => {
   });
   return (
     <View style={{padding: 20, backgroundColor: '#fff'}}>
-      <ScrollView ref={scrollViewRef} scrollEnabled showsVerticalScrollIndicator={false}>
+      <ScrollView
+        ref={scrollViewRef}
+        scrollEnabled
+        showsVerticalScrollIndicator={false}>
         <Formik
           initialValues={initialValues}
           enableReinitialize={true}
-          // validationSchema={validationSchema}
+          validationSchema={validationSchema}
           onSubmit={async values => {
             setLoading(true);
             await handleSubmit1(values);
@@ -215,17 +218,24 @@ export const SafetyToolbox = () => {
                 <TimePicker names={TimeNames} />
 
                 {values.projectDetails.stageDiscussion.Dismantle && (
-                  <ListWithBullets
-                    heading={firstListHeading}
-                    listText={topicFeedback}
-                  />
+                  <View style={[commonStyles.mb15]}>
+                    <ListWithBullets
+                      heading={firstListHeading}
+                      listText={topicFeedback}
+                    />
+                  </View>
                 )}
                 {values.projectDetails.stageDiscussion.Existing_Scaffold && (
-                  <ListWithBullets
-                    heading={secondListHeading}
-                    listText={scaffoldingData}
-                  />
+                  <View style={[commonStyles.mb15]}>
+                    <ListWithBullets
+                      heading={secondListHeading}
+                      listText={scaffoldingData}
+                    />
+                  </View>
                 )}
+                <Text style={[commonStyles.text16]}>
+                  What additional topics you will be discussing today?
+                </Text>
 
                 <Field
                   name="projectDetails.work_description"
@@ -247,7 +257,7 @@ export const SafetyToolbox = () => {
                     commonStyles.fontBold,
                     commonStyles.mTop15,
                   ]}>
-                  Supervisors Notes *
+                  Supervisors Notes <Text style={[commonStyles.errorText]}>*</Text>
                 </Text>
                 <Field
                   name="projectDetails.supervisor_notes"
@@ -263,10 +273,12 @@ export const SafetyToolbox = () => {
                 }).map((_, index) => (
                   <View key={index}>
                     <TextInputGroup
-                      inputFields={[{
-                        label: `Name ${index +1}`,
-                        name: `names.Name ${index +1}`,
-                      }]}
+                      inputFields={[
+                        {
+                          label: `Name ${index + 1}`,
+                          name: `name_${index + 1}`,
+                        },
+                      ]}
                     />
                     <Text style={[commonStyles.text16, commonStyles.mb5]}>
                       Signature {index + 1}
@@ -274,21 +286,12 @@ export const SafetyToolbox = () => {
                     <CanvasSignature
                       onBegin={handleCanvasBegin}
                       onEnd={handleCanvasEnd}
-                      // signature={signatures}
-                      // setSignature={(signature: any) =>
-                      //   setSignatures(prevSignatures => ({
-                      //     ...prevSignatures,
-                      //     signature2: signature,
-                      //   }))
-
-                      // }
-                      // setFieldValue={setFieldValue}
-                      name={`recordSign ${index}`}
+                      name={`recordSign_${index+1}`}
                     />
                   </View>
                 ))}
 
-                <Text style={[commonStyles.text16, commonStyles.mb5]}>
+                <Text style={[commonStyles.text16, commonStyles.mb5, commonStyles.mTop15]}>
                   Worker Feedback
                 </Text>
                 <Field
@@ -321,13 +324,6 @@ export const SafetyToolbox = () => {
               <CanvasSignature
                 onBegin={handleCanvasBegin}
                 onEnd={handleCanvasEnd}
-                // signature={signatures}
-                // setSignature={(signature: any) =>
-                //   setSignatures(prevSignatures => ({
-                //     ...prevSignatures,
-                //     signature2: signature,
-                //   }))
-                // }
                 name="signatures.signature_img"
               />
               <CustomAlert

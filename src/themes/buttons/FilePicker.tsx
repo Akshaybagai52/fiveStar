@@ -1,4 +1,5 @@
-import React, {useState, useEffect} from 'react';
+// Importing necessary components and modules from React Native
+import React, { useState, useEffect } from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -14,24 +15,30 @@ import DocumentPicker, {
   DocumentPickerResponse,
 } from 'react-native-document-picker';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+
+// Define the properties for the FilePicker component
 interface FilePickerProps {
   selectedFiles: DocumentPickerResponse[];
   setSelectedFiles: React.Dispatch<React.SetStateAction<DocumentPickerResponse[]>>;
 }
 
+// FilePicker component
 const FilePicker: React.FC<FilePickerProps> = ({ selectedFiles, setSelectedFiles }) => {
-  const [multipleFile, setMultipleFile] = useState<DocumentPickerResponse[]>(
-    [],
-  );
+  // State to store selected files
+  const [multipleFile, setMultipleFile] = useState<DocumentPickerResponse[]>([]);
 
+  // Function to handle multiple file selection
   const selectMultipleFile = async () => {
     try {
+      // Using DocumentPicker to select images
       const results = await DocumentPicker.pick({
         type: [DocumentPicker.types.images],
         allowMultiSelection: true,
       });
+      // Adding selected files to the state
       setMultipleFile(prevFiles => [...prevFiles, ...results]);
     } catch (err) {
+      // Handling errors during file selection
       if (DocumentPicker.isCancel(err)) {
         Alert.alert('Canceled from multiple doc picker');
       } else {
@@ -40,31 +47,34 @@ const FilePicker: React.FC<FilePickerProps> = ({ selectedFiles, setSelectedFiles
       }
     }
   };
+
+  // Function to remove a selected file based on its index
   const removeFile = (index: any) => {
     setMultipleFile(prevFiles => prevFiles.filter((_, i) => i !== index));
   };
-  const textTruncate = (text:string | null) => {
-    if(text)
-    return text.length > 6 ? text.substring(0, 6) + "..." : text;
-  }
 
+  // Function to truncate text for display
+  const textTruncate = (text: string | null) => {
+    if (text) return text.length > 6 ? text.substring(0, 6) + "..." : text;
+  };
+
+  // useEffect to update selectedFiles state when multipleFile state changes
   useEffect(() => {
     setSelectedFiles(multipleFile);
   }, [multipleFile]);
 
-
-
-
+  // JSX structure for the FilePicker component
   return (
-    <SafeAreaView style={{flex: 1}}>
+    <SafeAreaView style={{ flex: 1 }}>
       <Text style={styles.titleText}>Upload Your File</Text>
       <View style={styles.container}>
         <View style={styles.divider} />
+        {/* Button to trigger file selection */}
         <TouchableOpacity
           activeOpacity={0.5}
           style={styles.buttonStyle}
           onPress={selectMultipleFile}>
-          <Text style={{marginRight: 10, fontSize: 19}}>
+          <Text style={{ marginRight: 10, fontSize: 19 }}>
             Click here to upload files
           </Text>
           <Image
@@ -74,12 +84,14 @@ const FilePicker: React.FC<FilePickerProps> = ({ selectedFiles, setSelectedFiles
             style={styles.imageIconStyle}
           />
         </TouchableOpacity>
+        {/* Display selected files */}
         <ScrollView>
-          <View style={{flexWrap: 'wrap', flexDirection: 'row'}}>
+          <View style={{ flexWrap: 'wrap', flexDirection: 'row' }}>
             {multipleFile.map((item, index) => (
               <View key={index}>
+                {/* Display selected file image */}
                 <Image
-                  source={{uri: item.uri}}
+                  source={{ uri: item.uri }}
                   style={{
                     width: 50,
                     height: 50,
@@ -87,9 +99,9 @@ const FilePicker: React.FC<FilePickerProps> = ({ selectedFiles, setSelectedFiles
                     objectFit: 'contain',
                   }}
                 />
-                <Icon name='cancel' color="#ef233c" size={18} style={{position:'absolute',right:0}} onPress={() => removeFile(index)}/>
-
-                {/* </Text> */}
+                {/* Button to remove selected file */}
+                <Icon name='cancel' color="#ef233c" size={18} style={{ position: 'absolute', right: 0 }} onPress={() => removeFile(index)} />
+                {/* Display truncated file name */}
                 <Text>{textTruncate(item.name)}</Text>
               </View>
             ))}
@@ -100,8 +112,10 @@ const FilePicker: React.FC<FilePickerProps> = ({ selectedFiles, setSelectedFiles
   );
 };
 
+// Export the FilePicker component
 export default FilePicker;
 
+// Styles for the component
 const styles = StyleSheet.create({
   container: {
     flex: 1,
