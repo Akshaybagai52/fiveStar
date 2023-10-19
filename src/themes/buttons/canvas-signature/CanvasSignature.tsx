@@ -1,40 +1,39 @@
-import React, { useRef, useState, useEffect } from 'react';
-import { View, StyleSheet } from 'react-native';
-import SignatureCanvas, { SignatureViewRef } from 'react-native-signature-canvas';
-import { Button } from 'react-native-paper';
+import React, {useRef, useState, useEffect} from 'react';
+import {View, StyleSheet, Image} from 'react-native';
+import SignatureCanvas, {SignatureViewRef} from 'react-native-signature-canvas';
+import {Button} from 'react-native-paper';
+import {useFormikContext} from 'formik';
 
-export const CanvasSignature = ({ field, form, onEnd, onBegin, setSignature }: any) => {
-//   const [signature, setSignature] = useState<string>('');
-  const signatureRef = useRef<SignatureViewRef>(null);
+interface CanvasProps {
+  onBegin: () => void;
+  onEnd: () => void;
+  name: string;
+}
+
+export const CanvasSignature = ({onBegin, onEnd, name}: CanvasProps) => {
+  const {values, setFieldValue} = useFormikContext<any>();
+
+  const signatureRef = useRef<SignatureViewRef>(null); // Create a ref for the signature canvas
 
   const handleClearSignature = () => {
     signatureRef.current?.clearSignature();
-    setSignature('');
-    form.setFieldValue(field.name, ''); // Update the Formik field value
+    setFieldValue(name, '');
   };
 
   const handleGetSignature = async () => {
-    const signatureData = await signatureRef.current?.readSignature();
-    if (signatureData) {
-      setSignature(signatureData);
-      form.setFieldValue(field.name, signatureData); // Update the Formik field value
-    }
+    signatureRef.current?.readSignature();
   };
 
-//   useEffect(() => {
-//     // Set initial signature value if it exists
-//     if (field.value) {
-//       setSignature(field.value);
-//       signatureRef.current?.setSignature(field.value);
-//     }
-//   }, [field.value]);
+  const handleOK = (signature: any) => {
+    setFieldValue(name, signature);
+  };
 
   return (
     <View>
       <SignatureCanvas
         androidHardwareAccelerationDisabled={true}
         ref={signatureRef}
-        onOK={() => {}}
+        onOK={handleOK}
         maxWidth={3}
         style={styles.canvas}
         onBegin={onBegin}
@@ -59,6 +58,7 @@ export const CanvasSignature = ({ field, form, onEnd, onBegin, setSignature }: a
     </View>
   );
 };
+
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
@@ -78,4 +78,4 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     width: '90%',
   },
-})
+});

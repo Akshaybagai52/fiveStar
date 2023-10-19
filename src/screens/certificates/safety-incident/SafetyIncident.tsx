@@ -55,6 +55,9 @@ export const SafetyIncident = () => {
   const [selectedFiles, setSelectedFiles] = useState<DocumentPickerResponse[]>(
     [],
   );
+  const [selectedFiles2, setSelectedFiles2] = useState<DocumentPickerResponse[]>(
+    [],
+  );
   const [signatures, setSignatures] = useState({
     signature1: '',
     signature2: '',
@@ -120,25 +123,32 @@ export const SafetyIncident = () => {
           return `data:${file.type};base64,${base64}`;
         }),
       );
+      const base64Images2 = await Promise.all(
+        selectedFiles2.map(async file => {
+          const base64 = await RNFetchBlob.fs.readFile(file.uri, 'base64');
+          return `data:${file.type};base64,${base64}`;
+        }),
+      );
       const requestData = {
         values,
-        number: values.number
+        number: values.number,
         // stageDiscuss: values.projectDetails.stageDiscussion,
-        // imagesAttached: base64Images,
-        // signature: signatures,
+        incidentImages: base64Images,
+        measureImages: base64Images2,
+        signature: signatures,
       };
       console.log(requestData);
 
-      // const response = await axios.post(
-      //   'https://fivestaraccess.com.au/custom_form/damaged_scaffold_app.php',
-      //   requestData,
-      //   {
-      //     headers: {
-      //       'Content-Type': 'application/json',
-      //     },
-      //   },
-      // );
-      // console.log('Post Response:', requestData);
+      const response = await axios.post(
+        'https://fivestaraccess.com.au/custom_form/safety_incident_app.php',
+        requestData,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+      console.log('Post Response:', response);
       // console.log('signature', values.projectDetails.certificationRelation);
       // Alert.alert("Document submitted successfully")
       setCustomAlertVisible(true);
@@ -254,7 +264,7 @@ export const SafetyIncident = () => {
                 </Text>
 
                 <Field
-                  name="projectDetails.supervisor_notes"
+                  name="describe_incident"
                   component={AudioConverter}
                 />
               </View>
@@ -290,11 +300,11 @@ export const SafetyIncident = () => {
                 onPress={handleCheckboxPress}
               />
               <FilePicker
-                selectedFiles={selectedFiles}
-                setSelectedFiles={setSelectedFiles}
+                selectedFiles={selectedFiles2}
+                setSelectedFiles={setSelectedFiles2}
               />
               <Field
-                name="projectDetails.supervisor_notes"
+                name="specify_measures"
                 component={AudioConverter}
               />
               <View style={[commonStyles.mTop15]}>

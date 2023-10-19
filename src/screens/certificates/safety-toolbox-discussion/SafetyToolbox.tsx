@@ -38,7 +38,8 @@ import {AudioConverter} from '../../../themes/buttons/speechToText';
 import Address from '../../../components/common/Address';
 import {DatePickers} from '../../../themes/buttons/datePicker';
 import ListWithBullets from '../../../components/common/ListComp';
-import { TimePicker } from '../../../themes/buttons/timeCalculation';
+import {TimePicker} from '../../../themes/buttons/timeCalculation';
+import {CanvasSignature} from '../../../themes/buttons/canvas-signature';
 
 export const SafetyToolbox = () => {
   const [checkboxes, setCheckboxes] = useState<CheckboxItem[]>(loadingCapacity);
@@ -46,10 +47,10 @@ export const SafetyToolbox = () => {
   const [selectedFiles, setSelectedFiles] = useState<DocumentPickerResponse[]>(
     [],
   );
-  const [signatures, setSignatures] = useState({
-    signature1: '',
-    signature2: '',
-  });
+  // const [signatures, setSignatures] = useState({
+  //   signature1: '',
+  //   signature2: '',
+  // });
   const [isCustomAlertVisible, setCustomAlertVisible] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -64,9 +65,9 @@ export const SafetyToolbox = () => {
 
   const TimeNames: any = {
     startTime: 'projectDetails.start_time',
-    endTime: "projectDetails.finish_time",
-    duration: 'projectDetails.duration'
-  }
+    endTime: 'projectDetails.finish_time',
+    duration: 'projectDetails.duration',
+  };
 
   const handleCanvasEnd = () => {
     if (scrollViewRef.current) {
@@ -115,9 +116,10 @@ export const SafetyToolbox = () => {
         values,
         stageDiscuss: values.projectDetails.stageDiscussion,
         imagesAttached: base64Images,
-        signature: signatures,
+        data: values.record.data,
+        // signature: signatures,
       };
-      console.log(requestData)
+      console.log(requestData);
 
       const response = await axios.post(
         'https://fivestaraccess.com.au/custom_form/safety_toolbox_app.php',
@@ -140,14 +142,18 @@ export const SafetyToolbox = () => {
     projectDetails: Yup.object().shape({
       stageDiscussion: Yup.object().shape({
         Dismantle: Yup.string().required('Dismantle is required'),
-        Existing_Scaffold: Yup.string().required('Existing Scaffold is required'),
+        Existing_Scaffold: Yup.string().required(
+          'Existing Scaffold is required',
+        ),
       }),
       date: Yup.string().required('Date is required'),
       project_id: Yup.string().required('Project ID is required'),
       building_level: Yup.string(),
       nameOf_customer: Yup.string().required('Customer Name is required'),
       supervisor_name: Yup.string().required('Supervisor Name is required'),
-      number_of_attendence: Yup.string().required('Number of Attendance is required'),
+      number_of_attendence: Yup.string().required(
+        'Number of Attendance is required',
+      ),
       start_time: Yup.string().required('Start Time is required'),
       finish_time: Yup.string().required('Finish Time is required'),
       duration: Yup.string().required('Duration is required'),
@@ -160,13 +166,17 @@ export const SafetyToolbox = () => {
     }),
     signatures: Yup.object().shape({
       name_of_person: Yup.string().required('Name is required'),
-      email_receive_copy: Yup.string().email('Invalid email format').required('Email is required'),
-      subcontractor_email: Yup.string().email('Invalid email format').required('Subcontractor Email is required'),
+      email_receive_copy: Yup.string()
+        .email('Invalid email format')
+        .required('Email is required'),
+      subcontractor_email: Yup.string()
+        .email('Invalid email format')
+        .required('Subcontractor Email is required'),
     }),
   });
   return (
     <View style={{padding: 20, backgroundColor: '#fff'}}>
-      <ScrollView ref={scrollViewRef} scrollEnabled>
+      <ScrollView ref={scrollViewRef} scrollEnabled showsVerticalScrollIndicator={false}>
         <Formik
           initialValues={initialValues}
           enableReinitialize={true}
@@ -176,7 +186,7 @@ export const SafetyToolbox = () => {
             await handleSubmit1(values);
             setLoading(false);
           }}>
-          {({handleSubmit, values}) => (
+          {({handleSubmit, values, setFieldValue}) => (
             <View style={{backgroundColor: '#fff'}}>
               <View>
                 <Address />
@@ -195,7 +205,6 @@ export const SafetyToolbox = () => {
                   checkboxes={loadingCapacity}
                   onPress={handleCheckboxPress}
                 />
-                
               </View>
               <View style={[commonStyles.mTop15]}>
                 <Text style={[commonStyles.text16, commonStyles.mb5]}>
@@ -210,7 +219,7 @@ export const SafetyToolbox = () => {
                     heading={firstListHeading}
                     listText={topicFeedback}
                   />
-                ) }
+                )}
                 {values.projectDetails.stageDiscussion.Existing_Scaffold && (
                   <ListWithBullets
                     heading={secondListHeading}
@@ -247,21 +256,38 @@ export const SafetyToolbox = () => {
               </View>
               <View style={[commonStyles.mTop15]}>
                 <CustomHeader text="Record of Attendees" />
-                <TextInputGroup inputFields={scaffoldData} />
-                <Text style={[commonStyles.text16, commonStyles.mb5]}>
-                  Signature 1
-                </Text>
-                <MySignatureCanvas
-                  onBegin={handleCanvasBegin}
-                  onEnd={handleCanvasEnd}
-                  signature={signatures}
-                  setSignature={(signature: any) =>
-                    setSignatures(prevSignatures => ({
-                      ...prevSignatures,
-                      signature2: signature,
-                    }))
-                  }
-                />
+                {Array.from({
+                  length: parseInt(
+                    values?.projectDetails?.number_of_attendence,
+                  ),
+                }).map((_, index) => (
+                  <View key={index}>
+                    <TextInputGroup
+                      inputFields={[{
+                        label: `Name ${index +1}`,
+                        name: `names.Name ${index +1}`,
+                      }]}
+                    />
+                    <Text style={[commonStyles.text16, commonStyles.mb5]}>
+                      Signature {index + 1}
+                    </Text>
+                    <CanvasSignature
+                      onBegin={handleCanvasBegin}
+                      onEnd={handleCanvasEnd}
+                      // signature={signatures}
+                      // setSignature={(signature: any) =>
+                      //   setSignatures(prevSignatures => ({
+                      //     ...prevSignatures,
+                      //     signature2: signature,
+                      //   }))
+
+                      // }
+                      // setFieldValue={setFieldValue}
+                      name={`recordSign ${index}`}
+                    />
+                  </View>
+                ))}
+
                 <Text style={[commonStyles.text16, commonStyles.mb5]}>
                   Worker Feedback
                 </Text>
@@ -292,16 +318,17 @@ export const SafetyToolbox = () => {
                 Signature of person completing this form
               </Text>
 
-              <MySignatureCanvas
+              <CanvasSignature
                 onBegin={handleCanvasBegin}
                 onEnd={handleCanvasEnd}
-                signature={signatures}
-                setSignature={(signature: any) =>
-                  setSignatures(prevSignatures => ({
-                    ...prevSignatures,
-                    signature2: signature,
-                  }))
-                }
+                // signature={signatures}
+                // setSignature={(signature: any) =>
+                //   setSignatures(prevSignatures => ({
+                //     ...prevSignatures,
+                //     signature2: signature,
+                //   }))
+                // }
+                name="signatures.signature_img"
               />
               <CustomAlert
                 visible={isCustomAlertVisible}
