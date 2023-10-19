@@ -1,8 +1,9 @@
 import React, {useEffect, useState} from 'react';
-import {View, TextInput, StyleSheet} from 'react-native';
-import {Text} from 'react-native-paper';
+import {View, TextInput, StyleSheet, Text} from 'react-native';
+// import {Text} from 'react-native-paper';
 import {Field, ErrorMessage} from 'formik';
 import {useSelector} from 'react-redux';
+import commonStyles from '../../styles/commonStyles';
 
 interface TextInputGroupProps {
   inputFields: Partial<{
@@ -77,8 +78,9 @@ const TextInputGroup: React.FC<TextInputGroupProps> = ({inputFields}) => {
                 />
                 <ErrorMessage
                   name={inputField.name}
-                  component={Text} // Use your own Text component
-                  style={styles.errorText} // Apply your error styling
+                  render={msg => (
+                    <Text style={[commonStyles.errorText]}>{msg}</Text>
+                  )} // Use your own Text component
                 />
               </>
             )}

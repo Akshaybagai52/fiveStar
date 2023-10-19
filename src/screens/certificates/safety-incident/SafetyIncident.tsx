@@ -20,10 +20,7 @@ import RNFetchBlob from 'rn-fetch-blob';
 import CustomAlert from '../../../themes/buttons/Alert';
 import {
   userPersonalData,
-  initialFormData,
   scaffoldData,
-  // options,
-  // elevations,
   loadingCapacity,
   initialValues,
   data,
@@ -36,15 +33,16 @@ import {
   investigationOfficer,
   measuresData,
   dismantleRadioData,
-  // erectionData,
-  // variationData,
+  subcontractorData,
+  supervisorNameData,
+  supervisorEmailData,
+  anyOneInjuredData,
+  investigationOfficerData,
 } from '../../../data/safetyIncidents';
 import commonStyles from '../../../styles/commonStyles';
 import {AudioConverter} from '../../../themes/buttons/speechToText';
 import Address from '../../../components/common/Address';
 import {DatePickers} from '../../../themes/buttons/datePicker';
-import ListWithBullets from '../../../components/common/ListComp';
-import {TimePicker} from '../../../themes/buttons/timeCalculation';
 import {SelectPicker} from '../../../themes/buttons/selectDropdown';
 import RadioGroupButton from '../../../themes/buttons/radioButtonGroup';
 import {SafetyFieldArray} from '../../../themes/buttons/fieldArray-safetyInjured';
@@ -55,9 +53,9 @@ export const SafetyIncident = () => {
   const [selectedFiles, setSelectedFiles] = useState<DocumentPickerResponse[]>(
     [],
   );
-  const [selectedFiles2, setSelectedFiles2] = useState<DocumentPickerResponse[]>(
-    [],
-  );
+  const [selectedFiles2, setSelectedFiles2] = useState<
+    DocumentPickerResponse[]
+  >([]);
   const [signatures, setSignatures] = useState({
     signature1: '',
     signature2: '',
@@ -139,16 +137,16 @@ export const SafetyIncident = () => {
       };
       console.log(requestData);
 
-      const response = await axios.post(
-        'https://fivestaraccess.com.au/custom_form/safety_incident_app.php',
-        requestData,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        },
-      );
-      console.log('Post Response:', response);
+      // const response = await axios.post(
+      //   'https://fivestaraccess.com.au/custom_form/safety_incident_app.php',
+      //   requestData,
+      //   {
+      //     headers: {
+      //       'Content-Type': 'application/json',
+      //     },
+      //   },
+      // );
+      // console.log('Post Response:', response);
       // console.log('signature', values.projectDetails.certificationRelation);
       // Alert.alert("Document submitted successfully")
       setCustomAlertVisible(true);
@@ -232,41 +230,19 @@ export const SafetyIncident = () => {
                   Incident Date <Text style={[commonStyles.errorText]}>*</Text>
                 </Text>
                 <DatePickers name="date_of_incident" mode="date" />
-                {/* 
-                {values.projectDetails.stageDiscussion.Dismantle && (
-                  <ListWithBullets
-                    heading={firstListHeading}
-                    listText={topicFeedback}
-                  />
-                )}
-                {values.projectDetails.stageDiscussion.Existing_Scaffold && (
-                  <ListWithBullets
-                    heading={secondListHeading}
-                    listText={scaffoldingData}
-                  />
-                )} */}
-
-                {/* <Field
-                  name="projectDetails.work_description"
-                  component={AudioConverter}
-                />
-                 */}
               </View>
-              <SelectPicker label={label} data={data} />
+              <SelectPicker label={label} data={subcontractorData} />
               <TextInputGroup inputFields={scaffoldData} />
               <SelectPicker label={incidentAddress} data={data} />
-              <SelectPicker label={supervisorName} data={data} />
-              <SelectPicker label={supervisorMail} data={data} />
+              <SelectPicker label={supervisorName} data={supervisorNameData} />
+              <SelectPicker label={supervisorMail} data={supervisorEmailData} />
               <View>
                 <Text style={[commonStyles.text16]}>
                   How you would describe the incident ?{' '}
                   <Text style={[commonStyles.errorText]}>*</Text>
                 </Text>
 
-                <Field
-                  name="describe_incident"
-                  component={AudioConverter}
-                />
+                <Field name="describe_incident" component={AudioConverter} />
               </View>
               <View style={{width: '90%', marginBottom: 20}}>
                 <FilePicker
@@ -274,22 +250,22 @@ export const SafetyIncident = () => {
                   setSelectedFiles={setSelectedFiles}
                 />
               </View>
-              <SelectPicker label={anyOneInjured} data={data} />
+              <SelectPicker label={anyOneInjured} data={anyOneInjuredData} />
               {/* <TextInputGroup inputFields={} /> */}
               <CheckBox
                 checkboxes={checkboxData}
                 onPress={handleCheckboxPress}
               />
-
-              {/* <Text>
-                Investigation commenced for MTI LTI SNM{' '}
-                <Text style={[commonStyles.errorText]}>*</Text>
-              </Text> */}
-              <SafetyFieldArray number="number" />
+              {values.anyone_injured === 'Yes' && (
+                <SafetyFieldArray number="number" />
+              )}
 
               <RadioGroupButton options={dismantleRadioData} />
               <View style={[commonStyles.mTop15]}>
-                <SelectPicker label={investigationOfficer} data={data} />
+                <SelectPicker
+                  label={investigationOfficer}
+                  data={investigationOfficerData}
+                />
               </View>
               <Text style={[commonStyles.mb10, commonStyles.text16]}>
                 What measures were taken to prevent recurrence ?{' '}
@@ -303,10 +279,7 @@ export const SafetyIncident = () => {
                 selectedFiles={selectedFiles2}
                 setSelectedFiles={setSelectedFiles2}
               />
-              <Field
-                name="specify_measures"
-                component={AudioConverter}
-              />
+              <Field name="specify_measures" component={AudioConverter} />
               <View style={[commonStyles.mTop15]}>
                 <TextInputGroup inputFields={userPersonalData} />
                 <Text style={[commonStyles.text16, commonStyles.mb5]}>
@@ -323,44 +296,8 @@ export const SafetyIncident = () => {
                     }))
                   }
                 />
-                {/* <Text style={[commonStyles.text16, commonStyles.mb5]}>
-                  Worker Feedback
-                </Text>
-                <Field
-                  name="record.additional_cmt"
-                  component={AudioConverter}
-                /> */}
               </View>
-              {/* <View style={{marginBottom: 15, marginTop: 15}}>
-                <CustomHeader text="Supervisor/Team Leader Signatures" />
-              </View>
-              <View>
-                <Text
-                  style={{
-                    fontWeight: 'bold',
-                    fontSize: 15,
-                    marginBottom: 15,
-                  }}>
-                  I have conducted the Safety Tool Box disscussion at above site
-                  and I have truly and accurately recorded today's discussion.
-                </Text>
-              </View>
-              <TextInputGroup inputFields={userPersonalData} /> */}
-              {/* <SignatureScreen /> */}
-              {/* <Text style={[commonStyles.text16, commonStyles.mb15]}>
-                Signature of person completing this form
-              </Text> */}
-              {/* <MySignatureCanvas
-                onBegin={handleCanvasBegin}
-                onEnd={handleCanvasEnd}
-                signature={signatures}
-                setSignature={(signature: any) =>
-                  setSignatures(prevSignatures => ({
-                    ...prevSignatures,
-                    signature2: signature,
-                  }))
-                }
-              /> */}
+
               <CustomAlert
                 visible={isCustomAlertVisible}
                 title="Details submitted successfully"
