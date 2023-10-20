@@ -31,8 +31,6 @@ export const MySignatureCanvas = ({onBegin, onEnd, signature, setSignature}: any
   };
   const handleOK = (signature: any) => {
     setSignature(signature)
-    setFieldValue('formikSignature', signature)
-     console.log(signature , "signatuslkfklskdl");
   };
 
   return (
