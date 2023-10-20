@@ -8,13 +8,11 @@ import CustomHeader from '../../../themes/text/TextWithGreenBg';
 import CheckBox from '../../../themes/buttons/Checkbox';
 import {CheckboxItem} from '../../../types/interfaces/types';
 import {ButtonGreen} from '../../../themes/text/ButtonGreen';
-import Recorder from '../../../themes/buttons/AudioRecorder';
 import {MySignatureCanvas} from '../../../themes/buttons/SignatureCanvas';
 import FilePicker from '../../../themes/buttons/FilePicker';
 import {Field, Formik} from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
-import {HandoverFormValues} from '../../../types/interfaces/types';
 import {DocumentPickerResponse} from 'react-native-document-picker';
 import RNFetchBlob from 'rn-fetch-blob';
 import CustomAlert from '../../../themes/buttons/Alert';
@@ -29,7 +27,7 @@ import {
   supervisorName,
   supervisorMail,
   anyOneInjured,
-  checkboxData,
+  //   checkboxData,
   investigationOfficer,
   measuresData,
   dismantleRadioData,
@@ -38,7 +36,9 @@ import {
   supervisorEmailData,
   anyOneInjuredData,
   investigationOfficerData,
-} from '../../../data/safetyIncidents';
+  partATypeOfAccident,
+  partAItemOwner,
+} from '../../../data/accidentInvestigationData';
 import commonStyles from '../../../styles/commonStyles';
 import {AudioConverter} from '../../../themes/buttons/speechToText';
 import Address from '../../../components/common/Address';
@@ -46,8 +46,9 @@ import {DatePickers} from '../../../themes/buttons/datePicker';
 import {SelectPicker} from '../../../themes/buttons/selectDropdown';
 import RadioGroupButton from '../../../themes/buttons/radioButtonGroup';
 import {SafetyFieldArray} from '../../../themes/buttons/fieldArray-safetyInjured';
+import {SafeAreaView} from 'react-native';
 
-export const SafetyIncident = () => {
+export const AccidentInvestigation = () => {
   const [checkboxes, setCheckboxes] = useState<CheckboxItem[]>(loadingCapacity);
 
   const [selectedFiles, setSelectedFiles] = useState<DocumentPickerResponse[]>(
@@ -191,7 +192,7 @@ export const SafetyIncident = () => {
     }),
   });
   return (
-    <View style={{padding: 20, backgroundColor: '#fff'}}>
+    <SafeAreaView style={{padding: 20, backgroundColor: '#fff'}}>
       <ScrollView ref={scrollViewRef} scrollEnabled>
         <Formik
           initialValues={initialValues}
@@ -208,41 +209,147 @@ export const SafetyIncident = () => {
                 <Address />
                 <View style={{marginBottom: 20}}>
                   <Text style={{fontSize: 24, fontWeight: 'bold'}}>
-                    SAFETY INCIDENT / INJURY REPORTING
+                    ACCIDENT / INCIDENT INVESTIGATION REPORT
                   </Text>
                   <Text style={{fontSize: 24, fontWeight: 'bold'}}>
-                    FSS-EHS-009
+                    FSS-EHS-FM-003
                   </Text>
                   <Text style={[commonStyles.text16, commonStyles.mt5]}>
-                    (TO BE COMPLETED BY THE EMPLOYEE WITH THE SUPERVISOR OR
-                    MANAGER)
+                    (To be completed within 12hrs of incident and submitted to
+                    the Manager)
                   </Text>
-                  <Text style={[commonStyles.mt5, commonStyles.text16]}>
+                  {/* <Text style={[commonStyles.mt5, commonStyles.text16]}>
                     This report is the initial notification of a safety incident
                     involving Five Star Scaffolding Employees and is not
                     intended to replace the normal safety incident investigation
                     and report procedures.
-                  </Text>
+                  </Text> */}
                 </View>
+              </View>
+
+              <TextInputGroup inputFields={userPersonalData} />
+              <View style={[commonStyles.mTop15, commonStyles.mb15]}>
+                <Text style={[commonStyles.text16, commonStyles.mb5]}>
+                  Accident/Incident Date{' '}
+                  <Text style={[commonStyles.errorText]}>*</Text>
+                </Text>
+                <DatePickers name="incident_date" mode="date" />
               </View>
               <View style={[commonStyles.mTop15, commonStyles.mb15]}>
                 <Text style={[commonStyles.text16, commonStyles.mb5]}>
-                  Incident Date <Text style={[commonStyles.errorText]}>*</Text>
+                  Accident/Incident Time{' '}
+                  <Text style={[commonStyles.errorText]}>*</Text>
                 </Text>
-                <DatePickers name="date_of_incident" mode="date" />
+                <DatePickers name="incident_time" mode="time" />
               </View>
-              <SelectPicker label={label} data={subcontractorData} />
+              <View style={[commonStyles.mTop15, commonStyles.mb15]}>
+                <Text style={[commonStyles.text16, commonStyles.mb5]}>
+                  Date Reported <Text style={[commonStyles.errorText]}>*</Text>
+                </Text>
+                <DatePickers name="date_reported" mode="date" />
+              </View>
+              <View style={[commonStyles.mTop15, commonStyles.mb15]}>
+                <Text style={[commonStyles.text16, commonStyles.mb5]}>
+                  Time Reported <Text style={[commonStyles.errorText]}>*</Text>
+                </Text>
+                <DatePickers name="time_reported" mode="time" />
+              </View>
+
+              {/* <SelectPicker label={label} data={subcontractorData} />
               <TextInputGroup inputFields={scaffoldData} />
               <SelectPicker label={incidentAddress} data={data} />
               <SelectPicker label={supervisorName} data={supervisorNameData} />
-              <SelectPicker label={supervisorMail} data={supervisorEmailData} />
+              <SelectPicker label={supervisorMail} data={supervisorEmailData} /> */}
+              <CustomHeader text="PART A. ACCIDENT / INCIDENT DESCRIPTION" />
+              <View style={[commonStyles.mb15, commonStyles.mt5]}>
+                <Text style={[commonStyles.text16, commonStyles.mb10]}>
+                  Type of Accident
+                </Text>
+                <CheckBox
+                  checkboxes={partATypeOfAccident}
+                  onPress={handleCheckboxPress}
+                />
+              </View>
               <View>
                 <Text style={[commonStyles.text16]}>
-                  How you would describe the incident ?{' '}
+                  What Occurred? Describe all relevant background information,
+                  sequence of events leading to the incident, what occurred that
+                  precipitated the accident, mechanism of accident and contact
+                  agent. <Text style={[commonStyles.errorText]}>*</Text>
+                </Text>
+
+                <Field name="describe_incident" component={AudioConverter} />
+              </View>
+              <View style={[commonStyles.mb15, commonStyles.mt5]}>
+                <Text style={[commonStyles.text16, commonStyles.mb10]}>
+                  Item Owner <Text style={[commonStyles.errorText]}>*</Text>
+                </Text>
+                <CheckBox
+                  checkboxes={partAItemOwner}
+                  onPress={handleCheckboxPress}
+                />
+              </View>
+              <View style={[commonStyles.mb15]}>
+                <Text style={[commonStyles.text16]}>
+                  Damage Description{' '}
                   <Text style={[commonStyles.errorText]}>*</Text>
                 </Text>
 
                 <Field name="describe_incident" component={AudioConverter} />
+              </View>
+              <View style={[commonStyles.mb10]}>
+                <CustomHeader text="PART C. CAUSATION" />
+
+                <Text variant="headlineSmall" style={[commonStyles.mTop15]}>
+                  PROFILE
+                </Text>
+                <Text>
+                  What people issues were included in the hazard/incident (e.g
+                  competency level, training, procedures followed, fitness for
+                  work, etc)?
+                </Text>
+                <Field name="hazard_incident" component={AudioConverter} />
+              </View>
+              <View style={[commonStyles.mb10]}>
+                {/* <CustomHeader text="PART C. CAUSATION" /> */}
+
+                <Text variant="headlineSmall" style={[commonStyles.mTop15]}>
+                  Equipment
+                </Text>
+                <Text>
+                  What plant/equipment/material issues were involved in the
+                  hazard/incident (e.g fit for purpose maintained equipment,
+                  protective devices/guards,PPE labelling etc )?
+                </Text>
+                <Field name="equipment" component={AudioConverter} />
+              </View>
+              <View style={[commonStyles.mb10]}>
+                {/* <CustomHeader text="PART C. CAUSATION" /> */}
+
+                <Text variant="headlineSmall" style={[commonStyles.mTop15]}>
+                  Environment
+                </Text>
+                <Text>
+                  What work environment/natural environment issues were involved
+                  in the hazard/incident (e.g ventilation, ground conditions,
+                  wind, lighting, space, storage conditions, explosive
+                  atmosphere, etc ) ?
+                </Text>
+                <Field name="environment_cause" component={AudioConverter} />
+              </View>
+              <View style={[commonStyles.mb10]}>
+                <Text variant="headlineSmall" style={[commonStyles.mTop15]}>
+                  Procedures
+                </Text>
+                <Text>
+                  What procedural issues were involved in the hazard/incident
+                  (e.g permit system, isolation, standard operating procedures,
+                  maintenance, pre-use checks,etc )?
+                </Text>
+                <Field name="procedures" component={AudioConverter} />
+              </View>
+              <View>
+                <CustomHeader text="PART D: RECOMMENDATIONS (list in point form the specific actions taken to prevent recurrence)" />
               </View>
               <View style={{width: '90%', marginBottom: 20}}>
                 <FilePicker
@@ -253,17 +360,17 @@ export const SafetyIncident = () => {
               <SelectPicker label={anyOneInjured} data={anyOneInjuredData} />
               {/* <TextInputGroup inputFields={} /> */}
               <View style={[commonStyles.mb15, commonStyles.mt5]}>
-              <Text style={[commonStyles.text16, commonStyles.mb10]}>
-                Status of Injury / Incident
-              </Text>
-              <CheckBox
-                checkboxes={checkboxData}
-                onPress={handleCheckboxPress}
-              />
+                <Text style={[commonStyles.text16, commonStyles.mb10]}>
+                  Status of Injury / Incident
+                </Text>
+                {/* <CheckBox
+                  checkboxes={checkboxData}
+                  onPress={handleCheckboxPress}
+                /> */}
               </View>
-              {values.anyone_injured === 'Yes' && (
+              {/* {values.anyone_injured === 'Yes' && (
                 <SafetyFieldArray number="number" />
-              )}
+              )} */}
 
               <RadioGroupButton options={dismantleRadioData} />
               <View style={[commonStyles.mTop15]}>
@@ -325,6 +432,6 @@ export const SafetyIncident = () => {
         )}
         {/* {loading && <ActivityIndicator animating={true} size="large" color="blue" />}  */}
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 };

@@ -98,6 +98,7 @@ export const SafetyFieldArray = ({number}: SafetyProps) => {
           <Button
             mode="contained"
             rippleColor={colors.riplePurple}
+            style={[{width: '90%'}, commonStyles.mb15, commonStyles.mt5]}
             onPress={() =>
               push({
                 name: '',

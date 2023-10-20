@@ -18,6 +18,7 @@ import { createMaterialBottomTabNavigator } from '@react-navigation/material-bot
 import AllCertificates from '../screens/certificates/list-of-certificates/AllCertificates';
 import { SafetyIncident } from '../screens/certificates/safety-incident';
 import { ReportingUnsafe } from '../screens/certificates/reporting-unsafe-scaffold';
+import { AccidentInvestigation } from '../screens/certificates/accident-investigation';
 
 
 
@@ -47,6 +48,7 @@ export function HandoverDrawer() {
         <Drawer.Screen name="Safety Toolbox Discussion" component={SafetyToolbox}  />
         <Stack.Screen name="Safety Injured" component={SafetyIncident} />
         <Stack.Screen name="Reporting Unsafe Scaffolding" component={ReportingUnsafe} />
+        <Stack.Screen name="Accident Investigation" component={AccidentInvestigation} />
 
         <Drawer.Screen name="Help Center" component={Contact}  />
       </Drawer.Navigator>
