@@ -18,26 +18,16 @@ import RNFetchBlob from 'rn-fetch-blob';
 import CustomAlert from '../../../themes/buttons/Alert';
 import {
   userPersonalData,
-  scaffoldData,
   loadingCapacity,
   initialValues,
-  data,
-  label,
-  incidentAddress,
   supervisorName,
-  supervisorMail,
-  anyOneInjured,
-  //   checkboxData,
-  investigationOfficer,
-  measuresData,
-  dismantleRadioData,
-  subcontractorData,
   supervisorNameData,
-  supervisorEmailData,
-  anyOneInjuredData,
-  investigationOfficerData,
   partATypeOfAccident,
   partAItemOwner,
+  partEData,
+  partgOhs,
+  partgGM,
+  partfName,
 } from '../../../data/accidentInvestigationData';
 import commonStyles from '../../../styles/commonStyles';
 import {AudioConverter} from '../../../themes/buttons/speechToText';
@@ -47,6 +37,7 @@ import {SelectPicker} from '../../../themes/buttons/selectDropdown';
 import RadioGroupButton from '../../../themes/buttons/radioButtonGroup';
 import {SafetyFieldArray} from '../../../themes/buttons/fieldArray-safetyInjured';
 import {SafeAreaView} from 'react-native';
+import {CanvasSignature} from '../../../themes/buttons/canvas-signature';
 
 export const AccidentInvestigation = () => {
   const [checkboxes, setCheckboxes] = useState<CheckboxItem[]>(loadingCapacity);
@@ -130,24 +121,24 @@ export const AccidentInvestigation = () => {
       );
       const requestData = {
         values,
-        number: values.number,
+        // number: values.number,
         // stageDiscuss: values.projectDetails.stageDiscussion,
-        incidentImages: base64Images,
-        measureImages: base64Images2,
-        signature: signatures,
+        // incidentImages: base64Images,
+        // measureImages: base64Images2,
+        // signature: signatures,
       };
       console.log(requestData);
 
-      const response = await axios.post(
-        'https://fivestaraccess.com.au/custom_form/safety_incident_app.php',
-        requestData,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        },
-      );
-      console.log('Post Response:', response);
+      // const response = await axios.post(
+      //   'https://fivestaraccess.com.au/custom_form/safety_incident_app.php',
+      //   requestData,
+      //   {
+      //     headers: {
+      //       'Content-Type': 'application/json',
+      //     },
+      //   },
+      // );
+      // console.log('Post Response:', response);
       // console.log('signature', values.projectDetails.certificationRelation);
       // Alert.alert("Document submitted successfully")
       setCustomAlertVisible(true);
@@ -218,12 +209,6 @@ export const AccidentInvestigation = () => {
                     (To be completed within 12hrs of incident and submitted to
                     the Manager)
                   </Text>
-                  {/* <Text style={[commonStyles.mt5, commonStyles.text16]}>
-                    This report is the initial notification of a safety incident
-                    involving Five Star Scaffolding Employees and is not
-                    intended to replace the normal safety incident investigation
-                    and report procedures.
-                  </Text> */}
                 </View>
               </View>
 
@@ -254,12 +239,6 @@ export const AccidentInvestigation = () => {
                 </Text>
                 <DatePickers name="time_reported" mode="time" />
               </View>
-
-              {/* <SelectPicker label={label} data={subcontractorData} />
-              <TextInputGroup inputFields={scaffoldData} />
-              <SelectPicker label={incidentAddress} data={data} />
-              <SelectPicker label={supervisorName} data={supervisorNameData} />
-              <SelectPicker label={supervisorMail} data={supervisorEmailData} /> */}
               <CustomHeader text="PART A. ACCIDENT / INCIDENT DESCRIPTION" />
               <View style={[commonStyles.mb15, commonStyles.mt5]}>
                 <Text style={[commonStyles.text16, commonStyles.mb10]}>
@@ -295,7 +274,7 @@ export const AccidentInvestigation = () => {
                   <Text style={[commonStyles.errorText]}>*</Text>
                 </Text>
 
-                <Field name="describe_incident" component={AudioConverter} />
+                <Field name="damage_description" component={AudioConverter} />
               </View>
               <View style={[commonStyles.mb10]}>
                 <CustomHeader text="PART C. CAUSATION" />
@@ -357,57 +336,97 @@ export const AccidentInvestigation = () => {
                   setSelectedFiles={setSelectedFiles}
                 />
               </View>
-              <SelectPicker label={anyOneInjured} data={anyOneInjuredData} />
-              {/* <TextInputGroup inputFields={} /> */}
-              <View style={[commonStyles.mb15, commonStyles.mt5]}>
-                <Text style={[commonStyles.text16, commonStyles.mb10]}>
-                  Status of Injury / Incident
-                </Text>
-                {/* <CheckBox
-                  checkboxes={checkboxData}
-                  onPress={handleCheckboxPress}
-                /> */}
+              <View style={[commonStyles.mb15]}>
+                <CustomHeader text="PART E: Consequences" />
+                <Field name="equipment" component={AudioConverter} />
+                <TextInputGroup inputFields={partEData} />
+                <Field name="extra_comments" component={AudioConverter} />
               </View>
-              {/* {values.anyone_injured === 'Yes' && (
-                <SafetyFieldArray number="number" />
-              )} */}
 
-              <RadioGroupButton options={dismantleRadioData} />
               <View style={[commonStyles.mTop15]}>
-                <SelectPicker
-                  label={investigationOfficer}
-                  data={investigationOfficerData}
-                />
-              </View>
-              <Text style={[commonStyles.mb10, commonStyles.text16]}>
-                What measures were taken to prevent recurrence ?{' '}
-                <Text style={[commonStyles.errorText]}>*</Text>
-              </Text>
-              <CheckBox
-                checkboxes={measuresData}
-                onPress={handleCheckboxPress}
-              />
-              <FilePicker
-                selectedFiles={selectedFiles2}
-                setSelectedFiles={setSelectedFiles2}
-              />
-              <Field name="specify_measures" component={AudioConverter} />
-              <View style={[commonStyles.mTop15]}>
-                <TextInputGroup inputFields={userPersonalData} />
+                <CustomHeader text="PART F: ACCIDENT INVESTIGATION BY" />
+                <TextInputGroup inputFields={partfName} />
+
                 <Text style={[commonStyles.text16, commonStyles.mb5]}>
-                  Signature 1
+                  Signature
                 </Text>
-                <MySignatureCanvas
+                <CanvasSignature
                   onBegin={handleCanvasBegin}
                   onEnd={handleCanvasEnd}
-                  signature={signatures}
-                  setSignature={(signature: any) =>
-                    setSignatures(prevSignatures => ({
-                      ...prevSignatures,
-                      signature2: signature,
-                    }))
-                  }
+                  name={'accident_signature'}
                 />
+                <DatePickers name="accident_date" mode="date" />
+              </View>
+              <View style={[commonStyles.mTop15, commonStyles.mb15]}>
+                <CustomHeader text="PART G: REVIEWED BY" />
+
+                <View style={[commonStyles.mTop15]}>
+                  {/* <TextInputGroup inputFields={partgSupervisor} /> */}
+                  <SelectPicker
+                    label={supervisorName}
+                    data={supervisorNameData}
+                  />
+
+                  <Text style={[commonStyles.text16, commonStyles.mb5]}>
+                    Signature
+                  </Text>
+                  <CanvasSignature
+                    onBegin={handleCanvasBegin}
+                    onEnd={handleCanvasEnd}
+                    name={'supervisor_signature'}
+                  />
+                  <Text style={[commonStyles.text16, commonStyles.mb5]}>
+                    Date
+                  </Text>
+                  <DatePickers name="supervisor_date" mode="date" />
+                  <Text style={[commonStyles.text16, commonStyles.mTop15]}>
+                    Comments
+                  </Text>
+                  <Field name="supervisor_comment" component={AudioConverter} />
+                </View>
+                <View style={[commonStyles.mTop15]}>
+                  <TextInputGroup inputFields={partgOhs} />
+
+                  <Text style={[commonStyles.text16, commonStyles.mb5]}>
+                    Signature
+                  </Text>
+                  <CanvasSignature
+                    onBegin={handleCanvasBegin}
+                    onEnd={handleCanvasEnd}
+                    name={'representative_signature'}
+                  />
+                  <Text style={[commonStyles.text16, commonStyles.mb5]}>
+                    Date
+                  </Text>
+                  <DatePickers name="Representative_date" mode="date" />
+                  <Text style={[commonStyles.text16, commonStyles.mTop15]}>
+                    Comments
+                  </Text>
+                  <Field
+                    name="Representative_comment"
+                    component={AudioConverter}
+                  />
+                </View>
+                <View style={[commonStyles.mTop15]}>
+                  <TextInputGroup inputFields={partgGM} />
+
+                  <Text style={[commonStyles.text16, commonStyles.mb5]}>
+                    Signature
+                  </Text>
+                  <CanvasSignature
+                    onBegin={handleCanvasBegin}
+                    onEnd={handleCanvasEnd}
+                    name={'manager_signature'}
+                  />
+                  <Text style={[commonStyles.text16, commonStyles.mb5]}>
+                    Date
+                  </Text>
+                  <DatePickers name="manager_date" mode="date" />
+                  <Text style={[commonStyles.text16, commonStyles.mTop15]}>
+                    Comments
+                  </Text>
+                  <Field name="manager_comment" component={AudioConverter} />
+                </View>
               </View>
 
               <CustomAlert

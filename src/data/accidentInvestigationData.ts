@@ -5,70 +5,9 @@ import {
   HandoverFormValues,
 } from '../types/interfaces/types';
 
-export const label = {
-  name: 'subcontractor',
-  label: 'Sub Contractor (please select) ',
-  showAsterisk: true,
-};
-
-export const subcontractorData = [
-  {
-    label: '100%erz Scaffolding and Labour Hire Pty Ltd',
-    value: '100%erz Scaffolding and Labour Hire Pty Ltd',
-  },
-  {label: 'ACT Height', value: 'ACT Height'},
-  {label: 'AJ Scaff', value: 'AJ Scaff'},
-  {label: 'Aus Safe Access', value: 'Aus Safe Access'},
-  {label: 'BMR Scaffolding', value: 'BMR Scaffolding'},
-  {
-    label: 'Breakout Scaffolding Australia Pty Ltd',
-    value: 'Breakout Scaffolding Australia Pty Ltd',
-  },
-  {label: 'Compendium Design Pty Ltd', value: 'Compendium Design Pty Ltd'},
-  {label: 'Crane Service Industries', value: 'Crane Service Industries'},
-  {label: 'Elevated Access Solutions', value: 'Elevated Access Solutions'},
-  {label: 'Extreme Scaffolding Pty Ltd', value: 'Extreme Scaffolding Pty Ltd'},
-  {label: 'First Class Scaffolding', value: 'First Class Scaffolding'},
-  {label: 'Five Star Scaffolding copy', value: 'Five Star Scaffolding copy'},
-  {
-    label: 'Fortitude Scaffolding Pty Ltd',
-    value: 'Fortitude Scaffolding Pty Ltd',
-  },
-  {label: 'G&S Scaffolding Pty Ltd', value: 'G&S Scaffolding Pty Ltd'},
-  {
-    label: 'Hammond Scaffolding & Rigging Pty Ltd',
-    value: 'Hammond Scaffolding & Rigging Pty Ltd',
-  },
-  {
-    label: 'Hills Engineering Consultants',
-    value: 'Hills Engineering Consultants',
-  },
-  {label: 'L&N Scaffolding', value: 'L&N Scaffolding'},
-  {label: 'MMA Scaffolding', value: 'MMA Scaffolding'},
-  {label: 'MPR Scaffolding Pty Ltd', value: 'MPR Scaffolding Pty Ltd'},
-  {label: 'Other', value: 'Other'},
-  {label: 'Pro-Scaff', value: 'Pro-Scaff'},
-  {label: 'Ross Engineers', value: 'Ross Engineers'},
-  {
-    label: 'Sabel Rigging & Scaffolding Pty Ltd',
-    value: 'Sabel Rigging & Scaffolding Pty Ltd',
-  },
-  {label: 'Safe Hands 002 Pty Ltd', value: 'Safe Hands 002 Pty Ltd'},
-  {label: 'Scaffold Studio', value: 'Scaffold Studio'},
-  {label: 'Struttura Scaffolding', value: 'Struttura Scaffolding'},
-  {label: 'Sydscaff', value: 'Sydscaff'},
-  {label: 'TSB Scaffolding', value: 'TSB Scaffolding'},
-  {label: 'Warrior Scaffold', value: 'Warrior Scaffold'},
-];
-
-export const incidentAddress = {
-  name: 'street_address',
-  label: 'Where did the incident happen ? Site, Street Address & Suburb) ',
-  showAsterisk: true,
-};
 export const supervisorName = {
-  name: 'manager_name',
-  label: 'Name of your Supervisor and Manager responsible at workplace ',
+  name: 'supervisor_name',
+  label: 'Supervisor / Manager',
   showAsterisk: true,
 };
 
@@ -84,74 +23,6 @@ export const supervisorNameData = [
   {label: 'Charbel Makary', value: 'Charbel Makary'},
   {label: 'Trae Bridgeman', value: 'Trae Bridgeman'},
   {label: 'Nathan Shanks', value: 'Nathan Shanks'},
-];
-
-export const supervisorMail = {
-  name: 'supervisor_emails',
-  label: 'Supervisor Emails (please select) ',
-  showAsterisk: true,
-};
-
-export const supervisorEmailData = [
-  {
-    label: 'keaton@fivestarscaffolding.com.au',
-    value: 'keaton@fivestarscaffolding.com.au',
-  },
-  {
-    label: 'manishakumari85611@gmail.com',
-    value: 'manishakumari85611@gmail.com',
-  },
-  {
-    label: 'karl@fivestarscaffolding.com.au',
-    value: 'karl@fivestarscaffolding.com.au',
-  },
-  {label: 'dhavalshastri84@gmail.com', value: 'dhavalshastri84@gmail.com'},
-  {
-    label: 'john@fivestarscaffolding.com.au',
-    value: 'john@fivestarscaffolding.com.au',
-  },
-  {
-    label: 'willie@fivestarscaffolding.com.au',
-    value: 'willie@fivestarscaffolding.com.au',
-  },
-  {
-    label: 'bruce@fivestarscaffolding.com.au',
-    value: 'bruce@fivestarscaffolding.com.au',
-  },
-  {
-    label: 'dominic@fivestarscaffolding.com.au',
-    value: 'dominic@fivestarscaffolding.com.au',
-  },
-  {label: 'charbelmakari1@gmail.com', value: 'charbelmakari1@gmail.com'},
-  {
-    label: 'trae@fivestarscaffolding.com.au',
-    value: 'trae@fivestarscaffolding.com.au',
-  },
-  {
-    label: 'n.shanks@fivestarscaffolding.com.au',
-    value: 'n.shanks@fivestarscaffolding.com.au',
-  },
-];
-
-export const anyOneInjured = {
-  name: 'anyone_injured',
-  label: 'Was anyone injured ? ',
-  showAsterisk: true,
-};
-
-export const anyOneInjuredData = [
-  {label: 'Yes', value: 'Yes'},
-  {label: 'No', value: 'No'},
-];
-export const investigationOfficer = {
-  name: 'investigator_name',
-  label: 'Who is Investigating ? ',
-  showAsterisk: true,
-};
-
-export const investigationOfficerData = [
-  {label: 'Keaton', value: 'Keaton'},
-  {label: 'Bruce', value: 'Bruce'},
 ];
 
 export const occupation = {
@@ -196,16 +67,9 @@ export const initialFormData: Partial<InputField>[] = [
   },
 ];
 
-export const scaffoldData: Partial<InputField>[] = [
-  {
-    label: 'Email',
-    name: 'project_supervisor_mail',
-  },
-];
 export const partATypeOfAccident: CheckboxItem[] = [
   {
-    label:
-      'Equipment Damage and Process Loss',
+    label: 'Equipment Damage and Process Loss',
     status: 'unchecked',
     name: 'typeOfAccident.Equipment_Damage',
   },
@@ -242,62 +106,26 @@ export const partATypeOfAccident: CheckboxItem[] = [
 ];
 
 export const partAItemOwner: CheckboxItem[] = [
-    {
-      label:
-        'Five Star Scaffolding Pty Ltd',
-      status: 'unchecked',
-      name: 'itemOwner.Five_Star_Scaffolding',
-    },
-    {
-      label:
-        'Employee',
-      status: 'unchecked',
-      name: 'itemOwner.EmployeeCheck',
-    },
-    {
-      label:
-        'Other (specify)',
-      status: 'unchecked',
-      name: 'itemOwner.Other_specify',
-    },
-  ];
-
-export const measuresData: CheckboxItem[] = [
   {
-    label: 'Tool Box was held and preventative measures were discussed',
+    label: 'Five Star Scaffolding Pty Ltd',
     status: 'unchecked',
-    name: 'measures_to_prevent.Tool_box_was_held',
+    name: 'itemOwner.Five_Star_Scaffolding',
   },
   {
-    label: 'Referred to FSS Safety Committee',
+    label: 'Employee',
     status: 'unchecked',
-    name: 'measures_to_prevent.Referred_commettee',
+    name: 'itemOwner.EmployeeCheck',
   },
   {
-    label: 'Escalated to FSS Management',
+    label: 'Other (specify)',
     status: 'unchecked',
-    name: 'measures_to_prevent.Fss_management',
-  },
-  {
-    label: 'Work method changed',
-    status: 'unchecked',
-    name: 'measures_to_prevent.Work_method',
-  },
-  {
-    label: 'Signs placed',
-    status: 'unchecked',
-    name: 'measures_to_prevent.Signs_placed',
-  },
-  {
-    label: 'Hazard removed',
-    status: 'unchecked',
-    name: 'measures_to_prevent.Hazard_removed',
+    name: 'itemOwner.Other_specify',
   },
 ];
+
 export const userPersonalData: Partial<InputField>[] = [
   {
-    label: 'Employee ',
-    showAsterisk: true,
+    label: 'Name ',
     name: 'employee',
   },
   {
@@ -312,12 +140,12 @@ export const userPersonalData: Partial<InputField>[] = [
   },
   {
     label: 'Location where incident occurred ',
-    name: 'supervisor',
+    name: 'incident_occurred',
     showAsterisk: true,
   },
   {
     label: 'Supervisor ',
-    name: 'your_email',
+    name: 'supervisor',
     showAsterisk: true,
   },
   {
@@ -326,7 +154,30 @@ export const userPersonalData: Partial<InputField>[] = [
     showAsterisk: true,
   },
 ];
-
+export const partfName: Partial<InputField>[] = [
+  {
+    label: 'Name ',
+    name: 'accident_name',
+  },
+];
+export const partgOhs: Partial<InputField>[] = [
+  {
+    label: 'OH&S Representative ',
+    name: 'Representative',
+  },
+];
+export const partgGM: Partial<InputField>[] = [
+  {
+    label: 'General Manager ',
+    name: 'manager',
+  },
+];
+export const partEData = [
+  {
+    label: 'Estimated time off work ',
+    name: 'estimated_time',
+  },
+];
 export const loadingCapacity: CheckboxItem[] = [
   {
     label: 'Bin Strip Dismantle',
@@ -338,28 +189,6 @@ export const loadingCapacity: CheckboxItem[] = [
     status: 'unchecked',
     name: 'projectDetails.stageDiscussion.Existing_Scaffold',
   },
-];
-
-export const dismantleRadioData = [
-  {
-    heading: 'Investigation commenced for MTI LTI SNM',
-    options: [
-      {value: 'Yes', label: 'Yes'},
-      {value: 'No', label: 'No'},
-      {value: 'N/A', label: 'N/A'},
-    ],
-    name: 'investigation_commenced',
-  },
-];
-
-export const data = [
-  {label: 'Apple', value: 'apple'},
-  {label: 'Banana', value: 'banana'},
-  {label: 'Banana1', value: 'banana1'},
-  {label: 'Banana2', value: 'banana2'},
-  {label: 'Banana3', value: 'banana3'},
-  {label: 'Banana4', value: 'banana4'},
-  {label: 'Banana5', value: 'banana5'},
 ];
 
 export const occupationData = [
@@ -384,7 +213,7 @@ export const alreadyEmployedData = [
   {label: 'No', value: 'No'},
 ];
 
-export const init = {
+export const initialValues = {
   employee: '',
   occupation: '',
   street_address: '',
@@ -407,21 +236,28 @@ export const init = {
   },
 
   describe_incident: '',
-  itemOwner : {
+  itemOwner: {
     Five_Star_Scaffolding: '',
     EmployeeCheck: '',
     Other_specify: '',
   },
   damage_description: '',
 
-// Part C 
+  // Part C
   hazard_incident: '',
   equipment: '',
   environment_cause: '',
   procedures: '',
 
   // Part D
-  recommendations: [], // Field array
+  recommendations: [
+    {
+      no: '',
+      action: '',
+      list_name: '',
+      list_date: '',
+    },
+  ], // Field array
 
   // Part E
   known_injuries: '',
@@ -433,96 +269,17 @@ export const init = {
   accident_signature: '',
   accident_date: '',
 
-   // Part G
-   supervisor_name: '',
-   supervisor_signature: '',
-   supervisor_date: '',
-   supervisor_comment: '',
-   Representative: '',
-   representative_signature: '',
-   Representative_date: '',
-   Representative_comment: '',
-   manager: '',
-   manager_signature: '',
-   manager_date: '',
-   manager_comment: ''
+  // Part G
+  supervisor_name: '',
+  supervisor_signature: '',
+  supervisor_date: '',
+  supervisor_comment: '',
+  Representative: '',
+  representative_signature: '',
+  Representative_date: '',
+  Representative_comment: '',
+  manager: '',
+  manager_signature: '',
+  manager_date: '',
+  manager_comment: '',
 };
-
-export const initialValues = {
-  date_of_incident: '',
-  subcontractor: '',
-  project_supervisor_mail: '',
-  street_address: '',
-  employee_name: [],
-  manager_name: '',
-  supervisor_emails: '',
-  describe_incident: '',
-  anyone_injured: '',
-  status_of_injury: {
-    First_Aid_Injury: '',
-    Medical_Treatment: '',
-    Lost_time_Injury: '',
-    Minor_Near_Miss: '',
-    Significant_Near_Miss: '',
-  },
-  injured_persons: [
-    {
-      injured_name_1: '',
-      occupation: '',
-      fivestar_employee: '',
-      employee_address: '',
-      birth_of_employee: '',
-      employee_industry: '',
-    },
-  ],
-  investigation_commenced: '',
-  investigator_name: '',
-  measures_to_prevent: {
-    Tool_box_was_held: '',
-    Referred_commettee: '',
-    Fss_management: '',
-    Work_method: '',
-    Signs_placed: '',
-    Hazard_removed: '',
-  },
-  measures_photos: '',
-  specify_measures: '',
-  your_name: '',
-  your_email: '',
-  signature: '',
-  number: [
-    {
-      number: '',
-    },
-  ],
-  names: [],
-};
-
-// export const initialValues = {
-//   projectDetails: {
-//     stageDiscussion: {
-//       Dismantle: '',
-//       Existing_Scaffold: '',
-//     },
-//     date: '',
-//     project_id: '',
-//     building_level: '',
-//     nameOf_customer: '',
-//     supervisor_name: '',
-//     number_of_attendence: '',
-//     start_time: '',
-//     finish_time: '',
-//     duration: '',
-//     work_description: '',
-//   },
-//   supervisor_notes: '',
-//   record: {
-//     name_1: '',
-//     additional_cmt: '',
-//   },
-//   signatures: {
-//     name_of_person: '',
-//     email_receive_copy: '',
-//     subcontractor_email: '',
-//   },
-// };
