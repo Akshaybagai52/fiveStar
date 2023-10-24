@@ -125,7 +125,8 @@ export const partAItemOwner: CheckboxItem[] = [
 
 export const userPersonalData: Partial<InputField>[] = [
   {
-    label: 'Name ',
+    label: 'Employee ',
+    showAsterisk: true,
     name: 'employee',
   },
   {
@@ -151,6 +152,18 @@ export const userPersonalData: Partial<InputField>[] = [
   {
     label: 'Witness ',
     name: 'witness',
+    showAsterisk: true,
+  },
+];
+export const partbInputt: Partial<InputField>[] = [
+  {
+    label: 'Item Damaged ',
+    showAsterisk: true,
+    name: 'item_damaged',
+  },
+  {
+    label: 'Identifing No ',
+    name: 'identitfy_no',
     showAsterisk: true,
   },
 ];
@@ -236,6 +249,10 @@ export const initialValues = {
   },
 
   describe_incident: '',
+
+  // Part B
+  item_damaged: '',
+  identitfy_no: '',
   itemOwner: {
     Five_Star_Scaffolding: '',
     EmployeeCheck: '',
@@ -248,16 +265,6 @@ export const initialValues = {
   equipment: '',
   environment_cause: '',
   procedures: '',
-
-  // Part D
-  recommendations: [
-    {
-      no: '',
-      action: '',
-      list_name: '',
-      list_date: '',
-    },
-  ], // Field array
 
   // Part E
   known_injuries: '',
@@ -282,4 +289,15 @@ export const initialValues = {
   manager_signature: '',
   manager_date: '',
   manager_comment: '',
+  
+  // Part D
+   // Field array
+  number: [
+    {
+      no: '',
+      action: '',
+      list_name: '',
+      list_date: '',
+    },
+  ]
 };
