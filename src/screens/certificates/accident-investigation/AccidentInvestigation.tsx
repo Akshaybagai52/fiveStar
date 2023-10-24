@@ -28,6 +28,7 @@ import {
   partgOhs,
   partgGM,
   partfName,
+  partbInputt,
 } from '../../../data/accidentInvestigationData';
 import commonStyles from '../../../styles/commonStyles';
 import {AudioConverter} from '../../../themes/buttons/speechToText';
@@ -38,6 +39,7 @@ import RadioGroupButton from '../../../themes/buttons/radioButtonGroup';
 import {SafetyFieldArray} from '../../../themes/buttons/fieldArray-safetyInjured';
 import {SafeAreaView} from 'react-native';
 import {CanvasSignature} from '../../../themes/buttons/canvas-signature';
+import AccidentFieldArray from '../../../components/screens/accident-investigation/FieldArray';
 
 export const AccidentInvestigation = () => {
   const [checkboxes, setCheckboxes] = useState<CheckboxItem[]>(loadingCapacity);
@@ -121,7 +123,7 @@ export const AccidentInvestigation = () => {
       );
       const requestData = {
         values,
-        // number: values.number,
+        number: values.number,
         // stageDiscuss: values.projectDetails.stageDiscussion,
         // incidentImages: base64Images,
         // measureImages: base64Images2,
@@ -130,7 +132,7 @@ export const AccidentInvestigation = () => {
       console.log(requestData);
 
       // const response = await axios.post(
-      //   'https://fivestaraccess.com.au/custom_form/safety_incident_app.php',
+      //   'https://fivestaraccess.com.au/custom_form/accident_report_app.php',
       //   requestData,
       //   {
       //     headers: {
@@ -146,41 +148,56 @@ export const AccidentInvestigation = () => {
       console.error('Error:', error);
     }
   };
+  // employee: '',
+  // occupation: '',
+  // street_address: '',
+  // incident_occurred: '',
+  // supervisor: '',
+  // witness: '',
+  // incident_date: '',
+  // incident_time: '',
+  // date_reported: '',
+  // time_reported: '',
   const validationSchema = Yup.object().shape({
-    projectDetails: Yup.object().shape({
-      stageDiscussion: Yup.object().shape({
-        Dismantle: Yup.string().required('Dismantle is required'),
-        Existing_Scaffold: Yup.string().required(
-          'Existing Scaffold is required',
-        ),
-      }),
-      date: Yup.string().required('Date is required'),
-      project_id: Yup.string().required('Project ID is required'),
-      building_level: Yup.string(),
-      nameOf_customer: Yup.string().required('Customer Name is required'),
-      supervisor_name: Yup.string().required('Supervisor Name is required'),
-      number_of_attendence: Yup.string().required(
-        'Number of Attendance is required',
-      ),
-      start_time: Yup.string().required('Start Time is required'),
-      finish_time: Yup.string().required('Finish Time is required'),
-      duration: Yup.string().required('Duration is required'),
-      work_description: Yup.string().required('Work Description is required'),
-    }),
-    supervisor_notes: Yup.string(),
-    record: Yup.object().shape({
-      name_1: Yup.string(),
-      additional_cmt: Yup.string().required('Additional Comment is required'),
-    }),
-    signatures: Yup.object().shape({
-      name_of_person: Yup.string().required('Name is required'),
-      email_receive_copy: Yup.string()
-        .email('Invalid email format')
-        .required('Email is required'),
-      subcontractor_email: Yup.string()
-        .email('Invalid email format')
-        .required('Subcontractor Email is required'),
-    }),
+    employee: Yup.string().required('employee is required'),
+    occupation: Yup.string().required('occupation is required'),
+    street_address: Yup.string().required('Address ID is required'),
+    incident_occurred: Yup.string().required('Location ID is required'),
+    supervisor: Yup.string().required('Supervisor Name is required'),
+    witness: Yup.string().required('Witness is required'),
+    incident_date: Yup.string().required('Incident Date is required'),
+    incident_time: Yup.string().required('Incident Time is required'),
+    date_reported: Yup.string().required('Reported Date is required'),
+    time_reported: Yup.string().required('Reported Time is required'),
+    item_damaged: Yup.string().required('Reported Time is required'),
+    identitfy_no: Yup.string().required('Reported Time is required'),
+    damage_description: Yup.string().required('Reported Time is required'),
+    // occupation: Yup.string().required('Project ID is required'),
+    // building_level: Yup.string(),
+    // nameOf_customer: Yup.string().required('Customer Name is required'),
+    // supervisor_name: Yup.string().required('Supervisor Name is required'),
+    // number_of_attendence: Yup.string().required(
+    //   'Number of Attendance is required',
+    // ),
+    // start_time: Yup.string().required('Start Time is required'),
+    // finish_time: Yup.string().required('Finish Time is required'),
+    // duration: Yup.string().required('Duration is required'),
+    // work_description: Yup.string().required('Work Description is required'),
+
+    // supervisor_notes: Yup.string(),
+    // record: Yup.object().shape({
+    //   name_1: Yup.string(),
+    //   additional_cmt: Yup.string().required('Additional Comment is required'),
+    // }),
+    // signatures: Yup.object().shape({
+    //   name_of_person: Yup.string().required('Name is required'),
+    //   email_receive_copy: Yup.string()
+    //     .email('Invalid email format')
+    //     .required('Email is required'),
+    //   subcontractor_email: Yup.string()
+    //     .email('Invalid email format')
+    //     .required('Subcontractor Email is required'),
+    // }),
   });
   return (
     <SafeAreaView style={{padding: 20, backgroundColor: '#fff'}}>
@@ -259,7 +276,12 @@ export const AccidentInvestigation = () => {
 
                 <Field name="describe_incident" component={AudioConverter} />
               </View>
-              <View style={[commonStyles.mb15, commonStyles.mt5]}>
+              <View style={[commonStyles.mb15, commonStyles.mTop15]}>
+                <CustomHeader text="PART B. EQUIPMENT DAMAGE" />
+                {values.typeOfAccident.Equipment_Damage && 
+                  <TextInputGroup inputFields={partbInputt} />
+                }
+
                 <Text style={[commonStyles.text16, commonStyles.mb10]}>
                   Item Owner <Text style={[commonStyles.errorText]}>*</Text>
                 </Text>
@@ -329,7 +351,11 @@ export const AccidentInvestigation = () => {
               </View>
               <View>
                 <CustomHeader text="PART D: RECOMMENDATIONS (list in point form the specific actions taken to prevent recurrence)" />
+                <View style={[commonStyles.mTop15]}>
+                  <AccidentFieldArray number="number" />
+                </View>
               </View>
+
               <View style={{width: '90%', marginBottom: 20}}>
                 <FilePicker
                   selectedFiles={selectedFiles}
@@ -338,8 +364,13 @@ export const AccidentInvestigation = () => {
               </View>
               <View style={[commonStyles.mb15]}>
                 <CustomHeader text="PART E: Consequences" />
+                <Text style={[commonStyles.text16, commonStyles.mt5]}>
+                  Known injuries from incident
+                </Text>
                 <Field name="equipment" component={AudioConverter} />
+
                 <TextInputGroup inputFields={partEData} />
+                <Text style={[commonStyles.text16]}>Extra Comments</Text>
                 <Field name="extra_comments" component={AudioConverter} />
               </View>
 
@@ -355,6 +386,9 @@ export const AccidentInvestigation = () => {
                   onEnd={handleCanvasEnd}
                   name={'accident_signature'}
                 />
+                <Text style={[commonStyles.text16, commonStyles.mb5]}>
+                  Date
+                </Text>
                 <DatePickers name="accident_date" mode="date" />
               </View>
               <View style={[commonStyles.mTop15, commonStyles.mb15]}>

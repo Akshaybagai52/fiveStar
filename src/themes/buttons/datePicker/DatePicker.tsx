@@ -1,13 +1,19 @@
-import { Field, ErrorMessage } from 'formik';
-import React, { useState } from 'react';
-import { TextInput, TouchableOpacity, View, StyleSheet, Text } from 'react-native';
+import {Field, ErrorMessage} from 'formik';
+import React, {useState} from 'react';
+import {
+  TextInput,
+  TouchableOpacity,
+  View,
+  StyleSheet,
+  Text,
+} from 'react-native';
 import DatePicker from 'react-native-date-picker';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import commonStyles from '../../../styles/commonStyles';
 
 // mode = datetime/time/date
 
-export const DatePickers = ({ name, mode }: { name: string; mode:any }) => {
+export const DatePickers = ({name, mode}: {name: string; mode: any}) => {
   const [date, setDate] = useState<Date | null>(null);
   const [open, setOpen] = useState(false);
 
@@ -24,15 +30,14 @@ export const DatePickers = ({ name, mode }: { name: string; mode:any }) => {
 
   return (
     <Field name={name}>
-      {({ field, form }: { field: any; form: any }) => (
+      {({field, form}: {field: any; form: any}) => (
         <>
           <View style={styles.inputContainer}>
             <TouchableOpacity
               style={[styles.button]}
               onPress={() => {
                 setOpen(true);
-              }}
-            >
+              }}>
               <TextInput
                 style={styles.input}
                 value={formattedDate}
@@ -47,7 +52,7 @@ export const DatePickers = ({ name, mode }: { name: string; mode:any }) => {
               mode={mode}
               open={open}
               date={date || new Date()} // Provide the current date as a fallback
-              onConfirm={(selectedDate) => {
+              onConfirm={selectedDate => {
                 setOpen(false);
                 setDate(selectedDate);
                 form.setFieldValue(field.name, selectedDate);
@@ -58,7 +63,10 @@ export const DatePickers = ({ name, mode }: { name: string; mode:any }) => {
             />
           )}
           {/* Display error message */}
-          <ErrorMessage name={name} component={Text}  />
+          {/* <ErrorMessage name={name} component={Text}  /> */}
+          <ErrorMessage name={name}>
+            {msg => <Text style={{color: 'red'}}>{msg}</Text>}
+          </ErrorMessage>
         </>
       )}
     </Field>
@@ -82,9 +90,7 @@ const styles = StyleSheet.create({
   },
   input: {
     flex: 1,
-    color: 'black'
-
-
+    color: 'black',
   },
   errorText: {
     color: 'red',
