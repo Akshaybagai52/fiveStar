@@ -1,0 +1,63 @@
+{
+    "incidentImages": [],
+    "measureImages": [],
+    "number": null,
+    "signature": {
+      "signature1": "",
+      "signature2": ""
+    },
+    "values": {
+      "Representative": "",
+      "Representative_comment": "sadfsdf",
+      "Representative_date": "2023-10-23T08:00:55.179Z",
+      "accident_date": "",
+      "accident_name": "",
+      "accident_signature": "",
+      "damage_description": "",
+      "date_reported": "2023-10-23T07:59:32.128Z",
+      "describe_incident": "sadfsdf",
+      "employee": "asfsdaf",
+      "environment_cause": "asdsf",
+      "equipment": "safdasdf",
+      "estimated_time": "",
+      "extra_comments": "",
+      "hazard_incident": "fdasfdsf",
+      "incident_date": "2023-10-23T08:00:35.366Z",
+      "incident_occurred": "",
+      "incident_time": "2023-10-23T07:59:28.483Z",
+      "itemOwner": {
+        "EmployeeCheck": true,
+        "Five_Star_Scaffolding": true,
+        "Other_specify": ""
+      },
+      "known_injuries": "",
+      "manager": "",
+      "manager_comment": "asfdasf",
+      "manager_date": "2023-10-23T08:01:08.214Z",
+      "manager_signature": "",
+      "occupation": "",
+      "procedures": "safsdfa",
+      "recommendations": [],
+      "representative_signature": "",
+      "specify_measures": "safdsf",
+      "street_address": "",
+      "supervisor": "",
+      "supervisor_comment": "asfdsaf",
+      "supervisor_date": "2023-10-23T08:00:42.896Z",
+      "supervisor_name": "sdfasf",
+      "supervisor_signature": "",
+      "time_reported": "2023-10-23T07:59:34.468Z",
+      "typeOfAccident": {
+        "Equipment_Damage": true,
+        "First_Aid_Injury": true,
+        "Lost_time_Injury": "",
+        "Medical_Treatment": true,
+        "Minor_Near_Miss": "",
+        "Significant_Near_Miss": ""
+      },
+      "undefined": "",
+      "witness": "",
+      "your_email": "safdsf"
+    }
+  }
+  

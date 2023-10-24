@@ -54,7 +54,7 @@ export function AudioConverter({ field, form }: {field:any, form:any}) {
     container: {
       flex: 1,
       justifyContent: 'center',
-      alignItems: 'center',
+      alignItems: 'flex-start',
     },
     buttonStyles: {
       alignSelf: 'flex-start',
@@ -67,7 +67,7 @@ export function AudioConverter({ field, form }: {field:any, form:any}) {
       <TextInput
         value={results} // Use the local state variable
         onChangeText={text => setRecognizedTextManually(text)} // Handle manual text input
-        style={[commonStyles.textInput, {width: '100%', minHeight: 90}, commonStyles.mb15]}
+        style={[commonStyles.textInput, {width: '90%', minHeight: 90}, commonStyles.mb15]}
         multiline={true}
         numberOfLines={5}
       />
