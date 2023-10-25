@@ -6,19 +6,18 @@ import Handover from '../screens/certificates/handover-certificate/Handover';
 import Login from '../components/common/LoginForm';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Home from '../screens/home/Home';
-import { Text } from 'react-native-paper';
 import Contact from '../screens/contact/Contact';
 import { Damaged } from '../screens/certificates/damagedOrMissing';
 import { DayLabour } from '../screens/certificates/day-labour-docket';
 import { SafetyToolbox } from '../screens/certificates/safety-toolbox-discussion';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
-// import {useSelector} from 'react-redux';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import AllCertificates from '../screens/certificates/list-of-certificates/AllCertificates';
 import { SafetyIncident } from '../screens/certificates/safety-incident';
 import { ReportingUnsafe } from '../screens/certificates/reporting-unsafe-scaffold';
 import { AccidentInvestigation } from '../screens/certificates/accident-investigation';
+import { MonthlyInspection } from '../screens/certificates/monthly-inspection';
 
 
 
@@ -49,6 +48,7 @@ export function HandoverDrawer() {
         <Stack.Screen name="Safety Injured" component={SafetyIncident} />
         <Stack.Screen name="Reporting Unsafe Scaffolding" component={ReportingUnsafe} />
         <Stack.Screen name="Accident Investigation" component={AccidentInvestigation} />
+        <Stack.Screen name="Monthly Inspection" component={MonthlyInspection} />
 
         <Drawer.Screen name="Help Center" component={Contact}  />
       </Drawer.Navigator>

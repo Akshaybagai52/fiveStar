@@ -125,22 +125,22 @@ export const AccidentInvestigation = () => {
         values,
         number: values.number,
         // stageDiscuss: values.projectDetails.stageDiscussion,
-        // incidentImages: base64Images,
+        recommendationsImages: base64Images,
         // measureImages: base64Images2,
         // signature: signatures,
       };
       console.log(requestData);
 
-      // const response = await axios.post(
-      //   'https://fivestaraccess.com.au/custom_form/accident_report_app.php',
-      //   requestData,
-      //   {
-      //     headers: {
-      //       'Content-Type': 'application/json',
-      //     },
-      //   },
-      // );
-      // console.log('Post Response:', response);
+      const response = await axios.post(
+        'https://fivestaraccess.com.au/custom_form/accident_report_app.php',
+        requestData,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+      console.log('Post Response:', response);
       // console.log('signature', values.projectDetails.certificationRelation);
       // Alert.alert("Document submitted successfully")
       setCustomAlertVisible(true);
@@ -367,7 +367,7 @@ export const AccidentInvestigation = () => {
                 <Text style={[commonStyles.text16, commonStyles.mt5]}>
                   Known injuries from incident
                 </Text>
-                <Field name="equipment" component={AudioConverter} />
+                <Field name="known_injuries" component={AudioConverter} />
 
                 <TextInputGroup inputFields={partEData} />
                 <Text style={[commonStyles.text16]}>Extra Comments</Text>
