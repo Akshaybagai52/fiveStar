@@ -26,18 +26,14 @@ import {
   elevations,
   loadingCapacity,
   initialValues,
-  erectionData,
-  variationData,
-  inspectionData,
   erectionRadioData,
-  dismantleRadioData,
   drawingOptions,
 } from '../../../data/monthlyInspectionData';
 import commonStyles from '../../../styles/commonStyles';
 import RadioGroupButton from '../../../themes/buttons/radioButtonGroup';
 import {AudioConverter} from '../../../themes/buttons/speechToText';
 import Address from '../../../components/common/Address';
-import RadioButtonGroup from 'react-native-paper/lib/typescript/src/components/RadioButton/RadioButtonGroup';
+import {CanvasSignature} from '../../../themes/buttons/canvas-signature';
 
 export const MonthlyInspection = () => {
   // Scroll View End
@@ -117,7 +113,7 @@ export const MonthlyInspection = () => {
     setCustomAlertVisible(false);
   };
 
-  const handleSubmit1 = async (values: HandoverFormValues) => {
+  const handleSubmit1 = async (values: any) => {
     try {
       const base64Images = await Promise.all(
         selectedFiles.map(async file => {
@@ -126,19 +122,20 @@ export const MonthlyInspection = () => {
         }),
       );
       const requestData = {
-        projectDetails: values.projectDetails,
-        selectedOptionData:
-          values.projectDetails.certificationRelation.selectedOptionData,
-        // dismantleRadio: values.projectDetails.dismantleRadioData,
-        // erectionRadio: values.projectDetails.erectionRadioData,
-        scaffoldDetails: values.scaffoldDetails,
-        signatures: values.signatures,
-        imagesAttached: base64Images,
-        signature: signatures,
+        values,
+        // projectDetails: values.projectDetails,
+        // selectedOptionData:
+        //   values.projectDetails.certificationRelation.selectedOptionData,
+        // // dismantleRadio: values.projectDetails.dismantleRadioData,
+        // // erectionRadio: values.projectDetails.erectionRadioData,
+        // scaffoldDetails: values.scaffoldDetails,
+        // signatures: values.signatures,
+        signatureImages: base64Images,
+        // signature: signatures,
       };
 
       const response = await axios.post(
-        'https://fivestaraccess.com.au/custom_form/handover_native_app.php',
+        'https://fivestaraccess.com.au/custom_form/monthly_inspection_app.php',
         requestData,
         {
           headers: {
@@ -204,10 +201,7 @@ export const MonthlyInspection = () => {
                   What is this Certificate Relating to ?
                 </Text>
                 <Text>Choose One </Text>
-                <RadioGroup
-                  options={options}
-                  name="certificateRelation"
-                />
+                <RadioGroup options={options} name="certificateRelation" />
                 {/* {values.projectDetails.certificationRelation.selectedOptionData.variation.dayLabourErection === "dayLabourErection" ? <Text> "hey"</Text> : <Text> "dsfhey"</Text>} */}
               </View>
               <View>
@@ -244,9 +238,7 @@ export const MonthlyInspection = () => {
                 </Text>
               </View>
               <View>
-                <RadioGroupButton
-                  options={drawingOptions}
-                />
+                <RadioGroupButton options={drawingOptions} />
                 <Text style={{fontSize: 18, fontWeight: 'bold'}}>
                   What's the Loading Capacity?
                 </Text>
@@ -268,8 +260,7 @@ export const MonthlyInspection = () => {
               <View>
                 <TextInputGroup inputFields={scaffoldData} />
               </View>
-              {values.certificateRelation ===
-                'monthly_inspection' && (
+              {values.certificateRelation === 'monthly_inspection' && (
                 <View style={commonStyles.mTop15}>
                   <CustomHeader text="Checklist for Scaffold" />
                   <RadioGroupButton
@@ -280,32 +271,6 @@ export const MonthlyInspection = () => {
                   <Field
                     name="Rectification_description"
                     component={AudioConverter}
-                  />
-                </View>
-              )}
-              {values.projectDetails.certificationRelation.selectedOption ===
-                'Inspection' && (
-                <View style={commonStyles.mTop15}>
-                  <CustomHeader text="Checklist for Scaffold" />
-                  <RadioGroupButton
-                    options={erectionRadioData}
-                    // name="projectDetails.certificationRelation.selectedOption"
-                  />
-                  {/* <AudioConverter /> */}
-                  <Field
-                    name="projectDetails.scaffoldChecklist.speechToText"
-                    component={AudioConverter}
-                  />
-                </View>
-              )}
-
-              {values.projectDetails.certificationRelation.selectedOption ===
-                'Dismantle' && (
-                <View style={commonStyles.mTop15}>
-                  <CustomHeader text="Checklist for Scaffold" />
-                  <RadioGroupButton
-                    options={dismantleRadioData}
-                    // name="projectDetails.certificationRelation.selectedOption"
                   />
                 </View>
               )}
@@ -338,28 +303,16 @@ export const MonthlyInspection = () => {
               </View>
 
               {/* <SignatureScreen /> */}
-              <MySignatureCanvas
+              <CanvasSignature
                 onBegin={handleCanvasBegin}
                 onEnd={handleCanvasEnd}
-                signature={signatures}
-                setSignature={(signature: any) =>
-                  setSignatures(prevSignatures => ({
-                    ...prevSignatures,
-                    signature1: signature,
-                  }))
-                }
+                name={'personSignature'}
               />
 
-              <MySignatureCanvas
+              <CanvasSignature
                 onBegin={handleCanvasBegin}
                 onEnd={handleCanvasEnd}
-                signature={signatures}
-                setSignature={(signature: any) =>
-                  setSignatures(prevSignatures => ({
-                    ...prevSignatures,
-                    signature2: signature,
-                  }))
-                }
+                name={'customerSignature'}
               />
               <CustomAlert
                 visible={isCustomAlertVisible}

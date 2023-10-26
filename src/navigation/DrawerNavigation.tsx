@@ -18,6 +18,7 @@ import { SafetyIncident } from '../screens/certificates/safety-incident';
 import { ReportingUnsafe } from '../screens/certificates/reporting-unsafe-scaffold';
 import { AccidentInvestigation } from '../screens/certificates/accident-investigation';
 import { MonthlyInspection } from '../screens/certificates/monthly-inspection';
+import { ScaffoldTempering } from '../screens/certificates/scaffold-tempering-investigation';
 
 
 
@@ -49,6 +50,7 @@ export function HandoverDrawer() {
         <Stack.Screen name="Reporting Unsafe Scaffolding" component={ReportingUnsafe} />
         <Stack.Screen name="Accident Investigation" component={AccidentInvestigation} />
         <Stack.Screen name="Monthly Inspection" component={MonthlyInspection} />
+        <Stack.Screen name="Scaffold Tampering Investigation" component={ScaffoldTempering} />
 
         <Drawer.Screen name="Help Center" component={Contact}  />
       </Drawer.Navigator>
