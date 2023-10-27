@@ -1,15 +1,11 @@
-import {
-  View,
-  ScrollView,
-  SafeAreaView,
-} from 'react-native';
+import {View, ScrollView, SafeAreaView} from 'react-native';
 import {Text, ActivityIndicator, Button} from 'react-native-paper';
 import React, {useState, useRef, useEffect} from 'react';
 import {myStyles} from '../damagedOrMissing';
 import TextInputGroup from '../../../themes/buttons/TextInputGroup';
 import {ButtonGreen} from '../../../themes/text/ButtonGreen';
 import FilePicker from '../../../themes/buttons/FilePicker';
-import {Field, Formik} from 'formik';
+import {ErrorMessage, Field, Formik} from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
 import {DocumentPickerResponse} from 'react-native-document-picker';
@@ -22,6 +18,7 @@ import {
   secondListHeading,
   scaffoldingData,
   erectionRadioData,
+  list,
 } from '../../../data/scaffoldTemperingData';
 import commonStyles from '../../../styles/commonStyles';
 import {AudioConverter} from '../../../themes/buttons/speechToText';
@@ -30,9 +27,9 @@ import {DatePickers} from '../../../themes/buttons/datePicker';
 import ListWithBullets from '../../../components/common/ListComp';
 import {CanvasSignature} from '../../../themes/buttons/canvas-signature';
 import RadioGroupButton from '../../../themes/buttons/radioButtonGroup';
+import ListCompGroup from '../../../components/common/ListCompGroup';
 
 export const ScaffoldTempering = () => {
-
   const [selectedFiles, setSelectedFiles] = useState<DocumentPickerResponse[]>(
     [],
   );
@@ -74,16 +71,16 @@ export const ScaffoldTempering = () => {
       };
       console.log(requestData);
 
-    //   const response = await axios.post(
-    //     'https://fivestaraccess.com.au/custom_form/safety_toolbox_app.php',
-    //     requestData,
-    //     {
-    //       headers: {
-    //         'Content-Type': 'application/json',
-    //       },
-    //     },
-    //   );
-    //   console.log('Post Response:', requestData);
+      const response = await axios.post(
+        'https://fivestaraccess.com.au/custom_form/scaffold_tampering_app.php',
+        requestData,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+      console.log('Post Response:', requestData);
       // console.log('signature', values.projectDetails.certificationRelation);
       // Alert.alert("Document submitted successfully")
       setCustomAlertVisible(true);
@@ -104,10 +101,10 @@ export const ScaffoldTempering = () => {
     repair_scaffold: Yup.string().required('This is required Field'),
     prevent_recurrence: Yup.string().required('This is required Field'),
     Supervisor_Name: Yup.string().required('This is required Field'),
+    supervisor_emails: Yup.string().required('This is required Field'),
     customer_representative: Yup.string(),
     representative_email: Yup.string(),
     supervisorSignature: Yup.string(),
-   
   });
   return (
     <SafeAreaView style={{padding: 20, backgroundColor: '#fff'}}>
@@ -140,28 +137,37 @@ export const ScaffoldTempering = () => {
                 </Text>
                 <DatePickers name="date" mode="date" />
                 <TextInputGroup inputFields={initialFormData} />
-                <ListWithBullets
+                {/* <ListWithBullets
                   heading={secondListHeading}
                   listText={scaffoldingData}
-                />
-                <Text style={[commonStyles.text16]}>
+                /> */}
+                <ListCompGroup list={list} />
+                <Text style={[commonStyles.text16, commonStyles.mTop15]}>
                   Explain the unapproved modification that took place?{' '}
                   <Text style={[commonStyles.errorText]}>*</Text>
                 </Text>
-
                 <Field
-                  name="projectDetails.work_description"
+                  name="unapproved_modification"
                   component={AudioConverter}
                 />
+
                 <View style={commonStyles.mTop15}>
                   <RadioGroupButton
                     options={erectionRadioData}
                     // name="projectDetails.certificationRelation.selectedOption"
                   />
                   {/* <AudioConverter /> */}
+                  <Text
+                    style={[
+                      commonStyles.text16,
+                      commonStyles.mTop15,
+                      commonStyles.fontBold,
+                    ]}>
+                    Q6. What has been implemented to prevent recurrence of
+                    tampering? <Text style={[commonStyles.errorText]}>*</Text>
+                  </Text>
                   <Field name="prevent_recurrence" component={AudioConverter} />
                 </View>
-
                 <View style={{width: '90%', marginBottom: 20}}>
                   <FilePicker
                     selectedFiles={selectedFiles}

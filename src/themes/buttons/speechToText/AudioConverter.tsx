@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, TextInput, View } from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {StyleSheet, Text, TextInput, View} from 'react-native';
 import Voice, {
   SpeechResultsEvent,
   SpeechErrorEvent,
 } from '@react-native-voice/voice';
-import { Button } from 'react-native-paper';
+import {Button} from 'react-native-paper';
 import commonStyles from '../../../styles/commonStyles';
+import {ErrorMessage} from 'formik';
 
-export function AudioConverter({ field, form }: {field:any, form:any}) {
+export function AudioConverter({field, form}: {field: any; form: any}) {
   const [results, setResults] = useState<string>('');
   const [isListening, setIsListening] = useState(false);
 
@@ -67,10 +68,15 @@ export function AudioConverter({ field, form }: {field:any, form:any}) {
       <TextInput
         value={results} // Use the local state variable
         onChangeText={text => setRecognizedTextManually(text)} // Handle manual text input
-        style={[commonStyles.textInput, {width: '90%', minHeight: 90}, commonStyles.mb15]}
+        style={[
+          commonStyles.textInput,
+          {width: '90%', minHeight: 90},
+          commonStyles.mb15,
+        ]}
         multiline={true}
         numberOfLines={5}
       />
+      
       <Button
         mode="contained"
         icon={isListening ? 'stop' : 'record'}
@@ -78,6 +84,10 @@ export function AudioConverter({ field, form }: {field:any, form:any}) {
         onPress={toggleListening}>
         {isListening ? 'Stop Recognizing' : 'Start Recognizing'}
       </Button>
+      <ErrorMessage
+        name={field.name}
+        render={msg => <Text style={[commonStyles.errorText]}>{msg}</Text>} // Use your own Text component
+      />
     </View>
   );
 }
