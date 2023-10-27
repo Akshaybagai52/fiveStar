@@ -57,6 +57,23 @@ export const scaffoldingData = [
   'Missing Hop-up’s and Tie-bars',
 ];
 
+export const list = [
+    {
+        heading: 'Category of scaffold tampering as per chapter 7.3 of the SafeWork NSW Scaffold Industry Safety Standard TYPICAL RECTIFICATION WORK (Licensed FSS Scaffolder to reinstate with Handover certificate)',
+        listText: [
+            'Missing Handrails, Mid-Rails, Kickboards',
+            'Missing Hop-up’s and Tie-bars',
+          ],
+    },
+    {
+        heading: 'Category of scaffold tampering as per chapter 7.3 of the SafeWork NSW Scaffold Industry Safety Standard TYPICAL RECTIFICATION WORK (Licensed FSS Scaffolder to reinstate with Handover certificate)',
+        listText: [
+            'Missing Handrails, Mid-Rails, Kickboards',
+            'Missing Hop-up’s and Tie-bars',
+          ],
+    }
+]
+
 export const erectionRadioData = [
   {
     heading:

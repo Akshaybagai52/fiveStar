@@ -11,14 +11,16 @@ const BulletPoints = ({
 }) => {
   return (
     <View style={styles.container}>
-        <View style={{padding:15}}>
-      <Text style={[commonStyles.text20, commonStyles.fontBold]}>{heading}</Text>
-      {listText?.map((point, index) => (
-        <View style={styles.bulletItem} key={index}>
-          <Text style={styles.bullet}>• </Text>
-          <Text>{point}</Text>
-        </View>
-      ))}
+      <View style={{padding: 15}}>
+        <Text style={[commonStyles.text20, commonStyles.fontBold]}>
+          {heading}
+        </Text>
+        {listText?.map((point, index) => (
+          <View style={styles.bulletItem} key={index}>
+            <Text style={styles.bullet}>• </Text>
+            <Text>{point}</Text>
+          </View>
+        ))}
       </View>
     </View>
   );
@@ -28,9 +30,9 @@ const styles = StyleSheet.create({
   container: {
     borderColor: '#000',
     elevation: 2,
-    padding:10,
-    marginTop:20,
-    
+    padding: 10,
+    marginTop: 20,
+
     // Adjust the margin according to your layout
   },
   bulletItem: {
