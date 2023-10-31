@@ -19,6 +19,8 @@ import { ReportingUnsafe } from '../screens/certificates/reporting-unsafe-scaffo
 import { AccidentInvestigation } from '../screens/certificates/accident-investigation';
 import { MonthlyInspection } from '../screens/certificates/monthly-inspection';
 import { ScaffoldTempering } from '../screens/certificates/scaffold-tempering-investigation';
+import { MaterialOrder } from '../screens/material-order-process';
+import { PreStart } from '../screens/certificates/pre-start-baseout-checklist';
 
 
 
@@ -51,6 +53,8 @@ export function HandoverDrawer() {
         <Stack.Screen name="Accident Investigation" component={AccidentInvestigation} />
         <Stack.Screen name="Monthly Inspection" component={MonthlyInspection} />
         <Stack.Screen name="Scaffold Tampering Investigation" component={ScaffoldTempering} />
+        <Stack.Screen name="Pre Start - Base out checklist" component={PreStart} />
+        <Stack.Screen name="Material Order" component={MaterialOrder} />
 
         <Drawer.Screen name="Help Center" component={Contact}  />
       </Drawer.Navigator>
