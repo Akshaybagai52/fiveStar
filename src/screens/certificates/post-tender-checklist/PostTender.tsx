@@ -4,8 +4,7 @@ import React, {useState, useRef, useEffect} from 'react';
 import {myStyles} from '../damagedOrMissing';
 import TextInputGroup from '../../../themes/buttons/TextInputGroup';
 import {ButtonGreen} from '../../../themes/text/ButtonGreen';
-import FilePicker from '../../../themes/buttons/FilePicker';
-import {ErrorMessage, Field, Formik} from 'formik';
+import {Field, Formik} from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
 import {DocumentPickerResponse} from 'react-native-document-picker';
@@ -15,21 +14,18 @@ import {
   userPersonalData,
   initialFormData,
   initialValues,
-  // secondListHeading,
-  // scaffoldingData,
-  erectionRadioData,
-  list,
-} from '../../../data/scaffoldTemperingData';
+  secondFormData,
+  recordingComp,
+  //   combinedData,
+} from '../../../data/postTenderData';
 import commonStyles from '../../../styles/commonStyles';
 import {AudioConverter} from '../../../themes/buttons/speechToText';
 import Address from '../../../components/common/Address';
 import {DatePickers} from '../../../themes/buttons/datePicker';
-import ListWithBullets from '../../../components/common/ListComp';
 import {CanvasSignature} from '../../../themes/buttons/canvas-signature';
-import RadioGroupButton from '../../../themes/buttons/radioButtonGroup';
-import ListCompGroup from '../../../components/common/ListCompGroup';
+import RadioAudio from '../../../components/screens/pre-start/RadioAudio';
 
-export const ScaffoldTempering = () => {
+export const PostTender = () => {
   const [selectedFiles, setSelectedFiles] = useState<DocumentPickerResponse[]>(
     [],
   );
@@ -66,23 +62,21 @@ export const ScaffoldTempering = () => {
       );
       const requestData = {
         values,
-        imagesAttached: base64Images,
+        // imagesAttached: base64Images,
         // signature: signatures,
       };
       console.log(requestData);
 
-      const response = await axios.post(
-        'https://fivestaraccess.com.au/custom_form/scaffold_tampering_app.php',
-        requestData,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        },
-      );
-      console.log('Post Response:', requestData);
-      // console.log('signature', values.projectDetails.certificationRelation);
-      // Alert.alert("Document submitted successfully")
+      //   const response = await axios.post(
+      //     'https://fivestaraccess.com.au/custom_form/scaffold_tampering_app.php',
+      //     requestData,
+      //     {
+      //       headers: {
+      //         'Content-Type': 'application/json',
+      //       },
+      //     },
+      //   );
+      //   console.log('Post Response:', requestData);
       setCustomAlertVisible(true);
     } catch (error) {
       console.error('Error:', error);
@@ -115,7 +109,7 @@ export const ScaffoldTempering = () => {
         <Formik
           initialValues={initialValues}
           enableReinitialize={true}
-          validationSchema={validationSchema}
+          //   validationSchema={validationSchema}
           onSubmit={async values => {
             setLoading(true);
             handleSubmit1(values);
@@ -127,53 +121,42 @@ export const ScaffoldTempering = () => {
                 <Address />
                 <View style={{marginBottom: 20}}>
                   <Text style={{fontSize: 30, fontWeight: 'bold'}}>
-                    Scaffold Tampering Investigation Form
+                    Post-Tender Checklist
+                  </Text>
+                  <Text>
+                    Five Star Scaffolding pre tender checklist as per Chapter
+                    2.4 of the SafeWork NSW Scaffolding Industry Safety Standard
+                    2022
                   </Text>
                 </View>
               </View>
               <View style={[commonStyles.mTop15]}>
+                <TextInputGroup inputFields={initialFormData} />
                 <Text style={[commonStyles.text16, commonStyles.mb5]}>
                   Date
                 </Text>
                 <DatePickers name="date" mode="date" />
-                <TextInputGroup inputFields={initialFormData} />
-                {/* <ListWithBullets
-                  heading={secondListHeading}
-                  listText={scaffoldingData}
-                /> */}
-                <ListCompGroup list={list} />
-                <Text style={[commonStyles.text16, commonStyles.mTop15]}>
-                  Explain the unapproved modification that took place?{' '}
-                  <Text style={[commonStyles.errorText]}>*</Text>
-                </Text>
-                <Field
-                  name="unapproved_modification"
-                  component={AudioConverter}
-                />
+                <TextInputGroup inputFields={secondFormData} />
 
-                <View style={commonStyles.mTop15}>
-                  <RadioGroupButton
-                    options={erectionRadioData}
-                    // name="projectDetails.certificationRelation.selectedOption"
-                  />
-                  {/* <AudioConverter /> */}
-                  <Text
-                    style={[
-                      commonStyles.text16,
-                      commonStyles.mTop15,
-                      commonStyles.fontBold,
-                    ]}>
-                    Q6. What has been implemented to prevent recurrence of
-                    tampering? <Text style={[commonStyles.errorText]}>*</Text>
+                {/* <RadioAudio combinedData={combinedData} /> */}
+                {recordingComp.map((item, index) => {
+                  return (
+                    <View style={commonStyles.mTop15} key={index}>
+                      <Text style={[commonStyles.text16, commonStyles.mTop15]}>
+                        {item.heading}
+                      </Text>
+                      <Field name={item.name} component={AudioConverter} />
+                    </View>
+                  );
+                })}
+                {/* <View style={commonStyles.mTop15}>
+                  <Text style={[commonStyles.text16, commonStyles.mTop15]}>
+                    Other Observations and Comments Any other observations and
+                    comments not covered in this form?{' '}
+                    <Text style={[commonStyles.errorText]}>*</Text>
                   </Text>
                   <Field name="prevent_recurrence" component={AudioConverter} />
-                </View>
-                <View style={{width: '90%', marginBottom: 20}}>
-                  <FilePicker
-                    selectedFiles={selectedFiles}
-                    setSelectedFiles={setSelectedFiles}
-                  />
-                </View>
+                </View> */}
               </View>
 
               <View style={{marginBottom: 15, marginTop: 15}}>
@@ -188,7 +171,15 @@ export const ScaffoldTempering = () => {
               <CanvasSignature
                 onBegin={handleCanvasBegin}
                 onEnd={handleCanvasEnd}
-                name="signatures.signature_img"
+                name="supervisorSignature"
+              />
+              <Text style={[commonStyles.text16, commonStyles.mb15]}>
+                Signature of Customer
+              </Text>
+              <CanvasSignature
+                onBegin={handleCanvasBegin}
+                onEnd={handleCanvasEnd}
+                name="customerSignature"
               />
               <CustomAlert
                 visible={isCustomAlertVisible}

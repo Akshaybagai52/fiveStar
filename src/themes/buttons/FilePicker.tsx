@@ -120,13 +120,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    padding: 16,
+    // padding: 16,
   },
   titleText: {
     fontSize: 22,
     fontWeight: 'bold',
     textAlign: 'center',
-    paddingVertical: 20,
+    // paddingVertical: 20,
+    paddingTop: 20,
   },
   textStyle: {
     backgroundColor: '#fff',

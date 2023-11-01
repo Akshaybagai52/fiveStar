@@ -49,13 +49,13 @@ export const initialFormData: Partial<InputField>[] = [
   // },
 ];
 
-export const secondListHeading =
-  'Category of scaffold tampering as per chapter 7.3 of the SafeWork NSW Scaffold Industry Safety Standard TYPICAL RECTIFICATION WORK (Licensed FSS Scaffolder to reinstate with Handover certificate)';
+// export const secondListHeading =
+//   'Category of scaffold tampering as per chapter 7.3 of the SafeWork NSW Scaffold Industry Safety Standard TYPICAL RECTIFICATION WORK (Licensed FSS Scaffolder to reinstate with Handover certificate)';
 
-export const scaffoldingData = [
-  'Missing Handrails, Mid-Rails, Kickboards',
-  'Missing Hop-up’s and Tie-bars',
-];
+// export const scaffoldingData = [
+//   'Missing Handrails, Mid-Rails, Kickboards',
+//   'Missing Hop-up’s and Tie-bars',
+// ];
 
 export const list = [
     {
