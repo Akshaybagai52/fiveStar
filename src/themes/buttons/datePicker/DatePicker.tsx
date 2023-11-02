@@ -9,7 +9,6 @@ import {
 } from 'react-native';
 import DatePicker from 'react-native-date-picker';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import commonStyles from '../../../styles/commonStyles';
 
 // mode = datetime/time/date
 
@@ -18,15 +17,18 @@ export const DatePickers = ({name, mode}: {name: string; mode: any}) => {
   const [open, setOpen] = useState(false);
 
   const formattedDate = date
-    ? date.toLocaleString(undefined, {
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-      })
-    : 'Select Date';
+    ? mode === 'date'
+      ? date.toLocaleString(undefined, {
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
+        })
+      : date.toLocaleString(undefined, {
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit',
+        })
+    : 'Select ' + mode.charAt(0).toUpperCase() + mode.slice(1);
 
   return (
     <Field name={name}>
@@ -43,7 +45,11 @@ export const DatePickers = ({name, mode}: {name: string; mode: any}) => {
                 value={formattedDate}
                 editable={false}
               />
-              <Icon name="date-range" size={20} color="#112D4E" />
+              <Icon
+                name={mode === 'date' ? 'date-range' : 'access-time'}
+                size={20}
+                color="#112D4E"
+              />
             </TouchableOpacity>
           </View>
           {open && (
