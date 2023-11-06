@@ -227,7 +227,7 @@ export const SafetyIncident = () => {
               </View>
               <View style={[commonStyles.mTop15, commonStyles.mb15]}>
                 <Text style={[commonStyles.text16, commonStyles.mb5]}>
-                  Incident Date <Text style={[commonStyles.errorText]}>*</Text>
+                  Incident Date <Text style ={[commonStyles.errorText]}>*</Text>
                 </Text>
                 <DatePickers name="date_of_incident" mode="date" />
               </View>
