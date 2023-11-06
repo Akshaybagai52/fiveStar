@@ -1,6 +1,6 @@
 import {View, ScrollView, SafeAreaView, TextInput} from 'react-native';
 import {Text, ActivityIndicator, Button} from 'react-native-paper';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Field, Formik} from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
@@ -11,6 +11,8 @@ import {myStyles} from '../certificates/damagedOrMissing';
 import {SelectPicker} from '../../themes/buttons/selectDropdown';
 import {ButtonGreen} from '../../themes/text/ButtonGreen';
 import {colors} from '../../colors/colors';
+import {useDispatch, useSelector} from 'react-redux';
+import {fetchAddressOptions} from '../../redux/addressSlice';
 
 const initialValues = {
   date: '',
@@ -49,15 +51,23 @@ export const MaterialOrder = () => {
   const handleCustomAlertClose = () => {
     setCustomAlertVisible(false);
   };
+  const dispatch = useDispatch();
+  const addressOptions = useSelector((state: any) => state.addressOptions);
+
+  useEffect(() => {
+    dispatch(fetchAddressOptions());
+  }, [dispatch]); 
 
   const handleSubmit1 = async (values: any) => {
+    console.log("Addresses",addressOptions);
+    console.log("GearCondition",gearConditionData);
     try {
       const requestData = {
         values,
         // imagesAttached: base64Images,
         // signature: signatures,
       };
-      console.log(requestData);
+      // console.log(requestData);
 
       //   const response = await axios.post(
       //     'https://fivestaraccess.com.au/custom_form/scaffold_tampering_app.php',
@@ -74,6 +84,7 @@ export const MaterialOrder = () => {
       console.error('Error:', error);
     }
   };
+  // console.log(addressOptions)
 
   const validationSchema = Yup.object().shape({
     project_id: Yup.string().required('This is required Field'),
@@ -114,7 +125,7 @@ export const MaterialOrder = () => {
                   </Text>
                 </View>
               </View>
-              <View>
+              <View style={{marginBottom:50}}>
                 <View style={[commonStyles.mTop15]}>
                   <Text style={[commonStyles.text16, commonStyles.mb5]}>
                     DELIVERY DATE{' '}
@@ -131,7 +142,7 @@ export const MaterialOrder = () => {
                 </View>
                 <TextInputGroup inputFields={initialFormData} />
                 <SelectPicker label={gearCondition} data={gearConditionData} />
-                <SelectPicker label={gearCondition} data={gearConditionData} />
+                <SelectPicker label={gearCondition} data={addressOptions} />
                 <View>
                   <Text style={[commonStyles.text16, commonStyles.mb5]}>
                     SUBMITTER
