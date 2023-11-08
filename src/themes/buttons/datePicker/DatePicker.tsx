@@ -60,8 +60,9 @@ export const DatePickers = ({name, mode}: {name: string; mode: any}) => {
               date={date || new Date()} // Provide the current date as a fallback
               onConfirm={selectedDate => {
                 setOpen(false);
+                const isoDateString = selectedDate.toISOString();
                 setDate(selectedDate);
-                form.setFieldValue(field.name, selectedDate);
+                form.setFieldValue(field.name, isoDateString);
               }}
               onCancel={() => {
                 setOpen(false);

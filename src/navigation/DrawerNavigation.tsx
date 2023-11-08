@@ -22,6 +22,7 @@ import {MaterialOrder} from '../screens/material-order-process';
 import {PreStart} from '../screens/certificates/pre-start-baseout-checklist';
 import {PostTender} from '../screens/certificates/post-tender-checklist';
 import {SiteAudit} from '../screens/certificates/site-audit-form';
+import { MaterialCheckout } from '../screens/material-checkout';
 
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
@@ -71,8 +72,10 @@ export function HandoverDrawer() {
       />
       <Stack.Screen name="Post Tender Checklist" component={PostTender} />
       <Stack.Screen name="Material Order" component={MaterialOrder} />
-
+      <Drawer.Screen name="Material Checkout" component={MaterialCheckout
+      } />
       <Drawer.Screen name="Help Center" component={Contact} />
+    
     </Drawer.Navigator>
   );
 }

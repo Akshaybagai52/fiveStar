@@ -19,9 +19,10 @@ interface SelectPickerProps {
   data: Item[];
   label: labelProps;
   name?: string;
+  loading?: boolean;
 }
 
-export function SelectPicker({data, label, name}: SelectPickerProps) {
+export function SelectPicker({data, label, name, loading}: SelectPickerProps) {
   const [open, setOpen] = useState<boolean>(false);
   const [value, setValue] = useState<string | null>(null);
   const [items, setItems] = useState<Item[]>(data);
@@ -60,6 +61,7 @@ export function SelectPicker({data, label, name}: SelectPickerProps) {
             listMode="SCROLLVIEW"
             searchable={true}
             style={[commonStyles.commonTextInput]}
+            // loading={loading ? loading : false}
           />
         </View>
       )}

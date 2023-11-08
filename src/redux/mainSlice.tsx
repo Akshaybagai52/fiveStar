@@ -17,6 +17,17 @@ const speechSlice = createSlice({
     },
   },
 });
+const addressSlice = createSlice({
+  name: 'address',
+  initialState,
+  reducers: {
+    updateAddressResults: (state, action) => {
+      state.address = action.payload;
+    },
+  },
+});
 export const {updateResults, updateUserInfo} = speechSlice.actions;
+export const {updateAddressResults } = addressSlice.actions
 
-export default speechSlice.reducer;
+export const speechReducer = speechSlice.reducer;
+export const addressReducer = addressSlice.reducer;
