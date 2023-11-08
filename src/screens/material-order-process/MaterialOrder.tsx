@@ -13,6 +13,7 @@ import {ButtonGreen} from '../../themes/text/ButtonGreen';
 import {colors} from '../../colors/colors';
 import {useDispatch, useSelector} from 'react-redux';
 import {fetchAddressOptions} from '../../redux/addressSlice';
+import { updateAddressResults } from '../../redux/mainSlice';
 
 const initialValues = {
   date: '',
@@ -26,7 +27,7 @@ const initialFormData = [
   {
     label: 'DELIVERY NOTES',
     // showAsterisk: true,
-    name: 'projectDetails.projectId',
+    name: 'notes',
   },
 ];
 const gearConditionData = [
@@ -34,12 +35,12 @@ const gearConditionData = [
   {label: 'Un-Fresh', value: 'Un-Fresh'},
 ];
 const gearCondition = {
-  name: 'supervisor_name',
+  name: 'gearCondition',
   label: 'GEAR CONDITION',
   showAsterisk: true,
 };
 const delieveryAddress = {
-  name: 'supervisor_name',
+  name: 'deliveryAddress',
   label: 'DELIVERY ADDRESS (SEARCH AND SELECT FROM DROPDOWN)',
   showAsterisk: true,
 };
@@ -59,11 +60,11 @@ export const MaterialOrder = () => {
   }, [dispatch]); 
 
   const handleSubmit1 = async (values: any) => {
-    console.log("Addresses",addressOptions);
-    console.log("GearCondition",gearConditionData);
+
     try {
       const requestData = {
         values,
+
         // imagesAttached: base64Images,
         // signature: signatures,
       };
@@ -78,7 +79,9 @@ export const MaterialOrder = () => {
       //       },
       //     },
       //   );
-      //   console.log('Post Response:', requestData);
+      dispatch(updateAddressResults(values))
+        console.log('Post Response:', requestData);
+
       setCustomAlertVisible(true);
     } catch (error) {
       console.error('Error:', error);
@@ -103,6 +106,7 @@ export const MaterialOrder = () => {
     representative_email: Yup.string(),
     supervisorSignature: Yup.string(),
   });
+  
   return (
     <SafeAreaView style={{padding: 20, backgroundColor: '#fff'}}>
       <ScrollView scrollEnabled showsVerticalScrollIndicator={false}>
@@ -138,11 +142,11 @@ export const MaterialOrder = () => {
                     DELIVERY TIME{' '}
                     <Text style={[commonStyles.errorText]}>*</Text>
                   </Text>
-                  <DatePickers name="date" mode="time" />
+                  <DatePickers name="time" mode="time" />
                 </View>
                 <TextInputGroup inputFields={initialFormData} />
                 <SelectPicker label={gearCondition} data={gearConditionData} />
-                <SelectPicker label={gearCondition} data={addressOptions} />
+                <SelectPicker label={delieveryAddress} data={addressOptions} />
                 <View>
                   <Text style={[commonStyles.text16, commonStyles.mb5]}>
                     SUBMITTER
