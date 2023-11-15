@@ -18,9 +18,11 @@ interface productProps {
   value: string;
 }
 export const MaterialCheckout = () => {
-  const [data, setData] = useState<any>(); // const { loading, setLoading } = ();
-  const [updatedItems, setUpdatedItems] = useState<any>([]);
+  const [data, setData] = useState<any>();
+  const [updatedItems, setUpdatedItems] = useState<productProps[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [mappedItems, setMappedItems] = useState<productProps[]>([]);
+
   const dataResponse = async () => {
     try {
       const response = await axios.get(
@@ -44,7 +46,8 @@ export const MaterialCheckout = () => {
   };
   const handleInputChange = (text: string, index: number, field: any) => {
     const baseItem =
-      updatedItems.find(item => item.id === data[index].id) || data[index];
+      updatedItems.find((item: productProps) => item.id === data[index].id) ||
+      data[index];
     const updatedItem: any = {...baseItem};
 
     // Update the specific field in the copied item
@@ -68,17 +71,35 @@ export const MaterialCheckout = () => {
 
     console.log(updatedItems);
   };
+  const handleAddToCart = () => {
+    const mappedData = updatedItems.map((item: productProps) => ({
+      id: item.id,
+      label: item.label,
+      quantity: item.quantity,
+      text: item.text,
+      value: item.value,
+    }));
+    setMappedItems(mappedData);
+  };
 
-  // const addressResult = useSelector(updateAddressResults);
-  // const addressOptions = useSelector<any>(
-  //   (state: any) => state.address.address,
-  // );
+  const removeItem = (id: string) => {
+    const updatedMappedItems = mappedItems.filter(
+      (item: productProps) => item.id !== id,
+    );
+    setMappedItems(updatedMappedItems);
+  };
+
+  const addressResult = useSelector(updateAddressResults);
+  const addressOptions = useSelector<any>(
+    (state: any) => state.address.address,
+  );
+  console.log(addressOptions);
 
   useEffect(() => {
     dataResponse();
   }, []);
 
-  const renderItem = ({item, index}: {item: any; index: number}) => {
+  const renderItem = ({item, index}: {item: productProps; index: number}) => {
     return (
       <View key={item.id} style={[commonStyles.mTop15]}>
         <Text style={[commonStyles.text16, commonStyles.fontBold]}>
@@ -109,7 +130,7 @@ export const MaterialCheckout = () => {
       <View>
         <Button
           mode="contained"
-          onPress={() => console.log(updatedItems)}
+          onPress={handleAddToCart}
           style={[commonStyles.mTop15]}>
           Add to Cart
         </Button>
@@ -141,7 +162,7 @@ export const MaterialCheckout = () => {
         </View>
         <Text>Products</Text>
         <View>
-          {updatedItems.map((item: any, index: number) => {
+          {mappedItems.map((item: productProps, index: number) => {
             return (
               <View key={item.id} style={[commonStyles.mTop15]}>
                 <Text style={[commonStyles.text16, commonStyles.fontBold]}>
@@ -153,23 +174,30 @@ export const MaterialCheckout = () => {
                     justifyContent: 'space-between',
                   }}>
                   <ProductsInput
-                    value={item.input1}
+                    value={item.quantity}
                     onChangeText={(text: string) =>
                       handleInputChange(text, index, 'quantity')
                     }
                     placeholder="Quantity"
                   />
                   <ProductsInput
-                    value={item.input2}
+                    value={item.text}
                     onChangeText={(text: string) =>
                       handleInputChange(text, index, 'text')
                     }
                     placeholder="Text"
                   />
                 </View>
+                <Button onPress={() => removeItem(item.id)}>Remove</Button>
               </View>
             );
           })}
+        </View>
+        <View>
+          <Text>Address</Text>
+          <View>
+            <Text>{addressOptions ? addressOptions.date : ''}</Text>
+          </View>
         </View>
       </View>
     </View>
