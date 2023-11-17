@@ -20,9 +20,16 @@ interface SelectPickerProps {
   label: labelProps;
   name?: string;
   loading?: boolean;
+  searchable?: boolean;
 }
 
-export function SelectPicker({data, label, name, loading}: SelectPickerProps) {
+export function SelectPicker({
+  data,
+  label,
+  name,
+  loading,
+  searchable,
+}: SelectPickerProps) {
   const [open, setOpen] = useState<boolean>(false);
   const [value, setValue] = useState<string | null>(null);
   const [items, setItems] = useState<Item[]>(data);
@@ -53,13 +60,10 @@ export function SelectPicker({data, label, name, loading}: SelectPickerProps) {
               const selectedValue =
                 typeof newValue === 'function' ? newValue(undefined) : newValue;
               setValue(selectedValue);
-              form.setFieldValue(
-                label.name ? label.name : name,
-                selectedValue,
-              );
+              form.setFieldValue(label.name ? label.name : name, selectedValue);
             }}
             listMode="SCROLLVIEW"
-            searchable={true}
+            searchable={searchable===false ? searchable : true}
             style={[commonStyles.commonTextInput]}
             // loading={loading ? loading : false}
           />

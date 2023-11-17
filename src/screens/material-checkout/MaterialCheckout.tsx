@@ -1,4 +1,4 @@
-import {View, Text} from 'react-native';
+import {View, Text, TextInput} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 import LoadingSpinner from '../../components/loader/LoadingSpinner';
@@ -9,6 +9,13 @@ import {updateAddressResults} from '../../redux/mainSlice';
 import {Button} from 'react-native-paper';
 import ProductsInput from '../../components/screens/material-checkout/ProductsInput';
 import {FlatList} from 'react-native';
+import DatePicker from 'react-native-date-picker';
+import {DatePickers} from '../../themes/buttons/datePicker';
+import {Formik} from 'formik';
+import {SelectPicker} from '../../themes/buttons/selectDropdown';
+import TextInputGroup from '../../themes/buttons/TextInputGroup';
+import {colors} from '../../colors/colors';
+import {ButtonGreen} from '../../themes/text/ButtonGreen';
 
 interface productProps {
   id: string;
@@ -16,7 +23,41 @@ interface productProps {
   label: string;
   quantity: string;
   value: string;
+  weight: number;
+  category: string;
 }
+interface checkoutProps {
+  date: string;
+  deliveryAddress: string;
+  gearCondition: string;
+  notes: string;
+  submitter: string;
+  time: string;
+}
+const initialValues = {
+  date: '',
+  time: '',
+  notes: '',
+  deliveryAddress: '',
+  gearCondition: '',
+  submitter: '',
+};
+const initialFormData = [
+  {
+    label: 'DELIVERY NOTES',
+    // showAsterisk: true,
+    name: 'notes',
+  },
+];
+const gearConditionData = [
+  {label: 'Fresh', value: 'Fresh'},
+  {label: 'Un-Fresh', value: 'Un-Fresh'},
+];
+const gearCondition = {
+  name: 'gearCondition',
+  label: 'GEAR CONDITION',
+  showAsterisk: true,
+};
 export const MaterialCheckout = () => {
   const [data, setData] = useState<any>();
   const [updatedItems, setUpdatedItems] = useState<productProps[]>([]);
@@ -32,10 +73,13 @@ export const MaterialCheckout = () => {
       const modifiedData = response.data.records.map((item: any) => ({
         label: item.fields['Material Description'],
         value: item.fields['Material Description'],
+        weight: item.fields['Weight KG'],
         quantity: '',
         text: '',
         id: item.id,
+        category: item.fields['Material Category'],
       }));
+      console.log(modifiedData, 'modified Data');
 
       setData(modifiedData);
       setLoading(false);
@@ -78,8 +122,39 @@ export const MaterialCheckout = () => {
       quantity: item.quantity,
       text: item.text,
       value: item.value,
+      weight: item.weight * parseInt(item.quantity),
+      category: item.category,
     }));
     setMappedItems(mappedData);
+  };
+  const handleSubmit1 = async (values: any) => {
+    try {
+      const requestData = {
+        date: values.date || addressOptions.date,
+        time: values.time || addressOptions.time,
+        notes: values.notes || addressOptions.notes,
+        gearCondition: values.gearCondition || addressOptions.gearCondition,
+        address: addressOptions.deliveryAddress,
+        products: mappedItems,
+      };
+      // console.log(requestData);
+
+      //   const response = await axios.post(
+      //     'https://fivestaraccess.com.au/custom_form/scaffold_tampering_app.php',
+      //     requestData,
+      //     {
+      //       headers: {
+      //         'Content-Type': 'application/json',
+      //       },
+      //     },
+      //   );
+      // dispatch(updateAddressResults(values))
+      console.log('Post Response:', requestData);
+
+      // setCustomAlertVisible(true);
+    } catch (error) {
+      console.error('Error:', error);
+    }
   };
 
   const removeItem = (id: string) => {
@@ -90,7 +165,7 @@ export const MaterialCheckout = () => {
   };
 
   const addressResult = useSelector(updateAddressResults);
-  const addressOptions = useSelector<any>(
+  const addressOptions: checkoutProps = useSelector<any>(
     (state: any) => state.address.address,
   );
   console.log(addressOptions);
@@ -168,6 +243,12 @@ export const MaterialCheckout = () => {
                 <Text style={[commonStyles.text16, commonStyles.fontBold]}>
                   {item.label}
                 </Text>
+                <Text style={[commonStyles.text16, commonStyles.fontBold]}>
+                  Weight(KG) : {item.weight}
+                </Text>
+                <Text style={[commonStyles.text16, commonStyles.fontBold]}>
+                  Category : {item.category || 'none'}
+                </Text>
                 <View
                   style={{
                     flexDirection: 'row',
@@ -180,6 +261,7 @@ export const MaterialCheckout = () => {
                     }
                     placeholder="Quantity"
                   />
+                  {/* {item.weight} */}
                   <ProductsInput
                     value={item.text}
                     onChangeText={(text: string) =>
@@ -194,10 +276,92 @@ export const MaterialCheckout = () => {
           })}
         </View>
         <View>
-          <Text>Address</Text>
-          <View>
-            <Text>{addressOptions ? addressOptions.date : ''}</Text>
+          <Formik
+            initialValues={initialValues}
+            enableReinitialize={true}
+            //   validationSchema={validationSchema}
+            onSubmit={async values => {
+              setLoading(true);
+              handleSubmit1(values);
+              setLoading(false);
+              console.log(values, 'valuessssss');
+            }}>
+            {({handleSubmit, values, setFieldValue}) => (
+              <View style={{backgroundColor: '#fff'}}>
+                <View>
+                  {/* <Address /> */}
+                  <View style={{marginBottom: 20}}>
+                    <Text style={{fontSize: 30, fontWeight: 'bold'}}>
+                      Delivery Details
+                    </Text>
+                  </View>
+                </View>
+                <View style={{marginBottom: 50}}>
+                  <View style={[commonStyles.mTop15]}>
+                    <Text style={[commonStyles.text16, commonStyles.mb5]}>
+                      DELIVERY DATE{' '}
+                      <Text style={[commonStyles.errorText]}>*</Text>
+                    </Text>
+                    <DatePickers
+                      name="date"
+                      mode="date"
+                      initialValue={addressOptions.date}
+                    />
+                  </View>
+                  <View style={[commonStyles.mTop15]}>
+                    <Text style={[commonStyles.text16, commonStyles.mb5]}>
+                      DELIVERY TIME{' '}
+                      <Text style={[commonStyles.errorText]}>*</Text>
+                    </Text>
+                    <DatePickers
+                      name="time"
+                      mode="time"
+                      initialValue={addressOptions.date || ''}
+                    />
+                  </View>
+                  <TextInputGroup inputFields={initialFormData} />
+                  <SelectPicker
+                    label={gearCondition}
+                    data={gearConditionData}
+                    searchable={false}
+                  />
+
+                  <View>
+                    <Text style={[commonStyles.text16, commonStyles.mb5]}>
+                      Delievery Address :
+                    </Text>
+                    <Text style={[commonStyles.text16, commonStyles.mb5]}>
+                      {addressOptions.deliveryAddress ?? ''}
+                    </Text>
+                  </View>
+                  <View>
+                    <Text style={[commonStyles.text16, commonStyles.mb5]}>
+                      Total Weight :
+                    </Text>
+                    <Text style={[commonStyles.text16, commonStyles.mb5]}>
+                      {mappedItems.reduce(
+                        (accumulator, currentValue) =>
+                          accumulator + currentValue.weight,
+                        0,
+                      )}
+                    </Text>
+                  </View>
+
+                  <ButtonGreen text="Submit" onPress={handleSubmit} />
+                </View>
+              </View>
+            )}
+          </Formik>
+          {/* {loading && (
+          <View style={myStyles.activityContainer}>
+            <ActivityIndicator
+              animating={true}
+              size="large"
+              color="#c7fe1a"
+              style={myStyles.activityIndicator}
+            />
           </View>
+        )} */}
         </View>
       </View>
     </View>

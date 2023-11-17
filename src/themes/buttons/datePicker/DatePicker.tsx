@@ -1,5 +1,5 @@
 import {Field, ErrorMessage} from 'formik';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   TextInput,
   TouchableOpacity,
@@ -10,11 +10,20 @@ import {
 import DatePicker from 'react-native-date-picker';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-// mode = datetime/time/date
-
-export const DatePickers = ({name, mode}: {name: string; mode: any}) => {
-  const [date, setDate] = useState<Date | null>(null);
+export const DatePickers = ({
+  name,
+  mode,
+  initialValue,
+}: {
+  name: string;
+  mode: any;
+  initialValue?: string;
+}) => {
+  const [date, setDate] = useState<Date | null>(
+    initialValue ? new Date(initialValue) : null,
+  );
   const [open, setOpen] = useState(false);
+  const [init, setInit] = useState(false);
 
   const formattedDate = date
     ? mode === 'date'
@@ -30,16 +39,21 @@ export const DatePickers = ({name, mode}: {name: string; mode: any}) => {
         })
     : 'Select ' + mode.charAt(0).toUpperCase() + mode.slice(1);
 
+  useEffect(() => {
+    if (initialValue) {
+      setDate(new Date(initialValue));
+    }
+  }, [initialValue]);
+
   return (
     <Field name={name}>
       {({field, form}: {field: any; form: any}) => (
+
         <>
           <View style={styles.inputContainer}>
             <TouchableOpacity
               style={[styles.button]}
-              onPress={() => {
-                setOpen(true);
-              }}>
+              onPress={() => setOpen(true)}>
               <TextInput
                 style={styles.input}
                 value={formattedDate}
@@ -59,18 +73,25 @@ export const DatePickers = ({name, mode}: {name: string; mode: any}) => {
               open={open}
               date={date || new Date()} // Provide the current date as a fallback
               onConfirm={selectedDate => {
+                // console.log(selectedDate, 'selectedDate')
                 setOpen(false);
+                setInit(true);
                 const isoDateString = selectedDate.toISOString();
                 setDate(selectedDate);
-                form.setFieldValue(field.name, isoDateString);
+                form.setFieldValue(field.name, isoDateString)
+                // field.onChange(isoDateString);
+                // initialValue
+                //   ? init
+                //     ? form.setFieldValue(field.name, isoDateString)
+                //     : form.setFieldValue(field.name, initialValue)
+                //   : form.setFieldValue(field.name, isoDateString);
+                // init ? form.setFieldValue(field.name, isoDateString) : form.setFieldValue(field.name, initialValue);
               }}
               onCancel={() => {
                 setOpen(false);
               }}
             />
           )}
-          {/* Display error message */}
-          {/* <ErrorMessage name={name} component={Text}  /> */}
           <ErrorMessage name={name}>
             {msg => <Text style={{color: 'red'}}>{msg}</Text>}
           </ErrorMessage>
@@ -98,8 +119,5 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     color: 'black',
-  },
-  errorText: {
-    color: 'red',
   },
 });
