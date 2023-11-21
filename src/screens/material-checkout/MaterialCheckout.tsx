@@ -137,7 +137,7 @@ export const MaterialCheckout = () => {
         address: addressOptions.deliveryAddress,
         products: mappedItems,
       };
-      // console.log(requestData);
+      console.log(requestData);
 
       //   const response = await axios.post(
       //     'https://fivestaraccess.com.au/custom_form/scaffold_tampering_app.php',
@@ -149,7 +149,7 @@ export const MaterialCheckout = () => {
       //     },
       //   );
       // dispatch(updateAddressResults(values))
-      console.log('Post Response:', requestData);
+      // console.log('Post Response:', requestData);
 
       // setCustomAlertVisible(true);
     } catch (error) {
@@ -206,7 +206,8 @@ export const MaterialCheckout = () => {
         <Button
           mode="contained"
           onPress={handleAddToCart}
-          style={[commonStyles.mTop15]}>
+          style={[commonStyles.mTop15]}
+          rippleColor={colors.riplePurple}>
           Add to Cart
         </Button>
       </View>
@@ -270,7 +271,13 @@ export const MaterialCheckout = () => {
                     placeholder="Text"
                   />
                 </View>
-                <Button onPress={() => removeItem(item.id)}>Remove</Button>
+                <Button
+                  onPress={() => removeItem(item.id)}
+                  style={[commonStyles.alignSelfEnd]}
+                  mode="contained"
+                  rippleColor={colors.riplePurple}>
+                  Remove
+                </Button>
               </View>
             );
           })}
@@ -284,7 +291,6 @@ export const MaterialCheckout = () => {
               setLoading(true);
               handleSubmit1(values);
               setLoading(false);
-              console.log(values, 'valuessssss');
             }}>
             {({handleSubmit, values, setFieldValue}) => (
               <View style={{backgroundColor: '#fff'}}>
