@@ -45,10 +45,12 @@ const delieveryAddress = {
   showAsterisk: true,
 };
 
-export const MaterialOrder = () => {
+export const MaterialOrder = ({navigation}:any) => {
   const [isCustomAlertVisible, setCustomAlertVisible] = useState(false);
   const [loading, setLoading] = useState(false);
-
+  const handleGetStartedPress = () => {
+    navigation.navigate('Material Checkout');
+  };
   const handleCustomAlertClose = () => {
     setCustomAlertVisible(false);
   };
@@ -81,6 +83,7 @@ export const MaterialOrder = () => {
       //   );
       dispatch(updateAddressResults(values))
         console.log('Post Response:', requestData);
+        handleGetStartedPress()
 
       setCustomAlertVisible(true);
     } catch (error) {
