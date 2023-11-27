@@ -72,8 +72,8 @@ export function HandoverDrawer() {
       />
       <Stack.Screen name="Post Tender Checklist" component={PostTender} />
       <Stack.Screen name="Material Order" component={MaterialOrder} />
-      <Drawer.Screen name="Material Checkout" component={MaterialCheckout
-      } />
+      {/* <Drawer.Screen name="Material Checkout" component={MaterialCheckout
+      } /> */}
       <Drawer.Screen name="Help Center" component={Contact} />
     
     </Drawer.Navigator>
@@ -157,6 +157,11 @@ export function GetStartedStack() {
       <Stack.Screen
         name="Login"
         component={Login}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Material Checkout"
+        component={MaterialCheckout}
         options={{headerShown: false}}
       />
       <Stack.Screen

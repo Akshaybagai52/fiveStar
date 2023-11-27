@@ -9,7 +9,6 @@ import {updateAddressResults} from '../../redux/mainSlice';
 import {Button} from 'react-native-paper';
 import ProductsInput from '../../components/screens/material-checkout/ProductsInput';
 import {FlatList} from 'react-native';
-import DatePicker from 'react-native-date-picker';
 import {DatePickers} from '../../themes/buttons/datePicker';
 import {Formik} from 'formik';
 import {SelectPicker} from '../../themes/buttons/selectDropdown';
@@ -79,7 +78,7 @@ export const MaterialCheckout = () => {
         id: item.id,
         category: item.fields['Material Category'],
       }));
-      console.log(modifiedData, 'modified Data');
+      // console.log(modifiedData, 'modified Data');
 
       setData(modifiedData);
       setLoading(false);
@@ -93,6 +92,7 @@ export const MaterialCheckout = () => {
       updatedItems.find((item: productProps) => item.id === data[index].id) ||
       data[index];
     const updatedItem: any = {...baseItem};
+    console.log("sdfgfd")
 
     // Update the specific field in the copied item
     updatedItem[field] = text;
@@ -103,17 +103,19 @@ export const MaterialCheckout = () => {
         item => item.id === updatedItem.id,
       );
       if (existingItemIndex > -1) {
+        console.log("if")
         // If the item already exists in the updatedItems array, replace it
         const updatedItems = [...prevState];
         updatedItems[existingItemIndex] = updatedItem;
         return updatedItems;
       } else {
+        console.log("else")
         // If the item doesn't exist in the updatedItems array, add it
         return [...prevState, updatedItem];
       }
     });
 
-    console.log(updatedItems);
+    // console.log(updatedItems);
   };
   const handleAddToCart = () => {
     const mappedData = updatedItems.map((item: productProps) => ({
@@ -126,6 +128,9 @@ export const MaterialCheckout = () => {
       category: item.category,
     }));
     setMappedItems(mappedData);
+    // setData([])
+    // setUpdatedItems([]);
+
   };
   const handleSubmit1 = async (values: any) => {
     try {
@@ -157,6 +162,14 @@ export const MaterialCheckout = () => {
     }
   };
 
+  const handleInputChange1 = (text: string, index: number, property: string) => {
+    const updatedItems = [...mappedItems];
+    const updatedItem:any = updatedItems[index];
+    updatedItem[property] = text;
+    // console.log(mappedItems)
+    setMappedItems(updatedItems);
+  };
+
   const removeItem = (id: string) => {
     const updatedMappedItems = mappedItems.filter(
       (item: productProps) => item.id !== id,
@@ -165,10 +178,10 @@ export const MaterialCheckout = () => {
   };
 
   const addressResult = useSelector(updateAddressResults);
-  const addressOptions: checkoutProps = useSelector<any>(
+  const addressOptions: any = useSelector<any>(
     (state: any) => state.address.address,
   );
-  console.log(addressOptions);
+  // console.log(addressOptions);
 
   useEffect(() => {
     dataResponse();
@@ -189,7 +202,7 @@ export const MaterialCheckout = () => {
             placeholder="Quantity"
           />
           <ProductsInput
-            value={item.input2}
+            value={item.input1}
             onChangeText={(text: string) =>
               handleInputChange(text, index, 'text')
             }
@@ -232,7 +245,7 @@ export const MaterialCheckout = () => {
             ]}>
             <Text style={[commonStyles.heading26]}>Cart</Text>
             <Text style={[commonStyles.text16]}>
-              {updatedItems.length} Items
+              {mappedItems.length} Items
             </Text>
           </View>
         </View>
@@ -258,7 +271,7 @@ export const MaterialCheckout = () => {
                   <ProductsInput
                     value={item.quantity}
                     onChangeText={(text: string) =>
-                      handleInputChange(text, index, 'quantity')
+                      handleInputChange1(text, index, 'quantity')
                     }
                     placeholder="Quantity"
                   />
