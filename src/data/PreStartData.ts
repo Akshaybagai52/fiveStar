@@ -55,13 +55,13 @@ export const combinedData = [
         heading:
           'Is the area available for laydown of scaffold gear?',
         options: threeOptions,
-        name: 'process.ground_suitability',
+        name: 'process.gear_laydown',
       },
     ],
     audioFieldHeading: 'Comments for space for Gear Laydown',
     showRadioAsterisk: true,
     showAudioFieldAsterisk: true,
-    audioFieldName: 'process.ground_suitability_cmt'
+    audioFieldName: 'process.gear_laydown_cmt'
   },
   {
     heading: 'Engineering Drawings',

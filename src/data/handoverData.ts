@@ -5,11 +5,11 @@ import {
   HandoverFormValues,
 } from '../types/interfaces/types';
 export const initialFormData: Partial<InputField>[] = [
-  {
-    label: 'What"s the Project ID ?',
-    showAsterisk: true,
-    name: 'projectDetails.projectId',
-  },
+  // {
+  //   label: 'What"s the Project ID ?',
+  //   showAsterisk: true,
+  //   name: 'projectDetails.projectId',
+  // },
   {
     label: 'Which Building and what Level ?',
     name: 'projectDetails.buildingLevel',
@@ -30,6 +30,12 @@ export const initialFormData: Partial<InputField>[] = [
     name: 'projectDetails.workCompletion',
   },
 ];
+
+export const AddresOptionsData = {
+  name: 'projectDetails.projectId',
+  label: 'What is the Project ID ?',
+  showAsterisk: true,
+};
 export const scaffoldData: Partial<InputField>[] = [
   {
     label: 'Scaffold length',

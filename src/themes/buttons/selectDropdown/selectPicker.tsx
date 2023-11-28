@@ -65,6 +65,9 @@ export function SelectPicker({
             listMode="SCROLLVIEW"
             searchable={searchable===false ? searchable : true}
             style={[commonStyles.commonTextInput]}
+            dropDownContainerStyle={{
+              width: '90%'
+            }}
             // loading={loading ? loading : false}
           />
         </View>

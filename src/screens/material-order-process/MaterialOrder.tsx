@@ -13,7 +13,7 @@ import {ButtonGreen} from '../../themes/text/ButtonGreen';
 import {colors} from '../../colors/colors';
 import {useDispatch, useSelector} from 'react-redux';
 import {fetchAddressOptions} from '../../redux/addressSlice';
-import { updateAddressResults } from '../../redux/mainSlice';
+import {updateAddressResults} from '../../redux/mainSlice';
 
 const initialValues = {
   date: '',
@@ -45,7 +45,7 @@ const delieveryAddress = {
   showAsterisk: true,
 };
 
-export const MaterialOrder = ({navigation}:any) => {
+export const MaterialOrder = ({navigation}: any) => {
   const [isCustomAlertVisible, setCustomAlertVisible] = useState(false);
   const [loading, setLoading] = useState(false);
   const handleGetStartedPress = () => {
@@ -54,15 +54,14 @@ export const MaterialOrder = ({navigation}:any) => {
   const handleCustomAlertClose = () => {
     setCustomAlertVisible(false);
   };
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<any>();
   const addressOptions = useSelector((state: any) => state.addressOptions);
 
   useEffect(() => {
     dispatch(fetchAddressOptions());
-  }, [dispatch]); 
+  }, [dispatch]);
 
   const handleSubmit1 = async (values: any) => {
-
     try {
       const requestData = {
         values,
@@ -72,18 +71,18 @@ export const MaterialOrder = ({navigation}:any) => {
       };
       // console.log(requestData);
 
-      //   const response = await axios.post(
-      //     'https://fivestaraccess.com.au/custom_form/scaffold_tampering_app.php',
-      //     requestData,
-      //     {
-      //       headers: {
-      //         'Content-Type': 'application/json',
-      //       },
-      //     },
-      //   );
-      dispatch(updateAddressResults(values))
-        console.log('Post Response:', requestData);
-        handleGetStartedPress()
+      const response = await axios.post(
+        'https://fivestaraccess.com.au/custom_form/material_order_process_app.php',
+        requestData,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+      dispatch(updateAddressResults(values));
+      console.log('Post Response:', response);
+      handleGetStartedPress();
 
       setCustomAlertVisible(true);
     } catch (error) {
@@ -109,7 +108,7 @@ export const MaterialOrder = ({navigation}:any) => {
     representative_email: Yup.string(),
     supervisorSignature: Yup.string(),
   });
-  
+
   return (
     <SafeAreaView style={{padding: 20, backgroundColor: '#fff'}}>
       <ScrollView scrollEnabled showsVerticalScrollIndicator={false}>
@@ -132,7 +131,7 @@ export const MaterialOrder = ({navigation}:any) => {
                   </Text>
                 </View>
               </View>
-              <View style={{marginBottom:50}}>
+              <View style={{marginBottom: 50}}>
                 <View style={[commonStyles.mTop15]}>
                   <Text style={[commonStyles.text16, commonStyles.mb5]}>
                     DELIVERY DATE{' '}

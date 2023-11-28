@@ -17,7 +17,7 @@ function AppNavigation() {
       <NavigationContainer>
       <Stack.Navigator>
           <Stack.Screen name="GetStartedStack" component={GetStartedStack} options={{ headerShown: false }} />
-          <Stack.Screen name="HandoverDrawer" component={HandoverDrawer} options={{ headerShown: false }} />
+          {/* <Stack.Screen name="HandoverDrawer" component={HandoverDrawer} options={{ headerShown: false }} /> */}
           <Stack.Screen name="AllCertificates" component={CertificateStack} options={{ headerShown: false }} />
           <Stack.Screen name="MyTabs" component={MyTabs} options={{ headerShown: false }} />
         </Stack.Navigator>
