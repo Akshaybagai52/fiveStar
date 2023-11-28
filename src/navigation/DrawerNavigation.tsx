@@ -22,16 +22,18 @@ import {MaterialOrder} from '../screens/material-order-process';
 import {PreStart} from '../screens/certificates/pre-start-baseout-checklist';
 import {PostTender} from '../screens/certificates/post-tender-checklist';
 import {SiteAudit} from '../screens/certificates/site-audit-form';
-import { MaterialCheckout } from '../screens/material-checkout';
-
+import {MaterialCheckout} from '../screens/material-checkout';
+import {getFocusedRouteNameFromRoute, useRoute} from '@react-navigation/native';
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
 // const speechReducerValues = useSelector((state: any) => state?.speech);
-
+let activeTab: string;
 export function HandoverDrawer() {
   const [expanded, setExpanded] = React.useState(true);
-
+  const route = useRoute();
+  activeTab = route.name;
+  // console.log(route.name);
   const handlePress = () => setExpanded(!expanded);
   return (
     <Drawer.Navigator
@@ -41,8 +43,9 @@ export function HandoverDrawer() {
           width: '85%',
         },
       }}>
-      <Drawer.Screen name="Home" component={Home} />
-      <Drawer.Screen name="Tabs" component={MyTabs} />
+      {/* <Drawer.Screen name="Home" component={Home} />
+      <Drawer.Screen name="Tabs" component={MyTabs} /> */}
+      <Drawer.Screen name="AllCertificates" component={AllCertificates} />
 
       <Drawer.Screen name="Handover" component={Handover} />
       <Drawer.Screen name="Damaged" component={Damaged} />
@@ -51,31 +54,30 @@ export function HandoverDrawer() {
         name="Safety Toolbox Discussion"
         component={SafetyToolbox}
       />
-      <Stack.Screen name="Safety Injured" component={SafetyIncident} />
-      <Stack.Screen
+      <Drawer.Screen name="Safety Injured" component={SafetyIncident} />
+      <Drawer.Screen
         name="Reporting Unsafe Scaffolding"
         component={ReportingUnsafe}
       />
-      <Stack.Screen
+      <Drawer.Screen
         name="Accident Investigation"
         component={AccidentInvestigation}
       />
-      <Stack.Screen name="Monthly Inspection" component={MonthlyInspection} />
-      <Stack.Screen
+      <Drawer.Screen name="Monthly Inspection" component={MonthlyInspection} />
+      <Drawer.Screen
         name="Scaffold Tampering Investigation"
         component={ScaffoldTempering}
       />
-      <Stack.Screen name="Site Audit Form" component={SiteAudit} />
-      <Stack.Screen
+      <Drawer.Screen name="Site Audit Form" component={SiteAudit} />
+      <Drawer.Screen
         name="Pre Start - Base out checklist"
         component={PreStart}
       />
-      <Stack.Screen name="Post Tender Checklist" component={PostTender} />
-      <Stack.Screen name="Material Order" component={MaterialOrder} />
+      <Drawer.Screen name="Post Tender Checklist" component={PostTender} />
+      <Drawer.Screen name="Material Order" component={MaterialOrder} />
       {/* <Drawer.Screen name="Material Checkout" component={MaterialCheckout
       } /> */}
-      <Drawer.Screen name="Help Center" component={Contact} />
-    
+      {/* <Drawer.Screen name="Help Center" component={Contact} /> */}
     </Drawer.Navigator>
   );
 }
@@ -103,7 +105,9 @@ export function MyTabs() {
       initialRouteName="Home"
       activeColor="#FF8C00"
       inactiveColor="#FCF6F5"
-      barStyle={{backgroundColor: '#14274E'}}
+      barStyle={{
+        backgroundColor: '#14274E',
+      }}
       shifting={true}>
       <Tab.Screen
         name="Home"
@@ -117,8 +121,8 @@ export function MyTabs() {
         }}
       />
       <Tab.Screen
-        name="AllCertificates"
-        component={AllCertificates}
+        name="HandoverDrawer"
+        component={HandoverDrawer}
         options={{
           tabBarLabel: 'Certificates',
           tabBarColor: 'yellow',

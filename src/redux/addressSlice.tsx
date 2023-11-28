@@ -9,6 +9,7 @@ export const fetchAddressOptions = createAsyncThunk(
     return response.data.records.map((item:any) => ({
       label: item.fields['Project Address'],
       value: item.fields['Project Address'],
+      id: item.id,
     }));
   }
 );

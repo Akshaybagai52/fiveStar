@@ -65,16 +65,16 @@ export const PreStart = () => {
       };
       console.log(requestData);
 
-    //   const response = await axios.post(
-    //     'https://fivestaraccess.com.au/custom_form/scaffold_tampering_app.php',
-    //     requestData,
-    //     {
-    //       headers: {
-    //         'Content-Type': 'application/json',
-    //       },
-    //     },
-    //   );
-    //   console.log('Post Response:', requestData);
+      const response = await axios.post(
+        'https://fivestaraccess.com.au/custom_form/baseout_checklist_app.php',
+        requestData,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+      console.log('Post Response:', requestData);
       setCustomAlertVisible(true);
     } catch (error) {
       console.error('Error:', error);

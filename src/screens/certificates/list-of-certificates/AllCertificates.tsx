@@ -11,7 +11,7 @@ import commonStyles from '../../../styles/commonStyles';
 import { Headline } from 'react-native-paper';
 
 const buttons = [
-  { text: 'Handover Certificate', route: 'Handover' },
+  { text: 'Handover Certificate', route: 'Login' },
   { text: 'Damaged Certificate', route: 'Damaged' },
   { text: 'Day Labour Docket', route: 'Day Labour Docket' },
   { text: 'Safety Toolbox Discussion', route: 'Safety Toolbox Discussion' },

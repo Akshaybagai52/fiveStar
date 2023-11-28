@@ -34,11 +34,15 @@ import {
   inspectionData,
   erectionRadioData,
   dismantleRadioData,
+  AddresOptionsData,
 } from '../../../data/handoverData';
 import commonStyles from '../../../styles/commonStyles';
 import RadioGroupButton from '../../../themes/buttons/radioButtonGroup';
-import { AudioConverter } from '../../../themes/buttons/speechToText';
+import {AudioConverter} from '../../../themes/buttons/speechToText';
 import Address from '../../../components/common/Address';
+import {useDispatch, useSelector} from 'react-redux';
+import {fetchAddressOptions} from '../../../redux/addressSlice';
+import {SelectPicker} from '../../../themes/buttons/selectDropdown';
 
 const Handover = () => {
   // Scroll View End
@@ -54,6 +58,11 @@ const Handover = () => {
   });
   const [isCustomAlertVisible, setCustomAlertVisible] = useState(false);
   const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch<any>();
+  const addressOptions = useSelector((state: any) => state.addressOptions);
+  useEffect(() => {
+    dispatch(fetchAddressOptions());
+  }, [dispatch]);
   // Scroll View start
   const scrollViewRef: any = useRef(null);
 
@@ -129,25 +138,24 @@ const Handover = () => {
       const requestData = {
         projectDetails: values.projectDetails,
         selectedOptionData:
-        values.projectDetails.certificationRelation.selectedOptionData,
+          values.projectDetails.certificationRelation.selectedOptionData,
         // dismantleRadio: values.projectDetails.dismantleRadioData,
         // erectionRadio: values.projectDetails.erectionRadioData,
         scaffoldDetails: values.scaffoldDetails,
         signatures: values.signatures,
         imagesAttached: base64Images,
         signature: signatures,
-
       };
 
-      const response = await axios.post(
-        'https://fivestaraccess.com.au/custom_form/handover_native_app.php',
-        requestData,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        },
-      );
+      // const response = await axios.post(
+      //   'https://fivestaraccess.com.au/custom_form/handover_native_app.php',
+      //   requestData,
+      //   {
+      //     headers: {
+      //       'Content-Type': 'application/json',
+      //     },
+      //   },
+      // );
       console.log('Post Response:', requestData);
       // console.log('signature', values.projectDetails.certificationRelation);
       // Alert.alert("Document submitted successfully")
@@ -275,6 +283,8 @@ const Handover = () => {
                 {/* {values.projectDetails.certificationRelation.selectedOptionData.variation.dayLabourErection === "dayLabourErection" ? <Text> "hey"</Text> : <Text> "dsfhey"</Text>} */}
               </View>
               <View>
+                <SelectPicker label={AddresOptionsData} data={addressOptions} />
+
                 <TextInputGroup inputFields={initialFormData} />
               </View>
               <View style={{marginBottom: 15, marginTop: 15}}>
@@ -338,8 +348,10 @@ const Handover = () => {
                     // name="projectDetails.certificationRelation.selectedOption"
                   />
                   {/* <AudioConverter /> */}
-                  <Field name="projectDetails.scaffoldChecklist.speechToText" component={AudioConverter} />
-
+                  <Field
+                    name="projectDetails.scaffoldChecklist.speechToText"
+                    component={AudioConverter}
+                  />
                 </View>
               )}
               {values.projectDetails.certificationRelation.selectedOption ===
@@ -351,7 +363,10 @@ const Handover = () => {
                     // name="projectDetails.certificationRelation.selectedOption"
                   />
                   {/* <AudioConverter /> */}
-                  <Field name="projectDetails.scaffoldChecklist.speechToText" component={AudioConverter} />
+                  <Field
+                    name="projectDetails.scaffoldChecklist.speechToText"
+                    component={AudioConverter}
+                  />
                 </View>
               )}
 
@@ -398,7 +413,7 @@ const Handover = () => {
                 onBegin={handleCanvasBegin}
                 onEnd={handleCanvasEnd}
                 signature={signatures}
-                setSignature={(signature: any) =>
+                setSignature={(signature: string) =>
                   setSignatures(prevSignatures => ({
                     ...prevSignatures,
                     signature1: signature,
