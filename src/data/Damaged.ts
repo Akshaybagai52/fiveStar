@@ -9,6 +9,12 @@ export const initialFormData: Partial<InputField>[] = [
     numberOfLines: 5,
   },
 ];
+export const damagedProjectIdData = {
+  name: 'projectId',
+  label: 'What is the Project ID ?',
+  showAsterisk: true,
+  prefilled: false,
+}
 export const loadingCapacity: CheckboxItem[] = [
   {
     label: 'Damaged Scaffold Components',
