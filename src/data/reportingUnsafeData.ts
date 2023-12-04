@@ -1,11 +1,11 @@
-import { CheckboxItem, DamagedFormValues, HandoverFormValues, InputField } from "../types/interfaces/types";
+import { CheckboxItem, DamagedFormValues, HandoverFormValues, InputField, ProjectIdProps } from "../types/interfaces/types";
 
 export const initialFormData: Partial<InputField>[] = [
-  {
-    label: 'Site Address ',
-    showAsterisk: true,
-    name: 'street_address',
-  },
+  // {
+  //   label: 'Site Address ',
+  //   showAsterisk: true,
+  //   name: 'street_address',
+  // },
   {
     label: 'Email',
     name: 'project_supervisor_mail',
@@ -19,6 +19,14 @@ export const initialFormData: Partial<InputField>[] = [
     name: 'scaffolding_company',
   },
 ];
+
+export const ReportingUnsafeProjectIdData:ProjectIdProps = {
+  name: 'street_address',
+  label: 'Site Address ',
+  showAsterisk: true,
+  prefilled: true,
+  prefilledCustomerName: 'nameOf_customer',
+};
 export const loadingCapacity: CheckboxItem[] = [
   {
     label: 'Insufficient or non-existent Edge protection installed by PCBU/Builder',
@@ -102,31 +110,8 @@ export const userPersonalData: Partial<InputField>[] = [
     label: 'Your Email Address ',
     name: 'your_email',
   },
-  // {
-  //   label: 'Reporting Date and Time ',
-  //   showAsterisk: true,
-  //   name: 'signatures.date_time',
-  // },
-//   {
-//     label: 'Supervisors email (please select) ',
-//     showAsterisk: true,
-//     name: 'signatures.supervisor_email',
-//   },
 ];
-// export const scaffoldData: Partial<InputField>[] = [
-//   {
-//     label: 'Men on Job',
-//     name: 'reporting.menon_job',
-//   },
-//   {
-//     label: 'Hours Lost',
-//     name: 'reporting.estimated_time',
-//   },
-//   {
-//     label: 'Total Hours Lost',
-//     name: 'reporting.total_hours',
-//   },
-// ];
+
 export const dismantleRadioData = [
   {
     heading: 'Extra Truck',
@@ -172,48 +157,3 @@ export const initialValues  = {
 
      
   };
-
-
-
-  // projectDetails: {
-  //   certificationRelation: {
-  //     selectedOption: '',
-  //   },
-  //   projectId: '',
-  //   buildingLevel: '',
-  //   nameOfBuilder: '',
-  //   customerABN: '',
-  //   workCompletion: '',
-  // },
-  // scaffoldDetails: {
-  //   drawingsSupplied: {
-  //     heavy675: '',
-  //     light225: '',
-  //     Medium450: '',
-  //     specialDuty: '',
-  //   },
-  //   elevations: {
-  //     south: '',
-  //     north: '',
-  //     west: '',
-  //     east: '',
-  //     variationWorks: '',
-  //     wholeProject: '',
-  //     wholeLevel: '',
-  //     wholeHouse: '',
-  //   },
-  //   inputDetails: {
-  //     scaffoldLength: '',
-  //     numberOfBays: '',
-  //     scaffoldHeight: '',
-  //     numberOfLifts: '',
-  //   },
-  // },
-  // signatures: {
-  //   customerName: '',
-  //   HRWLNumber: '',
-  //   customerEmail2: '',
-  //   customerEmail: '',
-  //   DateTime: '',
-  //   customerName2: '',
-  // },

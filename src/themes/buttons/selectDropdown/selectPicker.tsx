@@ -6,8 +6,8 @@ import {View} from 'react-native';
 import commonStyles from '../../../styles/commonStyles';
 
 interface Item {
-  customer_abn: string | undefined;
-  customer_name: string | undefined;
+  customer_abn?: string | undefined;
+  customer_name?: string | undefined;
   label: string | undefined;
   value: string | undefined;
 }
@@ -55,17 +55,17 @@ export function SelectPicker({
       if (selectedProjectId) {
         const {customer_abn, customer_name}: any = selectedProjectId;
         console.log(label);
-        formik.setFieldValue(
+        label?.prefilledCustomerAbn && formik.setFieldValue(
           label?.prefilledCustomerAbn || '',
           customer_abn ?? '',
         );
-        formik.setFieldValue(
+        label?.prefilledCustomerName && formik.setFieldValue(
           label?.prefilledCustomerName || '',
           customer_name ?? '',
         );
         if (selectedProjectId) {
-          const {label}: any = selectedProjectId;
-          formik.setFieldValue(label?.name, label.label ?? '');
+          const {label:itemLabel}: any = selectedProjectId;
+          formik.setFieldValue(label?.name, itemLabel ?? '');
         }
       }
     }, [selectedProjectId]);

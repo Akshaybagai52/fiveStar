@@ -30,6 +30,7 @@ import {
   topicFeedback,
   secondListHeading,
   scaffoldingData,
+  safetyToolboxProjectIdData,
   // erectionData,
   // variationData,
 } from '../../../data/safetyToolbox';
@@ -40,6 +41,8 @@ import {DatePickers} from '../../../themes/buttons/datePicker';
 import ListWithBullets from '../../../components/common/ListComp';
 import {TimePicker} from '../../../themes/buttons/timeCalculation';
 import {CanvasSignature} from '../../../themes/buttons/canvas-signature';
+import { SelectPicker } from '../../../themes/buttons/selectDropdown';
+import { useSelector } from 'react-redux';
 
 export const SafetyToolbox = () => {
   const [checkboxes, setCheckboxes] = useState<CheckboxItem[]>(loadingCapacity);
@@ -103,6 +106,7 @@ export const SafetyToolbox = () => {
   const handleCustomAlertClose = () => {
     setCustomAlertVisible(false);
   };
+  const addressOptions = useSelector((state: any) => state.addressOptions);
 
   const handleSubmit1 = async (values: any) => {
     try {
@@ -214,6 +218,8 @@ export const SafetyToolbox = () => {
                   Date of Safety Tool Box Meeting *
                 </Text>
                 <DatePickers name="projectDetails.date" mode="date" />
+                <SelectPicker label={safetyToolboxProjectIdData} data={addressOptions} />
+
                 <TextInputGroup inputFields={initialFormData} />
                 <TimePicker names={TimeNames} />
 

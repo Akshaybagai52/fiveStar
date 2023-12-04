@@ -3,6 +3,7 @@ import {
   CheckboxItem,
   RadioOption,
   HandoverFormValues,
+  ProjectIdProps,
 } from '../types/interfaces/types';
 
 export const supervisorName = {
@@ -122,7 +123,12 @@ export const partAItemOwner: CheckboxItem[] = [
     name: 'itemOwner.Other_specify',
   },
 ];
-
+export const accidentInvestigationProjectIdData:ProjectIdProps = {
+  name: 'street_address',
+  label: 'Address ',
+  showAsterisk: true,
+  prefilled: false
+};
 export const userPersonalData: Partial<InputField>[] = [
   {
     label: 'Employee ',

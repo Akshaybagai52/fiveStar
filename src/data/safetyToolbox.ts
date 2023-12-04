@@ -3,14 +3,15 @@ import {
   CheckboxItem,
   RadioOption,
   HandoverFormValues,
+  ProjectIdProps,
 } from '../types/interfaces/types';
 
 export const initialFormData: Partial<InputField>[] = [
-  {
-    label: 'What"s the Project ID ?',
-    showAsterisk: true,
-    name: 'projectDetails.project_id',
-  },
+  // {
+  //   label: 'What"s the Project ID ?',
+  //   showAsterisk: true,
+  //   name: 'projectDetails.project_id',
+  // },
   {
     label: 'Which Building and what Level did you work at ?',
     name: 'projectDetails.building_level',
@@ -44,7 +45,13 @@ export const initialFormData: Partial<InputField>[] = [
   // },
   
 ];
-
+export const safetyToolboxProjectIdData:ProjectIdProps = {
+  name: 'projectDetails.project_id',
+  label: 'What is the Project ID ?',
+  showAsterisk: true,
+  prefilled: true,
+  prefilledCustomerName: 'projectDetails.supervisor_name'
+};
 export const firstListHeading = 'Topics discussed and feedback'
 
 export const topicFeedback = [

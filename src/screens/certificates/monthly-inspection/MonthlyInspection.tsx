@@ -28,12 +28,15 @@ import {
   initialValues,
   erectionRadioData,
   drawingOptions,
+  monthlyInspectionProjectIdData,
 } from '../../../data/monthlyInspectionData';
 import commonStyles from '../../../styles/commonStyles';
 import RadioGroupButton from '../../../themes/buttons/radioButtonGroup';
 import {AudioConverter} from '../../../themes/buttons/speechToText';
 import Address from '../../../components/common/Address';
 import {CanvasSignature} from '../../../themes/buttons/canvas-signature';
+import { useSelector } from 'react-redux';
+import { SelectPicker } from '../../../themes/buttons/selectDropdown';
 
 export const MonthlyInspection = () => {
   // Scroll View End
@@ -49,6 +52,8 @@ export const MonthlyInspection = () => {
   });
   const [isCustomAlertVisible, setCustomAlertVisible] = useState(false);
   const [loading, setLoading] = useState(false);
+  const addressOptions = useSelector((state: any) => state.addressOptions);
+
   // Scroll View start
   const scrollViewRef: any = useRef(null);
 
@@ -205,6 +210,8 @@ export const MonthlyInspection = () => {
                 {/* {values.projectDetails.certificationRelation.selectedOptionData.variation.dayLabourErection === "dayLabourErection" ? <Text> "hey"</Text> : <Text> "dsfhey"</Text>} */}
               </View>
               <View>
+              <SelectPicker label={monthlyInspectionProjectIdData} data={addressOptions} />
+
                 <TextInputGroup inputFields={initialFormData} />
               </View>
               <View style={{marginBottom: 15, marginTop: 15}}>

@@ -3,6 +3,7 @@ import {
   CheckboxItem,
   RadioOption,
   HandoverFormValues,
+  ProjectIdProps,
 } from '../types/interfaces/types';
 
 export const label = {
@@ -61,10 +62,16 @@ export const subcontractorData = [
   {label: 'Warrior Scaffold', value: 'Warrior Scaffold'},
 ];
 
-export const incidentAddress = {
+// export const incidentAddress = {
+//   name: 'street_address',
+//   label: 'Where did the incident happen ? Site, Street Address & Suburb) ',
+//   showAsterisk: true,
+// };
+export const safetyIncidentProjectIdData:ProjectIdProps = {
   name: 'street_address',
   label: 'Where did the incident happen ? Site, Street Address & Suburb) ',
   showAsterisk: true,
+  prefilled: false,
 };
 export const supervisorName = {
   name: 'manager_name',
