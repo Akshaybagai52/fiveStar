@@ -3,14 +3,15 @@ import {
   CheckboxItem,
   RadioOption,
   HandoverFormValues,
+  ProjectIdProps,
 } from '../types/interfaces/types';
 
 export const initialFormData: Partial<InputField>[] = [
-  {
-    label: 'What"s the Project ID ?',
-    showAsterisk: true,
-    name: 'projectDetails.project_id',
-  },
+  // {
+  //   label: 'What"s the Project ID ?',
+  //   showAsterisk: true,
+  //   name: 'projectDetails.project_id',
+  // },
   {
     label: 'FSS Purchase Order #',
     name: 'projectDetails.purchase_order',
@@ -27,6 +28,14 @@ export const initialFormData: Partial<InputField>[] = [
     name: 'projectDetails.nameOf_customer',
   },
 ];
+export const dayLabourProjectIdData:ProjectIdProps = {
+  name: 'projectDetails.project_id',
+  label: 'What is the Project ID ?',
+  showAsterisk: true,
+  prefilled: true,
+  // prefilledCustomerAbn: 'projectDetails.customerABN',
+  prefilledCustomerName: 'projectDetails.nameOf_customer'
+}
 
 
 // export const scaffoldData: Partial<InputField>[] = [

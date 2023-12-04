@@ -29,6 +29,7 @@ import {
   partgGM,
   partfName,
   partbInputt,
+  accidentInvestigationProjectIdData,
 } from '../../../data/accidentInvestigationData';
 import commonStyles from '../../../styles/commonStyles';
 import {AudioConverter} from '../../../themes/buttons/speechToText';
@@ -40,6 +41,7 @@ import {SafetyFieldArray} from '../../../themes/buttons/fieldArray-safetyInjured
 import {SafeAreaView} from 'react-native';
 import {CanvasSignature} from '../../../themes/buttons/canvas-signature';
 import AccidentFieldArray from '../../../components/screens/accident-investigation/FieldArray';
+import { useSelector } from 'react-redux';
 
 export const AccidentInvestigation = () => {
   const [checkboxes, setCheckboxes] = useState<CheckboxItem[]>(loadingCapacity);
@@ -56,6 +58,7 @@ export const AccidentInvestigation = () => {
   });
   const [isCustomAlertVisible, setCustomAlertVisible] = useState(false);
   const [loading, setLoading] = useState(false);
+  const addressOptions = useSelector((state: any) => state.addressOptions);
 
   // Scroll View start
   const scrollViewRef: any = useRef(null);
@@ -228,6 +231,7 @@ export const AccidentInvestigation = () => {
                   </Text>
                 </View>
               </View>
+              <SelectPicker label={accidentInvestigationProjectIdData} data={addressOptions} />
 
               <TextInputGroup inputFields={userPersonalData} />
               <View style={[commonStyles.mTop15, commonStyles.mb15]}>

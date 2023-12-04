@@ -28,6 +28,7 @@ import {
   initialValues,
   erectionData,
   variationData,
+  dayLabourProjectIdData,
 } from '../../../data/dayLabour';
 import commonStyles from '../../../styles/commonStyles';
 import RadioGroupButton from '../../../themes/buttons/radioButtonGroup';
@@ -35,6 +36,8 @@ import {AudioConverter} from '../../../themes/buttons/speechToText';
 import Address from '../../../components/common/Address';
 import {DatePickers} from '../../../themes/buttons/datePicker';
 import WorkCalculate from '../../../themes/buttons/work-calculation/WorkCalculate';
+import { SelectPicker } from '../../../themes/buttons/selectDropdown';
+import { useSelector } from 'react-redux';
 
 export const DayLabour = () => {
   // Scroll View End
@@ -55,6 +58,7 @@ export const DayLabour = () => {
     "number1": '',
     "number2": '',
   }]);
+  const addressOptions = useSelector((state: any) => state.addressOptions);
 
   const handleAddComponent = () => {
     setNames([...names, { number1: '', number2: '', result: '' }]);
@@ -186,15 +190,15 @@ export const DayLabour = () => {
         numbers: values.number
       };
 
-      const response = await axios.post(
-        'https://fivestaraccess.com.au/custom_form/daylabour_app.php',
-        requestData,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        },
-      );
+      // const response = await axios.post(
+      //   'https://fivestaraccess.com.au/custom_form/daylabour_app.php',
+      //   requestData,
+      //   {
+      //     headers: {
+      //       'Content-Type': 'application/json',
+      //     },
+      //   },
+      // );
       console.log('Post Response:', requestData);
       // console.log('signature', values.projectDetails.certificationRelation);
       // Alert.alert("Document submitted successfully")
@@ -280,7 +284,9 @@ export const DayLabour = () => {
                 {/* {values.projectDetails.certificationRelation.selectedOptionData.variation.dayLabourErection === "dayLabourErection" ? <Text> "hey"</Text> : <Text> "dsfhey"</Text>} */}
               </View>
               <View style={[commonStyles.mTop15]}>
-                <DatePickers name="projectDetails.date" mode="date" />
+              <SelectPicker label={dayLabourProjectIdData} data={addressOptions} />
+
+              <DatePickers name="projectDetails.date" mode="date" />
                 <TextInputGroup inputFields={initialFormData} />
               </View>
               <View>

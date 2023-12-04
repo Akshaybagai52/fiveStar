@@ -121,3 +121,12 @@ export interface DamagedFormValues {
   
 
 }
+
+export interface ProjectIdProps {
+  name: string;
+  label: string;
+  showAsterisk: boolean;
+  prefilled: boolean;
+  prefilledCustomerAbn?: string;
+  prefilledCustomerName?: string;
+}

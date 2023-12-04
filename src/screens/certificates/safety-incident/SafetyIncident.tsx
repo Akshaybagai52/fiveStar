@@ -23,9 +23,7 @@ import {
   scaffoldData,
   loadingCapacity,
   initialValues,
-  data,
   label,
-  incidentAddress,
   supervisorName,
   supervisorMail,
   anyOneInjured,
@@ -38,6 +36,7 @@ import {
   supervisorEmailData,
   anyOneInjuredData,
   investigationOfficerData,
+  safetyIncidentProjectIdData,
 } from '../../../data/safetyIncidents';
 import commonStyles from '../../../styles/commonStyles';
 import {AudioConverter} from '../../../themes/buttons/speechToText';
@@ -46,6 +45,7 @@ import {DatePickers} from '../../../themes/buttons/datePicker';
 import {SelectPicker} from '../../../themes/buttons/selectDropdown';
 import RadioGroupButton from '../../../themes/buttons/radioButtonGroup';
 import {SafetyFieldArray} from '../../../themes/buttons/fieldArray-safetyInjured';
+import { useSelector } from 'react-redux';
 
 export const SafetyIncident = () => {
   const [checkboxes, setCheckboxes] = useState<CheckboxItem[]>(loadingCapacity);
@@ -62,6 +62,7 @@ export const SafetyIncident = () => {
   });
   const [isCustomAlertVisible, setCustomAlertVisible] = useState(false);
   const [loading, setLoading] = useState(false);
+  const addressOptions = useSelector((state: any) => state.addressOptions);
 
   // Scroll View start
   const scrollViewRef: any = useRef(null);
@@ -233,7 +234,7 @@ export const SafetyIncident = () => {
               </View>
               <SelectPicker label={label} data={subcontractorData} />
               <TextInputGroup inputFields={scaffoldData} />
-              <SelectPicker label={incidentAddress} data={data} />
+              <SelectPicker label={safetyIncidentProjectIdData} data={addressOptions} />
               <SelectPicker label={supervisorName} data={supervisorNameData} />
               <SelectPicker label={supervisorMail} data={supervisorEmailData} />
               <View>

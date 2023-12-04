@@ -3,6 +3,7 @@ import {
   CheckboxItem,
   RadioOption,
   HandoverFormValues,
+  ProjectIdProps,
 } from '../types/interfaces/types';
 const threeOptions = [
   {value: 'Yes', label: 'Yes'},
@@ -11,11 +12,11 @@ const threeOptions = [
 ];
 
 export const initialFormData: Partial<InputField>[] = [
-  {
-    label: 'What"s the Project ID ?',
-    showAsterisk: true,
-    name: 'project_id',
-  },
+  // {
+  //   label: 'What"s the Project ID ?',
+  //   showAsterisk: true,
+  //   name: 'project_id',
+  // },
   {
     label: 'Which Building and what Level ?',
     name: 'project_level',
@@ -36,6 +37,15 @@ export const initialFormData: Partial<InputField>[] = [
     name: 'inspection_notes',
   },
 ];
+
+export const monthlyInspectionProjectIdData:ProjectIdProps = {
+  name: 'project_id',
+  label: 'What"s the Project ID ? ',
+  showAsterisk: true,
+  prefilled: true,
+  prefilledCustomerName: 'nameOf_customer',
+  prefilledCustomerAbn: 'Customer_ABN',
+};
 
 export const scaffoldData: Partial<InputField>[] = [
   {

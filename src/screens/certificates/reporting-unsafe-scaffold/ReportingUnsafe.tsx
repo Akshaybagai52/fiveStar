@@ -34,6 +34,7 @@ import Address from '../../../components/common/Address';
 // import { dismantleRadioData, initialFormData, initialValues, loadingCapacity, scaffoldData, userPersonalData } from '../../../data/damaged';
 import {DatePickers} from '../../../themes/buttons/datePicker';
 import {
+  ReportingUnsafeProjectIdData,
   dismantleRadioData,
   initialFormData,
   initialValues,
@@ -43,6 +44,8 @@ import {
   // scaffoldData,
   userPersonalData,
 } from '../../../data/reportingUnsafeData';
+import { SelectPicker } from '../../../themes/buttons/selectDropdown';
+import { useSelector } from 'react-redux';
 // import DatePickers from '../../../themes/buttons/datePicker';
 
 export const ReportingUnsafe = () => {
@@ -59,6 +62,7 @@ export const ReportingUnsafe = () => {
   const [loading, setLoading] = useState(false);
   // Scroll View start
   const scrollViewRef: any = useRef(null);
+  const addressOptions = useSelector((state: any) => state.addressOptions);
 
   const handleCanvasBegin = () => {
     if (scrollViewRef.current) {
@@ -71,6 +75,7 @@ export const ReportingUnsafe = () => {
       scrollViewRef.current.setNativeProps({scrollEnabled: true});
     }
   };
+
 
   const handleCheckboxPress = (label: string) => {
     // @ts-ignore
@@ -115,15 +120,15 @@ export const ReportingUnsafe = () => {
       };
       // console.log(requestData, 'req');
 
-      const response = await axios.post(
-        'https://fivestaraccess.com.au/custom_form/unsafe_scaffolding_app.php',
-        requestData,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        },
-      );
+      // const response = await axios.post(
+      //   'https://fivestaraccess.com.au/custom_form/unsafe_scaffolding_app.php',
+      //   requestData,
+      //   {
+      //     headers: {
+      //       'Content-Type': 'application/json',
+      //     },
+      //   },
+      // );
       console.log('Post Response:', requestData);
       // console.log('signature', values.projectDetails.certificationRelation);
       // Alert.alert("Document submitted successfully")
@@ -199,6 +204,8 @@ export const ReportingUnsafe = () => {
                 {/* {values.projectDetails.certificationRelation.selectedOptionData.variation.dayLabourErection === "dayLabourErection" ? <Text> "hey"</Text> : <Text> "dsfhey"</Text>} */}
               </View>
               <View>
+              <SelectPicker label={ReportingUnsafeProjectIdData} data={addressOptions} />
+
                 <TextInputGroup inputFields={initialFormData} />
               </View>
               {/* <View style={{marginBottom: 15, marginTop: 15}}>
