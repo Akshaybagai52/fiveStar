@@ -7,7 +7,7 @@ import {
   Dimensions,
 } from 'react-native';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 interface WindowDimension {
   width: number;
   height: number;
@@ -55,6 +55,8 @@ const data = [
 
 import Carousel from 'react-native-reanimated-carousel';
 import TeamCard from '../../components/common/TeamCard';
+import { fetchAddressOptions } from '../../redux/addressSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 let imgData = [
   require('../../assets/carousel/build0.jpg'),
@@ -85,6 +87,11 @@ const Home = ({ navigation }:any) => {
       navigation.navigate('Help Center');
   // }
 }
+const dispatch = useDispatch<any>();
+const addressOptions = useSelector((state: any) => state.addressOptions);
+useEffect(() => { 
+  dispatch(fetchAddressOptions());
+}, [dispatch]);
   const styles = StyleSheet.create({
     container: {
       flex: 1,

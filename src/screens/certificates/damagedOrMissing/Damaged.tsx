@@ -29,7 +29,9 @@ import {AudioConverter} from '../../../themes/buttons/speechToText';
 import Address from '../../../components/common/Address';
 // import { dismantleRadioData, initialFormData, initialValues, loadingCapacity, scaffoldData, userPersonalData } from '../../../data/damaged';
 import { DatePickers } from '../../../themes/buttons/datePicker';
-import { dismantleRadioData, initialFormData, initialValues, loadingCapacity, scaffoldData, userPersonalData } from '../../../data/Damaged';
+import { damagedProjectIdData, dismantleRadioData, initialValues, loadingCapacity, scaffoldData, userPersonalData } from '../../../data/Damaged';
+import { SelectPicker } from '../../../themes/buttons/selectDropdown';
+import { useSelector } from 'react-redux';
 // import DatePickers from '../../../themes/buttons/datePicker';
 
 export const Damaged = () => {
@@ -44,6 +46,8 @@ export const Damaged = () => {
   });
   const [isCustomAlertVisible, setCustomAlertVisible] = useState(false);
   const [loading, setLoading] = useState(false);
+  const addressOptions = useSelector((state: any) => state.addressOptions);
+
   // Scroll View start
   const scrollViewRef: any = useRef(null);
 
@@ -177,7 +181,9 @@ export const Damaged = () => {
                 {/* {values.projectDetails.certificationRelation.selectedOptionData.variation.dayLabourErection === "dayLabourErection" ? <Text> "hey"</Text> : <Text> "dsfhey"</Text>} */}
               </View>
               <View>
-                <TextInputGroup inputFields={initialFormData} />
+              <SelectPicker label={damagedProjectIdData} data={addressOptions} />
+
+                {/* <TextInputGroup inputFields={initialFormData} /> */}
               </View>
               {/* <View style={{marginBottom: 15, marginTop: 15}}>
                 <Recorder />

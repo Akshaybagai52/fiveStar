@@ -35,6 +35,9 @@ export const AddresOptionsData = {
   name: 'projectDetails.projectId',
   label: 'What is the Project ID ?',
   showAsterisk: true,
+  prefilled: true,
+  prefilledCustomerAbn: 'projectDetails.customerABN',
+  prefilledCustomerName: 'projectDetails.nameOfBuilder'
 };
 export const scaffoldData: Partial<InputField>[] = [
   {

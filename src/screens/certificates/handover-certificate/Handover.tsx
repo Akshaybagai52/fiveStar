@@ -7,9 +7,6 @@ import TextInputGroup from '../../../themes/buttons/TextInputGroup';
 import CustomHeader from '../../../themes/text/TextWithGreenBg';
 import CheckBox from '../../../themes/buttons/Checkbox';
 import {CheckboxItem} from '../../../types/interfaces/types';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import Icon1 from 'react-native-vector-icons/FontAwesome5';
-import Icon2 from 'react-native-vector-icons/Feather';
 import {ButtonGreen} from '../../../themes/text/ButtonGreen';
 import Recorder from '../../../themes/buttons/AudioRecorder';
 import {MySignatureCanvas} from '../../../themes/buttons/SignatureCanvas';
@@ -58,11 +55,8 @@ const Handover = () => {
   });
   const [isCustomAlertVisible, setCustomAlertVisible] = useState(false);
   const [loading, setLoading] = useState(false);
-  const dispatch = useDispatch<any>();
   const addressOptions = useSelector((state: any) => state.addressOptions);
-  useEffect(() => {
-    dispatch(fetchAddressOptions());
-  }, [dispatch]);
+
   // Scroll View start
   const scrollViewRef: any = useRef(null);
 
@@ -196,28 +190,6 @@ const Handover = () => {
           {({handleSubmit, values}) => (
             <View style={{backgroundColor: '#fff'}}>
               <View>
-                {/* <View style={{padding: 10, marginBottom: 15}}>
-                  <Text>
-                    <Icon
-                      name="office-building-marker"
-                      size={20}
-                      color="#112D4E"
-                    />{' '}
-                    Five Star Scaffolding Pvt Ltd
-                  </Text>
-                  <Text style={{marginTop: 10}}>
-                    <Icon name="license" size={20} color="#112D4E" /> ABN 70 130
-                    008 212
-                  </Text>
-                  <Text style={{marginTop: 10}}>
-                    <Icon1 name="street-view" size={20} color="#112D4E" /> 61
-                    Long Street, Smithfield NSW 2164
-                  </Text>
-                  <Text style={{marginTop: 10}}>
-                    <Icon2 name="phone-call" size={20} color="#112D4E" /> (02)
-                    9632 3466
-                  </Text>
-                </View> */}
                 <Address />
                 <View style={{marginBottom: 20}}>
                   <Text style={{fontSize: 30, fontWeight: 'bold'}}>
@@ -280,12 +252,10 @@ const Handover = () => {
                     />
                   </View>
                 )}
-                {/* {values.projectDetails.certificationRelation.selectedOptionData.variation.dayLabourErection === "dayLabourErection" ? <Text> "hey"</Text> : <Text> "dsfhey"</Text>} */}
               </View>
               <View>
                 <SelectPicker label={AddresOptionsData} data={addressOptions} />
-
-                <TextInputGroup inputFields={initialFormData} />
+                <TextInputGroup inputFields={initialFormData}  />
               </View>
               <View style={{marginBottom: 15, marginTop: 15}}>
                 <Recorder />

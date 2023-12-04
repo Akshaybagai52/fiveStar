@@ -33,13 +33,11 @@ const TextInputGroup: React.FC<TextInputGroupProps> = ({inputFields}) => {
   const time = `${addingZero(hourseIn12)} : ${addingZero(
     currentMinutes,
   )} : ${addingZero(currentSeconds)} ${amPm}`;
-  // console.log(addingZero(hourseIn12))
-
-  // console.log(typeof(time), "time")
-  // console.log(userInfo)
+  // let obj = addressOptions.find((o:any) => o?.values ==values?.projectDetails?.projectId);
   useEffect(() => {
     setInputValues(prevInputValues => ({
       ...prevInputValues,
+      // 'projectDetails.customerABN': obj ? obj?.customer_abn : '',
       'projectDetails.workCompletion': speechReducerValues.audioVoice[0],
       'signatures.customerEmail2': speechReducerValues.userInformation.email,
       'signatures.customerName': speechReducerValues.userInformation.name,
@@ -62,11 +60,11 @@ const TextInputGroup: React.FC<TextInputGroupProps> = ({inputFields}) => {
             {inputField.showAsterisk && <Text style={styles.asterisk}>*</Text>}
           </Text>
           <Field name={inputField.name}>
-            {({field, form, meta}: {field: any; form: any; meta: any}) => (
+            {({field, form, meta}: {field: any; form: any; meta: any}) => 
+            (
               <>
-                {/* {console.log(form)} */}
                 <TextInput
-                  value={inputValues[inputField.name]}
+                  value={field.value}
                   style={styles.textInput}
                   onChangeText={(e: any) => {
                     form.setFieldValue(inputField.name, e);
