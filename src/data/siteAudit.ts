@@ -1,4 +1,4 @@
-import {InputField} from '../types/interfaces/types';
+import {InputField, ProjectIdProps} from '../types/interfaces/types';
 
 const threeOptions = [
   {value: 'Yes', label: 'Yes'},
@@ -13,6 +13,12 @@ export const initialFormData: Partial<InputField>[] = [
     name: 'project_id',
   },
 ];
+export const siteAuditProjectIdData:ProjectIdProps = {
+  name: 'project_id',
+  label: 'What"s the Project ID ? ',
+  showAsterisk: true,
+  prefilled: false,
+};
 export const inputField1: Partial<InputField>[] = [
   {
     label: 'Safe work method Comments Q1',

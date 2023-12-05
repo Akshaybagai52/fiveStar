@@ -3,6 +3,7 @@ import {
   CheckboxItem,
   RadioOption,
   HandoverFormValues,
+  ProjectIdProps,
 } from '../types/interfaces/types';
 
 const twoOptions = [
@@ -11,51 +12,26 @@ const twoOptions = [
 ];
 
 export const initialFormData: Partial<InputField>[] = [
-  {
-    label: 'What"s the Project ID ?',
-    showAsterisk: true,
-    name: 'project_id',
-  },
+  // {
+  //   label: 'What"s the Project ID ?',
+  //   showAsterisk: true,
+  //   name: 'project_id',
+  // },
   {
     label: 'Customer Name',
     name: 'nameOf_customer',
     //   multiline: true,
     //   numberOfLines: 4,
   },
-  // {
-  //   label: 'What"s the name of Customer or Builder ? ',
-  //   showAsterisk: true,
-  //   name: 'projectDetails.nameOf_customer',
-  // },
-  // {
-  //   label: 'Supervisor"s Name ',
-  //   showAsterisk: true,
-  //   name: 'projectDetails.supervisor_name',
-  // },
-  // {
-  //   label: 'Number of Attendees ',
-  //   showAsterisk: true,
-  //   name: 'projectDetails.number_of_attendence',
-  // },
-  // {
-  //   label: 'Start Time ',
-  //   showAsterisk: true,
-  //   name: 'projectDetails.number_of_attendence',
-  // },
-  // {
-  //   label: 'Finish Time ',
-  //   showAsterisk: true,
-  //   name: 'projectDetails.start_time',
-  // },
 ];
 
-// export const secondListHeading =
-//   'Category of scaffold tampering as per chapter 7.3 of the SafeWork NSW Scaffold Industry Safety Standard TYPICAL RECTIFICATION WORK (Licensed FSS Scaffolder to reinstate with Handover certificate)';
-
-// export const scaffoldingData = [
-//   'Missing Handrails, Mid-Rails, Kickboards',
-//   'Missing Hop-up’s and Tie-bars',
-// ];
+export const scaffoldTemperingProjectIdData:ProjectIdProps = {
+  name: 'project_id',
+  label: 'What"s the Project ID ? ',
+  showAsterisk: true,
+  prefilled: true,
+  prefilledCustomerName: 'nameOf_customer',
+};
 
 export const list = [
     {

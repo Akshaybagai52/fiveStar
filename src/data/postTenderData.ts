@@ -1,4 +1,4 @@
-import {InputField} from '../types/interfaces/types';
+import {InputField, ProjectIdProps} from '../types/interfaces/types';
 
 const threeOptions = [
   {value: 'Yes', label: 'Yes'},
@@ -13,6 +13,13 @@ export const initialFormData: Partial<InputField>[] = [
     name: 'project_id',
   },
 ];
+
+export const postTenderProjectIdData:ProjectIdProps = {
+  name: 'project_id',
+  label: 'Address of the Construction site ',
+  showAsterisk: true,
+  prefilled: false
+};
 
 export const secondFormData: Partial<InputField>[] = [
   {
