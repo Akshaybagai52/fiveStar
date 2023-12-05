@@ -38,6 +38,7 @@ import {
   supervisorName,
   supervisorEmail,
   subcontractor,
+  siteAuditProjectIdData,
 } from '../../../data/siteAudit';
 import commonStyles from '../../../styles/commonStyles';
 import {AudioConverter} from '../../../themes/buttons/speechToText';
@@ -53,6 +54,7 @@ import {
   supervisorEmailData,
   supervisorNameData,
 } from '../../../data/globalData';
+import { useSelector } from 'react-redux';
 
 export const SiteAudit = () => {
   const [selectedFiles3, setSelectedFiles3] = useState<
@@ -89,6 +91,7 @@ export const SiteAudit = () => {
 
   const [isCustomAlertVisible, setCustomAlertVisible] = useState(false);
   const [loading, setLoading] = useState(false);
+  const addressOptions = useSelector((state: any) => state.addressOptions);
 
   // Scroll View start
   const scrollViewRef: any = useRef(null);
@@ -207,7 +210,8 @@ export const SiteAudit = () => {
                 </View>
                 <View>
                   <CustomHeader text="Project Details" />
-                  <TextInputGroup inputFields={initialFormData} />
+                  <SelectPicker label={siteAuditProjectIdData} data={addressOptions} />
+                  {/* <TextInputGroup inputFields={initialFormData} /> */}
                 </View>
               </View>
               <View>

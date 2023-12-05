@@ -16,6 +16,7 @@ import {
   initialValues,
   secondFormData,
   recordingComp,
+  postTenderProjectIdData,
   //   combinedData,
 } from '../../../data/postTenderData';
 import commonStyles from '../../../styles/commonStyles';
@@ -24,6 +25,8 @@ import Address from '../../../components/common/Address';
 import {DatePickers} from '../../../themes/buttons/datePicker';
 import {CanvasSignature} from '../../../themes/buttons/canvas-signature';
 import RadioAudio from '../../../components/screens/pre-start/RadioAudio';
+import { SelectPicker } from '../../../themes/buttons/selectDropdown';
+import { useSelector } from 'react-redux';
 
 export const PostTender = () => {
   const [selectedFiles, setSelectedFiles] = useState<DocumentPickerResponse[]>(
@@ -31,6 +34,7 @@ export const PostTender = () => {
   );
   const [isCustomAlertVisible, setCustomAlertVisible] = useState(false);
   const [loading, setLoading] = useState(false);
+  const addressOptions = useSelector((state: any) => state.addressOptions);
 
   // Scroll View start
   const scrollViewRef: any = useRef(null);
@@ -131,7 +135,8 @@ export const PostTender = () => {
                 </View>
               </View>
               <View style={[commonStyles.mTop15]}>
-                <TextInputGroup inputFields={initialFormData} />
+              <SelectPicker label={postTenderProjectIdData} data={addressOptions} />
+                {/* <TextInputGroup inputFields={initialFormData} /> */}
                 <Text style={[commonStyles.text16, commonStyles.mb5]}>
                   Date
                 </Text>

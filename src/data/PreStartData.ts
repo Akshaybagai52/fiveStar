@@ -1,5 +1,5 @@
 import {
-  InputField,
+  InputField, ProjectIdProps,
 } from '../types/interfaces/types';
 
 const threeOptions = [
@@ -16,7 +16,12 @@ export const initialFormData: Partial<InputField>[] = [
   },
 ];
 
-
+export const preStartProjectIdData:ProjectIdProps = {
+  name: 'project_id',
+  label: 'What"s the Project ID ? ',
+  showAsterisk: true,
+  prefilled: false
+};
 export const combinedData = [
   {
     heading: 'Induction Process',

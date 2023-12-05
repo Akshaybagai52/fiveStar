@@ -15,6 +15,7 @@ import {
   initialFormData,
   initialValues,
   combinedData,
+  preStartProjectIdData,
 } from '../../../data/PreStartData';
 import commonStyles from '../../../styles/commonStyles';
 import {AudioConverter} from '../../../themes/buttons/speechToText';
@@ -22,6 +23,8 @@ import Address from '../../../components/common/Address';
 import {DatePickers} from '../../../themes/buttons/datePicker';
 import {CanvasSignature} from '../../../themes/buttons/canvas-signature';
 import RadioAudio from '../../../components/screens/pre-start/RadioAudio';
+import { SelectPicker } from '../../../themes/buttons/selectDropdown';
+import { useSelector } from 'react-redux';
 
 export const PreStart = () => {
   const [selectedFiles, setSelectedFiles] = useState<DocumentPickerResponse[]>(
@@ -29,6 +32,7 @@ export const PreStart = () => {
   );
   const [isCustomAlertVisible, setCustomAlertVisible] = useState(false);
   const [loading, setLoading] = useState(false);
+  const addressOptions = useSelector((state: any) => state.addressOptions);
 
   // Scroll View start
   const scrollViewRef: any = useRef(null);
@@ -124,7 +128,9 @@ export const PreStart = () => {
                 </View>
               </View>
               <View style={[commonStyles.mTop15]}>
-                <TextInputGroup inputFields={initialFormData} />
+              <SelectPicker label={preStartProjectIdData} data={addressOptions} />
+
+                {/* <TextInputGroup inputFields={initialFormData} /> */}
                 <Text style={[commonStyles.text16, commonStyles.mb5]}>
                   Date
                 </Text>

@@ -19,6 +19,7 @@ import {
   // scaffoldingData,
   erectionRadioData,
   list,
+  scaffoldTemperingProjectIdData,
 } from '../../../data/scaffoldTemperingData';
 import commonStyles from '../../../styles/commonStyles';
 import {AudioConverter} from '../../../themes/buttons/speechToText';
@@ -28,6 +29,8 @@ import ListWithBullets from '../../../components/common/ListComp';
 import {CanvasSignature} from '../../../themes/buttons/canvas-signature';
 import RadioGroupButton from '../../../themes/buttons/radioButtonGroup';
 import ListCompGroup from '../../../components/common/ListCompGroup';
+import { useSelector } from 'react-redux';
+import { SelectPicker } from '../../../themes/buttons/selectDropdown';
 
 export const ScaffoldTempering = () => {
   const [selectedFiles, setSelectedFiles] = useState<DocumentPickerResponse[]>(
@@ -35,6 +38,7 @@ export const ScaffoldTempering = () => {
   );
   const [isCustomAlertVisible, setCustomAlertVisible] = useState(false);
   const [loading, setLoading] = useState(false);
+  const addressOptions = useSelector((state: any) => state.addressOptions);
 
   // Scroll View start
   const scrollViewRef: any = useRef(null);
@@ -136,6 +140,7 @@ export const ScaffoldTempering = () => {
                   Date
                 </Text>
                 <DatePickers name="date" mode="date" />
+                <SelectPicker label={scaffoldTemperingProjectIdData} data={addressOptions} />
                 <TextInputGroup inputFields={initialFormData} />
                 {/* <ListWithBullets
                   heading={secondListHeading}
