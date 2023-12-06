@@ -388,7 +388,6 @@ export const initialValues = {
   signature: '',
   number: [
     {
-      number: '',
     },
   ],
   names: [],

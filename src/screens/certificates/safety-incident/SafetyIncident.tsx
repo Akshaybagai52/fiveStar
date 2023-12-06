@@ -45,7 +45,8 @@ import {DatePickers} from '../../../themes/buttons/datePicker';
 import {SelectPicker} from '../../../themes/buttons/selectDropdown';
 import RadioGroupButton from '../../../themes/buttons/radioButtonGroup';
 import {SafetyFieldArray} from '../../../themes/buttons/fieldArray-safetyInjured';
-import { useSelector } from 'react-redux';
+import {useSelector} from 'react-redux';
+import SafetyInjuredFieldArray from '../../../components/screens/safetyInjured/FieldArray';
 
 export const SafetyIncident = () => {
   const [checkboxes, setCheckboxes] = useState<CheckboxItem[]>(loadingCapacity);
@@ -138,16 +139,16 @@ export const SafetyIncident = () => {
       };
       console.log(requestData);
 
-      const response = await axios.post(
-        'https://fivestaraccess.com.au/custom_form/safety_incident_app.php',
-        requestData,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        },
-      );
-      console.log('Post Response:', response);
+      // const response = await axios.post(
+      //   'https://fivestaraccess.com.au/custom_form/safety_incident_app.php',
+      //   requestData,
+      //   {
+      //     headers: {
+      //       'Content-Type': 'application/json',
+      //     },
+      //   },
+      // );
+      // console.log('Post Response:', response);
       // console.log('signature', values.projectDetails.certificationRelation);
       // Alert.alert("Document submitted successfully")
       setCustomAlertVisible(true);
@@ -228,13 +229,18 @@ export const SafetyIncident = () => {
               </View>
               <View style={[commonStyles.mTop15, commonStyles.mb15]}>
                 <Text style={[commonStyles.text16, commonStyles.mb5]}>
-                  Incident Date <Text style ={[commonStyles.errorText]}>*</Text>
+                  Incident Date <Text style={[commonStyles.errorText]}>*</Text>
                 </Text>
                 <DatePickers name="date_of_incident" mode="date" />
               </View>
               <SelectPicker label={label} data={subcontractorData} />
               <TextInputGroup inputFields={scaffoldData} />
-              <SelectPicker label={safetyIncidentProjectIdData} data={addressOptions} />
+              <SelectPicker
+                label={safetyIncidentProjectIdData}
+                data={addressOptions}
+              />
+              <Text>Name of Employee Involved in this incident</Text>
+              <SafetyInjuredFieldArray number="number" />
               <SelectPicker label={supervisorName} data={supervisorNameData} />
               <SelectPicker label={supervisorMail} data={supervisorEmailData} />
               <View>
@@ -254,13 +260,13 @@ export const SafetyIncident = () => {
               <SelectPicker label={anyOneInjured} data={anyOneInjuredData} />
               {/* <TextInputGroup inputFields={} /> */}
               <View style={[commonStyles.mb15, commonStyles.mt5]}>
-              <Text style={[commonStyles.text16, commonStyles.mb10]}>
-                Status of Injury / Incident
-              </Text>
-              <CheckBox
-                checkboxes={checkboxData}
-                onPress={handleCheckboxPress}
-              />
+                <Text style={[commonStyles.text16, commonStyles.mb10]}>
+                  Status of Injury / Incident
+                </Text>
+                <CheckBox
+                  checkboxes={checkboxData}
+                  onPress={handleCheckboxPress}
+                />
               </View>
               {values.anyone_injured === 'Yes' && (
                 <SafetyFieldArray number="number" />
