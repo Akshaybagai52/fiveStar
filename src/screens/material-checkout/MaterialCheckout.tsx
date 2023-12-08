@@ -92,7 +92,6 @@ export const MaterialCheckout = () => {
       updatedItems.find((item: productProps) => item.id === data[index].id) ||
       data[index];
     const updatedItem: any = {...baseItem};
-    console.log("sdfgfd")
 
     // Update the specific field in the copied item
     updatedItem[field] = text;
@@ -103,13 +102,13 @@ export const MaterialCheckout = () => {
         item => item.id === updatedItem.id,
       );
       if (existingItemIndex > -1) {
-        console.log("if")
+        console.log('if');
         // If the item already exists in the updatedItems array, replace it
         const updatedItems = [...prevState];
         updatedItems[existingItemIndex] = updatedItem;
         return updatedItems;
       } else {
-        console.log("else")
+        console.log('else');
         // If the item doesn't exist in the updatedItems array, add it
         return [...prevState, updatedItem];
       }
@@ -130,7 +129,6 @@ export const MaterialCheckout = () => {
     setMappedItems(mappedData);
     // setData([])
     // setUpdatedItems([]);
-
   };
   const handleSubmit1 = async (values: any) => {
     try {
@@ -162,10 +160,32 @@ export const MaterialCheckout = () => {
     }
   };
 
-  const handleInputChange1 = (text: string, index: number, property: string) => {
+  const handleInputChange1 = (
+    text: string,
+    index: number,
+    property: string,
+  ) => {
     const updatedItems = [...mappedItems];
-    const updatedItem:any = updatedItems[index];
-    updatedItem[property] = text;
+    const updatedItem: any = updatedItems[index];
+    if (property === 'quantity') {
+      
+      const newQuantity = parseInt(text, 10);
+      if (Number.isNaN(newQuantity)) {
+        let oneQuantity = 1
+        console.log("Nan")
+        updatedItem['quantity'] = oneQuantity.toString(); // Set a default value when the input is not a valid number
+      } else {
+        const weightOfOneQuantity = updatedItem.weight / parseInt(updatedItem.quantity, 10);
+        updatedItem.weight = newQuantity * weightOfOneQuantity;
+        updatedItem[property] = text;
+
+      }
+    } else {
+      updatedItem[property] = text;
+    }
+
+    console.log(updatedItem);
+    console.log(typeof(property));
     // console.log(mappedItems)
     setMappedItems(updatedItems);
   };
@@ -258,7 +278,7 @@ export const MaterialCheckout = () => {
                   {item.label}
                 </Text>
                 <Text style={[commonStyles.text16, commonStyles.fontBold]}>
-                  Weight(KG) : {item.weight}
+                  Weight(KG) : {item.weight }
                 </Text>
                 <Text style={[commonStyles.text16, commonStyles.fontBold]}>
                   Category : {item.category || 'none'}
@@ -279,7 +299,7 @@ export const MaterialCheckout = () => {
                   <ProductsInput
                     value={item.text}
                     onChangeText={(text: string) =>
-                      handleInputChange(text, index, 'text')
+                      handleInputChange1(text, index, 'text')
                     }
                     placeholder="Text"
                   />
