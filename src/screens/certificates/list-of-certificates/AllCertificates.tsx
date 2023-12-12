@@ -11,11 +11,18 @@ import commonStyles from '../../../styles/commonStyles';
 import { Headline } from 'react-native-paper';
 
 const buttons = [
-  { text: 'Handover Certificate', route: 'Login' },
+  { text: 'Handover Certificate', route: 'Handover' },
   { text: 'Damaged Certificate', route: 'Damaged' },
   { text: 'Day Labour Docket', route: 'Day Labour Docket' },
   { text: 'Safety Toolbox Discussion', route: 'Safety Toolbox Discussion' },
-  { text: 'Safety Incident/ Injury Reporting', route: 'Safety Injured' },
+  { text: 'Reporting Unsafe Scaffolding', route: 'Reporting Unsafe Scaffolding' },
+  { text: 'Accident Investigation', route: 'Accident Investigation' },
+  { text: 'Monthly Inspection', route: 'Monthly Inspection' },
+  { text: 'Scaffold Tampering Investigation', route: 'Scaffold Tampering Investigation' },
+  { text: 'Site Audit Form', route: 'Site Audit Form' },
+  { text: 'Pre Start - Base out checklist', route: 'Pre Start - Base out checklist' },
+  { text: 'Post Tender Checklist', route: 'Post Tender Checklist' },
+  { text: 'Material Order', route: 'Material Order' },
   // Add more buttons as needed
 ];
 

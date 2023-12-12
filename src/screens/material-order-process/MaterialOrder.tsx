@@ -164,15 +164,6 @@ export const MaterialOrder = ({navigation}: any) => {
                 </View>
 
                 <ButtonGreen text="Submit" onPress={handleSubmit} />
-
-                {/* <View style={commonStyles.mTop15}>
-                  <Text style={[commonStyles.text16, commonStyles.mTop15]}>
-                    Other Observations and Comments Any other observations and
-                    comments not covered in this form?{' '}
-                    <Text style={[commonStyles.errorText]}>*</Text>
-                  </Text>
-                  <Field name="prevent_recurrence" component={AudioConverter} />
-                </View> */}
               </View>
             </View>
           )}
