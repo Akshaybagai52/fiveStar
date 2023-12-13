@@ -58,7 +58,7 @@ const Handover = () => {
   const [loading, setLoading] = useState(false);
 
   const addressOptions = useSelector((state: any) => state.addressOptions);
-  // const {username, userEmail} = useUserInformation();
+  const {username, userEmail} = useUserInformation();
   // const formik = useFormikContext()
   // console.log(username)
   // if(username) {
@@ -378,7 +378,7 @@ const Handover = () => {
                   injury or death.
                 </Text>
               </View>
-              <TextInputGroup inputFields={userPersonalData} />
+              <TextInputGroup inputFields={userPersonalData} username={username} userEmail={userEmail} />
               <View style={{width: '90%', marginBottom: 50}}>
                 <FilePicker
                   selectedFiles={selectedFiles}

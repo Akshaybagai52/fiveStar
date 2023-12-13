@@ -2,6 +2,7 @@ import {View, Image, TouchableOpacity, Text} from 'react-native';
 import {myStyles} from './style';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../../types/type/types';
+import useUserInformation from '../../hooks/userInformation';
 
 type GetStartedNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -9,8 +10,11 @@ type GetStartedNavigationProp = NativeStackNavigationProp<
 >;
 
 const GetStarted = ({navigation}: {navigation: GetStartedNavigationProp}) => {
+  
+  const {username, userEmail} = useUserInformation();
   const handleGetStartedPress = () => {
-    navigation.navigate('Login');
+    let route = username && userEmail ? "MyTabs" : "Login"
+    navigation.navigate(route);
   };
   return (
     <View style={myStyles.container}>

@@ -12,7 +12,11 @@ import React, {useState, useRef, useEffect} from 'react';
 import TextInputGroup from '../../../themes/buttons/TextInputGroup';
 import CustomHeader from '../../../themes/text/TextWithGreenBg';
 import CheckBox from '../../../themes/buttons/Checkbox';
-import {CheckboxItem, DamagedFormValues, InputField} from '../../../types/interfaces/types';
+import {
+  CheckboxItem,
+  DamagedFormValues,
+  InputField,
+} from '../../../types/interfaces/types';
 
 import {ButtonGreen} from '../../../themes/text/ButtonGreen';
 import {MySignatureCanvas} from '../../../themes/buttons/SignatureCanvas';
@@ -28,10 +32,18 @@ import RadioGroupButton from '../../../themes/buttons/radioButtonGroup';
 import {AudioConverter} from '../../../themes/buttons/speechToText';
 import Address from '../../../components/common/Address';
 // import { dismantleRadioData, initialFormData, initialValues, loadingCapacity, scaffoldData, userPersonalData } from '../../../data/damaged';
-import { DatePickers } from '../../../themes/buttons/datePicker';
-import { damagedProjectIdData, dismantleRadioData, initialValues, loadingCapacity, scaffoldData, userPersonalData } from '../../../data/Damaged';
-import { SelectPicker } from '../../../themes/buttons/selectDropdown';
-import { useSelector } from 'react-redux';
+import {DatePickers} from '../../../themes/buttons/datePicker';
+import {
+  damagedProjectIdData,
+  dismantleRadioData,
+  initialValues,
+  loadingCapacity,
+  scaffoldData,
+  userPersonalData,
+} from '../../../data/Damaged';
+import {SelectPicker} from '../../../themes/buttons/selectDropdown';
+import {useSelector} from 'react-redux';
+import useUserInformation from '../../../hooks/userInformation';
 // import DatePickers from '../../../themes/buttons/datePicker';
 
 export const Damaged = () => {
@@ -47,7 +59,7 @@ export const Damaged = () => {
   const [isCustomAlertVisible, setCustomAlertVisible] = useState(false);
   const [loading, setLoading] = useState(false);
   const addressOptions = useSelector((state: any) => state.addressOptions);
-
+  const {username} = useUserInformation();
   // Scroll View start
   const scrollViewRef: any = useRef(null);
 
@@ -105,7 +117,6 @@ export const Damaged = () => {
         signature: signatures,
       };
       // console.log(requestData, 'req');
-      
 
       const response = await axios.post(
         'https://fivestaraccess.com.au/custom_form/damaged_scaffold_app.php',
@@ -126,7 +137,7 @@ export const Damaged = () => {
   };
   const validationSchema = Yup.object().shape({
     projectId: Yup.string().required('Project ID is required'),
-  
+
     reporting: Yup.object().shape({
       reportingCheck: Yup.object().shape({
         damaged_Components: Yup.string(),
@@ -138,13 +149,15 @@ export const Damaged = () => {
       extra_truck: Yup.string(),
       comments: Yup.string().required('Comments is required'),
     }),
-  
+
     signatures: Yup.object().shape({
       your_name: Yup.string(),
       subcontractor_name: Yup.string(),
       supervisor_name: Yup.string().required('Supervisor Name is required'),
       date_time: Yup.string().required('Date and Time is required'),
-      supervisor_email: Yup.string().email('Invalid email address').required('Supervisor Email is required'),
+      supervisor_email: Yup.string()
+        .email('Invalid email address')
+        .required('Supervisor Email is required'),
     }),
   });
 
@@ -181,13 +194,11 @@ export const Damaged = () => {
                 {/* {values.projectDetails.certificationRelation.selectedOptionData.variation.dayLabourErection === "dayLabourErection" ? <Text> "hey"</Text> : <Text> "dsfhey"</Text>} */}
               </View>
               <View>
-              <SelectPicker label={damagedProjectIdData} data={addressOptions} />
-
-                {/* <TextInputGroup inputFields={initialFormData} /> */}
+                <SelectPicker
+                  label={damagedProjectIdData}
+                  data={addressOptions}
+                />
               </View>
-              {/* <View style={{marginBottom: 15, marginTop: 15}}>
-                <Recorder />
-              </View> */}
               <View style={{margin: 15}}>
                 <CustomHeader text="What are you Reporting ?" />
               </View>
@@ -208,10 +219,7 @@ export const Damaged = () => {
                   options={dismantleRadioData}
                   // name="projectDetails.certificationRelation.selectedOption"
                 />
-                <Field
-                  name="reporting.comments"
-                  component={AudioConverter}
-                />
+                <Field name="reporting.comments" component={AudioConverter} />
               </View>
               <View style={{width: '90%', marginBottom: 50}}>
                 <FilePicker
@@ -228,11 +236,23 @@ export const Damaged = () => {
                 it's true and accurate.
               </Text>
               <View style={commonStyles.mb15}>
-                <TextInputGroup inputFields={userPersonalData} />
-                <Text style={[commonStyles.text16, {marginBottom:5}, commonStyles.mTop15]}>Reporting Date And Time</Text>
-                <DatePickers name='signatures.date_time' mode='datetime' />
+                <TextInputGroup
+                  inputFields={userPersonalData}
+                  username={username}
+                />
+                <Text
+                  style={[
+                    commonStyles.text16,
+                    {marginBottom: 5},
+                    commonStyles.mTop15,
+                  ]}>
+                  Reporting Date And Time
+                </Text>
+                <DatePickers name="signatures.date_time" mode="datetime" />
               </View>
-              <Text style={[commonStyles.text16, commonStyles.mb15]}>Your Signature (please sign)</Text>
+              <Text style={[commonStyles.text16, commonStyles.mb15]}>
+                Your Signature (please sign)
+              </Text>
 
               <MySignatureCanvas
                 onBegin={handleCanvasBegin}

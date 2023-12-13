@@ -99,11 +99,15 @@ export const userPersonalData: Partial<InputField>[] = [
     label: 'Name of person conducting this Safety Tool Box Discussion',
     showAsterisk: true,
     name: 'signatures.name_of_person',
+    prefilled: true,
+    prefilledUsername: true,
   },
   {
     label: 'Write your email to receive a pdf copy ',
     name: 'signatures.email_receive_copy',
     showAsterisk: true,
+    prefilled: true,
+    prefilledUserEmail: true,
   },
   {
     label: 'Write your Subcontractors email for them to receive a pdf copy',
