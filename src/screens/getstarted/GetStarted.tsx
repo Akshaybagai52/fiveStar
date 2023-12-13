@@ -1,55 +1,32 @@
-import {View, Image, StyleSheet, TouchableOpacity, Text} from 'react-native';
-// import { Text } from 'react-native-paper';
-import React, {useState} from 'react';
+import {View, Image, TouchableOpacity, Text} from 'react-native';
+import {myStyles} from './style';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import {RootStackParamList} from '../../types/type/types';
+import useUserInformation from '../../hooks/userInformation';
 
-const GetStarted = ({navigation}: any) => {
+type GetStartedNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  'MyTabs'
+>;
+
+const GetStarted = ({navigation}: {navigation: GetStartedNavigationProp}) => {
+  
+  const {username, userEmail} = useUserInformation();
   const handleGetStartedPress = () => {
-    navigation.navigate('MyTabs');
+    let route = username && userEmail ? "MyTabs" : "Login"
+    navigation.navigate(route);
   };
   return (
-    <View style={styles.container}>
-      {/* Logo image */}
+    <View style={myStyles.container}>
       <Image
         source={require('../../assets/logo/logo.png')}
-        style={styles.logo}
+        style={myStyles.logo}
       />
-      <TouchableOpacity style={styles.button} onPress={handleGetStartedPress}>
-        <Text style={styles.buttonText}>Get Started</Text>
+      <TouchableOpacity style={myStyles.button} onPress={handleGetStartedPress}>
+        <Text style={myStyles.buttonText}>Get Started</Text>
       </TouchableOpacity>
     </View>
   );
 };
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#DBE2EF',
-  },
-  logo: {
-    width: 300,
-    objectFit: 'contain',
-    height: 150,
-    marginBottom: 20,
-  },
-  header: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 30,
-  },
-  button: {
-    position: 'absolute',
-    bottom: 80,
-    right: 20,
-    backgroundColor: '#c7fe1a',
-    padding: 15,
-    borderRadius: 5,
-  },
-  buttonText: {
-    color: 'black',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-});
 
 export default GetStarted;

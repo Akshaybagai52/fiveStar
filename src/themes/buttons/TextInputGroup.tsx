@@ -1,24 +1,19 @@
 import React, {useEffect, useState} from 'react';
 import {View, TextInput, StyleSheet, Text} from 'react-native';
-// import {Text} from 'react-native-paper';
-import {Field, ErrorMessage} from 'formik';
+import {Field, ErrorMessage, useFormikContext} from 'formik';
 import {useSelector} from 'react-redux';
 import commonStyles from '../../styles/commonStyles';
+import { PrefilledValuesMap, TextInputGroupProps } from '../../types/interfaces/types';
 
-interface TextInputGroupProps {
-  inputFields: Partial<{
-    name: any; // Add the name field
-    label: string;
-    placeholder?: string;
-    showAsterisk?: boolean;
-    multiline?: boolean;
-    numberOfLines?: number;
-  }>[];
-}
-
-const TextInputGroup: React.FC<TextInputGroupProps> = ({inputFields}) => {
+const TextInputGroup: React.FC<TextInputGroupProps> = ({
+  inputFields,
+  username,
+  userEmail
+}) => {
   const [inputValues, setInputValues] = useState<{[name: string]: string}>({});
-
+  if (username) {
+    console.log(username, 'inifdgnput');
+  }
   const speechReducerValues = useSelector((state: any) => state?.speech);
   const addingZero = (time: number) => {
     return time >= 10 ? time : `0${time}`;
@@ -34,23 +29,39 @@ const TextInputGroup: React.FC<TextInputGroupProps> = ({inputFields}) => {
     currentMinutes,
   )} : ${addingZero(currentSeconds)} ${amPm}`;
   // let obj = addressOptions.find((o:any) => o?.values ==values?.projectDetails?.projectId);
-  useEffect(() => {
-    setInputValues(prevInputValues => ({
-      ...prevInputValues,
-      // 'projectDetails.customerABN': obj ? obj?.customer_abn : '',
-      'projectDetails.workCompletion': speechReducerValues.audioVoice[0],
-      'signatures.customerEmail2': speechReducerValues.userInformation.email,
-      'signatures.customerName': speechReducerValues.userInformation.name,
-      'signatures.DateTime': time,
-    }));
-  }, [speechReducerValues.audioVoice]);
+  // useEffect(() => {
+  //   setInputValues(prevInputValues => ({
+  //     ...prevInputValues,
+  //     // 'projectDetails.customerABN': obj ? obj?.customer_abn : '',
+  //     'projectDetails.workCompletion': speechReducerValues.audioVoice[0],
+  //     'signatures.customerEmail2': speechReducerValues.userInformation.email,
+  //     'signatures.customerName': speechReducerValues.userInformation.name,
+  //     'signatures.DateTime': time,
+  //   }));
+  // }, [speechReducerValues.audioVoice]);
   const handleInputChange = (name: string, value: string) => {
     setInputValues(prevInputValues => ({
       ...prevInputValues,
       [name]: value,
     }));
   };
-  // console.log(inputValues)
+  // const formik = useFormikContext();
+  const formik = useFormikContext();
+
+  useEffect(() => {
+    inputFields.forEach((inputField) => {
+      if(inputField.prefilled) {
+        if (inputField.prefilledUsername && username) {
+          formik.setFieldValue(inputField.name, username);
+        }
+        if (inputField.prefilledUserEmail && userEmail) {
+          formik.setFieldValue(inputField.name, userEmail);
+        }
+      }
+    });
+  }, [ username]);
+  
+  
   return (
     <View>
       {inputFields.map((inputField, index) => (
@@ -60,8 +71,7 @@ const TextInputGroup: React.FC<TextInputGroupProps> = ({inputFields}) => {
             {inputField.showAsterisk && <Text style={styles.asterisk}>*</Text>}
           </Text>
           <Field name={inputField.name}>
-            {({field, form, meta}: {field: any; form: any; meta: any}) => 
-            (
+            {({field, form, meta}: {field: any; form: any; meta: any}) => (
               <>
                 <TextInput
                   value={field.value}

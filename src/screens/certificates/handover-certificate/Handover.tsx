@@ -11,7 +11,7 @@ import {ButtonGreen} from '../../../themes/text/ButtonGreen';
 import Recorder from '../../../themes/buttons/AudioRecorder';
 import {MySignatureCanvas} from '../../../themes/buttons/SignatureCanvas';
 import FilePicker from '../../../themes/buttons/FilePicker';
-import {Field, Formik} from 'formik';
+import {Field, Formik, useFormikContext} from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
 import {HandoverFormValues} from '../../../types/interfaces/types';
@@ -37,9 +37,10 @@ import commonStyles from '../../../styles/commonStyles';
 import RadioGroupButton from '../../../themes/buttons/radioButtonGroup';
 import {AudioConverter} from '../../../themes/buttons/speechToText';
 import Address from '../../../components/common/Address';
-import {useDispatch, useSelector} from 'react-redux';
-import {fetchAddressOptions} from '../../../redux/addressSlice';
+import {useSelector} from 'react-redux';
+// import {fetchAddressOptions} from '../../../redux/addressSlice';
 import {SelectPicker} from '../../../themes/buttons/selectDropdown';
+import useUserInformation from '../../../hooks/userInformation';
 
 const Handover = () => {
   // Scroll View End
@@ -55,8 +56,15 @@ const Handover = () => {
   });
   const [isCustomAlertVisible, setCustomAlertVisible] = useState(false);
   const [loading, setLoading] = useState(false);
-  const addressOptions = useSelector((state: any) => state.addressOptions);
 
+  const addressOptions = useSelector((state: any) => state.addressOptions);
+  const {username, userEmail} = useUserInformation();
+  // const formik = useFormikContext()
+  // console.log(username)
+  // if(username) {
+  //   formik.setFieldValue('signatures.customerName', username)
+
+  // }
   // Scroll View start
   const scrollViewRef: any = useRef(null);
 
@@ -370,7 +378,7 @@ const Handover = () => {
                   injury or death.
                 </Text>
               </View>
-              <TextInputGroup inputFields={userPersonalData} />
+              <TextInputGroup inputFields={userPersonalData} username={username} userEmail={userEmail} />
               <View style={{width: '90%', marginBottom: 50}}>
                 <FilePicker
                   selectedFiles={selectedFiles}

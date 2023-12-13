@@ -38,6 +38,7 @@ import {DatePickers} from '../../../themes/buttons/datePicker';
 import WorkCalculate from '../../../themes/buttons/work-calculation/WorkCalculate';
 import { SelectPicker } from '../../../themes/buttons/selectDropdown';
 import { useSelector } from 'react-redux';
+import useUserInformation from '../../../hooks/userInformation';
 
 export const DayLabour = () => {
   // Scroll View End
@@ -59,6 +60,7 @@ export const DayLabour = () => {
     "number2": '',
   }]);
   const addressOptions = useSelector((state: any) => state.addressOptions);
+  const {username, userEmail}  = useUserInformation();
 
   const handleAddComponent = () => {
     setNames([...names, { number1: '', number2: '', result: '' }]);
@@ -346,7 +348,7 @@ export const DayLabour = () => {
                   authorised by Five Star Scaffolding
                 </Text>
               </View>
-              <TextInputGroup inputFields={userPersonalData} />
+              <TextInputGroup inputFields={userPersonalData} userEmail={userEmail} username={username}/>
 
               {/* <SignatureScreen /> */}
               <MySignatureCanvas

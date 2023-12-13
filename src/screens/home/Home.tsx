@@ -7,7 +7,7 @@ import {
   Dimensions,
 } from 'react-native';
 
-import React, { useEffect } from 'react';
+import React, {useEffect} from 'react';
 interface WindowDimension {
   width: number;
   height: number;
@@ -55,8 +55,10 @@ const data = [
 
 import Carousel from 'react-native-reanimated-carousel';
 import TeamCard from '../../components/common/TeamCard';
-import { fetchAddressOptions } from '../../redux/addressSlice';
-import { useDispatch, useSelector } from 'react-redux';
+import {fetchAddressOptions} from '../../redux/addressSlice';
+import {useDispatch, useSelector} from 'react-redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import useUserInformation from '../../hooks/userInformation';
 
 let imgData = [
   require('../../assets/carousel/build0.jpg'),
@@ -71,27 +73,44 @@ let imgData = [
   require('../../assets/carousel/build9.jpg'),
 ];
 const teamData = [
-  {img: require('../../assets/home/team-1.jpg'), name: 'Gareth Collin',occupation: 'Project Manager'},
-  {img: require('../../assets/home/team-2.jpg'), name: 'Daniel Antoun',occupation: 'Project Manager'},
-  {img: require('../../assets/home/team-3.jpg'), name: 'Jason Hong',occupation: 'Accounting & Admin Manager'},
-  {img: require('../../assets/home/team-4.jpg'), name: 'Louie Takchi',occupation: 'Project Manager'},
-]
-const Home = ({ navigation }:any) => {
+  {
+    img: require('../../assets/home/team-1.jpg'),
+    name: 'Gareth Collin',
+    occupation: 'Project Manager',
+  },
+  {
+    img: require('../../assets/home/team-2.jpg'),
+    name: 'Daniel Antoun',
+    occupation: 'Project Manager',
+  },
+  {
+    img: require('../../assets/home/team-3.jpg'),
+    name: 'Jason Hong',
+    occupation: 'Accounting & Admin Manager',
+  },
+  {
+    img: require('../../assets/home/team-4.jpg'),
+    name: 'Louie Takchi',
+    occupation: 'Project Manager',
+  },
+];
+
+const Home = ({navigation}: any) => {
   const {height: windowHeight, width: windowWidth}: WindowDimension =
     useWindowDimensions();
   const width = Dimensions.get('window').width;
 
   // const contactUs = ({ navigation }:any) => {
-  
-    const handleGetContact = () => {
-      navigation.navigate('Help Center');
-  // }
-}
-const dispatch = useDispatch<any>();
-const addressOptions = useSelector((state: any) => state.addressOptions);
-useEffect(() => { 
-  dispatch(fetchAddressOptions());
-}, [dispatch]);
+
+  const handleGetContact = () => {
+    navigation.navigate('Help Center');
+    // }
+  };
+  const dispatch = useDispatch<any>();
+  const addressOptions = useSelector((state: any) => state.addressOptions);
+  useEffect(() => {
+    dispatch(fetchAddressOptions());
+  }, [dispatch]);
   const styles = StyleSheet.create({
     container: {
       flex: 1,
@@ -253,7 +272,6 @@ useEffect(() => {
               commonStyles.mb15,
             ]}>
             PORTFOLIO
-
           </Text>
           <Carousel
             loop
@@ -263,7 +281,7 @@ useEffect(() => {
             data={[...new Array(10).keys()]}
             scrollAnimationDuration={1000}
             withAnimation={{type: 'timing', config: {}}}
-            mode='parallax'
+            mode="parallax"
             // vertical={true}
             renderItem={({index}) => (
               <View>
@@ -276,7 +294,7 @@ useEffect(() => {
           />
         </View>
         <View style={commonStyles.commonContainer}>
-        <Text
+          <Text
             style={[
               windowWidth > 500
                 ? commonStyles.heading42
@@ -286,12 +304,13 @@ useEffect(() => {
               commonStyles.mb15,
             ]}>
             Team
-
           </Text>
           <TeamCard teamData={teamData} />
         </View>
         <View style={commonStyles.commonContainer}>
-        <Button mode='contained' onPress={handleGetContact}>Contact</Button>
+          <Button mode="contained" onPress={handleGetContact}>
+            Contact
+          </Button>
         </View>
       </ScrollView>
     </View>

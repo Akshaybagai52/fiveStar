@@ -62,6 +62,8 @@ export const userPersonalData: Partial<InputField>[] = [
     label: 'Name of authorised Customer Representative ',
     showAsterisk: true,
     name: 'signatures.customerName',
+    prefilled:true,
+    prefilledUsername: true,
   },
   {
     label: 'Write your HRWL number (High Risk Work Licence number)',
@@ -70,6 +72,8 @@ export const userPersonalData: Partial<InputField>[] = [
   {
     label: 'Write your Customer email for them to receive a pdf copy',
     name: 'signatures.customerEmail',
+    prefilled:true,
+    prefilledUserEmail: true,
   },
   {
     label: 'Write your email to receive a pdf copy',

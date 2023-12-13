@@ -7,6 +7,9 @@ export interface InputField {
   multiline: boolean;
   numberOfLines: number;
   name: string;
+  prefilled?: boolean;
+  prefilledUserEmail?: boolean;
+  prefilledUsername?: boolean;
 }
 
 export interface RadioOption {
@@ -51,6 +54,25 @@ interface ProjectDetails {
   nameOfBuilder: string;
   customerABN: string;
   workCompletion: string;
+}
+
+export interface TextInputGroupProps {
+  inputFields: Partial<{
+    name: any;
+    label: string;
+    placeholder?: string;
+    showAsterisk?: boolean;
+    multiline?: boolean;
+    numberOfLines?: number;
+    prefilledUserEmail?: boolean;
+    prefilledUsername?: boolean;
+    prefilled?: boolean;
+  }>[];
+  username?:string | null;
+  userEmail?: string | null;
+}
+export interface PrefilledValuesMap {
+  [fieldName: string]: string | undefined | null;
 }
 
 interface DrawingsSupplied {

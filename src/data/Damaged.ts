@@ -32,6 +32,8 @@ export const userPersonalData: Partial<InputField>[] = [
   {
     label: 'Your Name',
     name: 'signatures.your_name',
+    prefilled: true,
+    prefilledUsername: true,
   },
   {
     label: 'Subcontractor Name',

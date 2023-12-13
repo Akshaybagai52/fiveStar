@@ -60,6 +60,8 @@ export const userPersonalData: Partial<InputField>[] = [
     label: 'Name of person Issuing this Day Labour Docket ',
     showAsterisk: true,
     name: 'signatures.name_day_labour_docket',
+    prefilled: true,
+    prefilledUsername: true,
   },
   {
     label: 'Name of authorised Customer site representative',
@@ -69,6 +71,8 @@ export const userPersonalData: Partial<InputField>[] = [
     label: 'Write your email to receive a pdf copy ',
     name: 'signatures.email_receive_copy',
     showAsterisk: true,
+    prefilled: true,
+    prefilledUserEmail: true,
 
   },
   {

@@ -43,6 +43,7 @@ import {TimePicker} from '../../../themes/buttons/timeCalculation';
 import {CanvasSignature} from '../../../themes/buttons/canvas-signature';
 import { SelectPicker } from '../../../themes/buttons/selectDropdown';
 import { useSelector } from 'react-redux';
+import useUserInformation from '../../../hooks/userInformation';
 
 export const SafetyToolbox = () => {
   const [checkboxes, setCheckboxes] = useState<CheckboxItem[]>(loadingCapacity);
@@ -56,6 +57,7 @@ export const SafetyToolbox = () => {
   // });
   const [isCustomAlertVisible, setCustomAlertVisible] = useState(false);
   const [loading, setLoading] = useState(false);
+  const {username, userEmail} = useUserInformation();
 
   // Scroll View start
   const scrollViewRef: any = useRef(null);
@@ -320,7 +322,7 @@ export const SafetyToolbox = () => {
                   and I have truly and accurately recorded today's discussion.
                 </Text>
               </View>
-              <TextInputGroup inputFields={userPersonalData} />
+              <TextInputGroup inputFields={userPersonalData} username={username} userEmail={userEmail} />
 
               {/* <SignatureScreen /> */}
               <Text style={[commonStyles.text16, commonStyles.mb15]}>
