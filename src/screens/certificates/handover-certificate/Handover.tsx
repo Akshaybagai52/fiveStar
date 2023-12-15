@@ -41,8 +41,15 @@ import {useSelector} from 'react-redux';
 // import {fetchAddressOptions} from '../../../redux/addressSlice';
 import {SelectPicker} from '../../../themes/buttons/selectDropdown';
 import useUserInformation from '../../../hooks/userInformation';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../../../types/type/types';
 
-const Handover = () => {
+type HomeNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  'Home'
+>;
+
+const Handover = ({navigation}:{navigation:HomeNavigationProp}) => {
   // Scroll View End
   const [checkboxes, setCheckboxes] = useState<CheckboxItem[]>(loadingCapacity);
   const [elevationData, setElevationData] =
@@ -127,6 +134,7 @@ const Handover = () => {
 
   const handleCustomAlertClose = () => {
     setCustomAlertVisible(false);
+    navigation.navigate("Home")
   };
 
   const handleSubmit1 = async (values: HandoverFormValues) => {
@@ -190,10 +198,12 @@ const Handover = () => {
           initialValues={initialValues}
           enableReinitialize={true}
           // validationSchema={validationSchema}
-          onSubmit={async values => {
+          onSubmit={async (values, { resetForm }) => {
             setLoading(true);
             await handleSubmit1(values);
+            resetForm()
             setLoading(false);
+            // navigation.navigate("Home")
           }}>
           {({handleSubmit, values}) => (
             <View style={{backgroundColor: '#fff'}}>

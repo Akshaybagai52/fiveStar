@@ -279,11 +279,15 @@ export const userPersonalData: Partial<InputField>[] = [
     label: 'Your Name ',
     showAsterisk: true,
     name: 'your_name',
+    prefilled: true,
+    prefilledUsername: true,
   },
   {
     label: 'Write you email to receive a copy of your report ',
     name: 'your_email',
     showAsterisk: true,
+    prefilled: true,
+    prefilledUserEmail: true,
   },
 ];
 

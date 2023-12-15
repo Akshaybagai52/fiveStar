@@ -44,11 +44,18 @@ import {
   // scaffoldData,
   userPersonalData,
 } from '../../../data/reportingUnsafeData';
-import { SelectPicker } from '../../../themes/buttons/selectDropdown';
-import { useSelector } from 'react-redux';
+import {SelectPicker} from '../../../themes/buttons/selectDropdown';
+import {useSelector} from 'react-redux';
+import useUserInformation from '../../../hooks/userInformation';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../../../types/type/types';
 // import DatePickers from '../../../themes/buttons/datePicker';
 
-export const ReportingUnsafe = () => {
+type HomeNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  'Home'
+>;
+export const ReportingUnsafe = ({navigation}:{navigation:HomeNavigationProp}) => {
   // Scroll View End
   const [checkboxes, setCheckboxes] = useState<CheckboxItem[]>(loadingCapacity);
   const [selectedFiles, setSelectedFiles] = useState<DocumentPickerResponse[]>(
@@ -63,6 +70,7 @@ export const ReportingUnsafe = () => {
   // Scroll View start
   const scrollViewRef: any = useRef(null);
   const addressOptions = useSelector((state: any) => state.addressOptions);
+  const {username, userEmail, userPhoneNumber} = useUserInformation();
 
   const handleCanvasBegin = () => {
     if (scrollViewRef.current) {
@@ -75,7 +83,6 @@ export const ReportingUnsafe = () => {
       scrollViewRef.current.setNativeProps({scrollEnabled: true});
     }
   };
-
 
   const handleCheckboxPress = (label: string) => {
     // @ts-ignore
@@ -102,9 +109,10 @@ export const ReportingUnsafe = () => {
 
   const handleCustomAlertClose = () => {
     setCustomAlertVisible(false);
+    navigation.navigate("Home")
   };
 
-  const handleSubmit1 = async (values:any) => {
+  const handleSubmit1 = async (values: any) => {
     try {
       const base64Images = await Promise.all(
         selectedFiles.map(async file => {
@@ -170,9 +178,10 @@ export const ReportingUnsafe = () => {
           initialValues={initialValues}
           enableReinitialize={true}
           // validationSchema={validationSchema}
-          onSubmit={async values => {
+          onSubmit={async (values, { resetForm }) => {
             setLoading(true);
             await handleSubmit1(values);
+            resetForm()
             setLoading(false);
           }}>
           {({handleSubmit, values}) => (
@@ -204,7 +213,10 @@ export const ReportingUnsafe = () => {
                 {/* {values.projectDetails.certificationRelation.selectedOptionData.variation.dayLabourErection === "dayLabourErection" ? <Text> "hey"</Text> : <Text> "dsfhey"</Text>} */}
               </View>
               <View>
-              <SelectPicker label={ReportingUnsafeProjectIdData} data={addressOptions} />
+                <SelectPicker
+                  label={ReportingUnsafeProjectIdData}
+                  data={addressOptions}
+                />
 
                 <TextInputGroup inputFields={initialFormData} />
               </View>
@@ -268,7 +280,12 @@ export const ReportingUnsafe = () => {
                 it's true and accurate.
               </Text>
               <View style={commonStyles.mb15}>
-                <TextInputGroup inputFields={userPersonalData} />
+                <TextInputGroup
+                  inputFields={userPersonalData}
+                  username={username}
+                  userEmail={userEmail}
+                  userPhoneNumber={userPhoneNumber}
+                />
                 <Text
                   style={[
                     commonStyles.text16,
@@ -288,31 +305,8 @@ export const ReportingUnsafe = () => {
                   consider has a risk potential for serious injury, please
                   report this immediately to FSS
                 </Text>
-                {/* <Text
-                  style={[
-                    commonStyles.text16,
-                    {marginBottom: 5},
-                    commonStyles.mTop15,
-                  ]}>
-                  Reporting Date And Time
-                </Text> */}
-                {/* <DatePickers name="signatures.date_time" mode="datetime" /> */}
               </View>
-              {/* <Text style={[commonStyles.text16, commonStyles.mb15]}>
-                Your Signature (please sign)
-              </Text>
 
-              <MySignatureCanvas
-                onBegin={handleCanvasBegin}
-                onEnd={handleCanvasEnd}
-                signature={signatures}
-                setSignature={(signature: any) =>
-                  setSignatures(prevSignatures => ({
-                    ...prevSignatures,
-                    signature1: signature,
-                  }))
-                }
-              /> */}
               <CustomAlert
                 visible={isCustomAlertVisible}
                 title="Details submitted successfully"

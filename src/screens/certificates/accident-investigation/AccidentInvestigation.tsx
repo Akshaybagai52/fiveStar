@@ -42,8 +42,15 @@ import {SafeAreaView} from 'react-native';
 import {CanvasSignature} from '../../../themes/buttons/canvas-signature';
 import AccidentFieldArray from '../../../components/screens/accident-investigation/FieldArray';
 import { useSelector } from 'react-redux';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../../../types/type/types';
 
-export const AccidentInvestigation = () => {
+type HomeNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  'Home'
+>;
+
+export const AccidentInvestigation = ({navigation}:{navigation:HomeNavigationProp}) => {
   const [checkboxes, setCheckboxes] = useState<CheckboxItem[]>(loadingCapacity);
 
   const [selectedFiles, setSelectedFiles] = useState<DocumentPickerResponse[]>(
@@ -108,6 +115,7 @@ export const AccidentInvestigation = () => {
 
   const handleCustomAlertClose = () => {
     setCustomAlertVisible(false);
+    navigation.navigate("Home")
   };
 
   const handleSubmit1 = async (values: any) => {
@@ -209,9 +217,10 @@ export const AccidentInvestigation = () => {
           initialValues={initialValues}
           enableReinitialize={true}
           // validationSchema={validationSchema}
-          onSubmit={async values => {
+          onSubmit={async (values, { resetForm }) => {
             setLoading(true);
             await handleSubmit1(values);
+            resetForm()
             setLoading(false);
           }}>
           {({handleSubmit, values}) => (

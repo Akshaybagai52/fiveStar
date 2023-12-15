@@ -31,8 +31,15 @@ import RadioGroupButton from '../../../themes/buttons/radioButtonGroup';
 import ListCompGroup from '../../../components/common/ListCompGroup';
 import { useSelector } from 'react-redux';
 import { SelectPicker } from '../../../themes/buttons/selectDropdown';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../../../types/type/types';
 
-export const ScaffoldTempering = () => {
+type HomeNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  'Home'
+>;
+
+export const ScaffoldTempering = ({navigation}:{navigation:HomeNavigationProp}) => {
   const [selectedFiles, setSelectedFiles] = useState<DocumentPickerResponse[]>(
     [],
   );
@@ -58,6 +65,7 @@ export const ScaffoldTempering = () => {
 
   const handleCustomAlertClose = () => {
     setCustomAlertVisible(false);
+    navigation.navigate("Home")
   };
 
   const handleSubmit1 = async (values: any) => {
@@ -120,9 +128,10 @@ export const ScaffoldTempering = () => {
           initialValues={initialValues}
           enableReinitialize={true}
           validationSchema={validationSchema}
-          onSubmit={async values => {
+          onSubmit={async (values, { resetForm }) => {
             setLoading(true);
             handleSubmit1(values);
+            resetForm()
             setLoading(false);
           }}>
           {({handleSubmit, values, setFieldValue}) => (

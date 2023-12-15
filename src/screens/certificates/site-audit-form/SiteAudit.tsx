@@ -55,8 +55,15 @@ import {
   supervisorNameData,
 } from '../../../data/globalData';
 import { useSelector } from 'react-redux';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../../../types/type/types';
 
-export const SiteAudit = () => {
+type HomeNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  'Home'
+>;
+
+export const SiteAudit = ({navigation}:{navigation:HomeNavigationProp}) => {
   const [selectedFiles3, setSelectedFiles3] = useState<
     DocumentPickerResponse[]
   >([]);
@@ -111,6 +118,7 @@ export const SiteAudit = () => {
 
   const handleCustomAlertClose = () => {
     setCustomAlertVisible(false);
+    navigation.navigate("Home")
   };
 
   const handleSubmit1 = async (values: any) => {
@@ -194,9 +202,10 @@ export const SiteAudit = () => {
           initialValues={initialValues}
           enableReinitialize={true}
           //   validationSchema={validationSchema}
-          onSubmit={async values => {
+          onSubmit={async (values, { resetForm }) => {
             setLoading(true);
             handleSubmit1(values);
+            resetForm()
             setLoading(false);
           }}>
           {({handleSubmit, values, setFieldValue}) => (
