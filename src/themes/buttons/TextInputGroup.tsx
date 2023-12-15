@@ -12,10 +12,10 @@ const TextInputGroup: React.FC<TextInputGroupProps> = ({
   userPhoneNumber
 }) => {
   const [inputValues, setInputValues] = useState<{[name: string]: string}>({});
-  if (username) {
-    console.log(username, 'inifdgnput');
-    console.log(userPhoneNumber, 'inifdgnput');
-  }
+  // if (username) {
+  //   console.log(username, 'inifdgnput');
+  //   console.log(userPhoneNumber, 'inifdgnput');
+  // }
   const speechReducerValues = useSelector((state: any) => state?.speech);
   const addingZero = (time: number) => {
     return time >= 10 ? time : `0${time}`;

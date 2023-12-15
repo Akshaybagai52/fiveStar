@@ -47,9 +47,15 @@ import {
 import {SelectPicker} from '../../../themes/buttons/selectDropdown';
 import {useSelector} from 'react-redux';
 import useUserInformation from '../../../hooks/userInformation';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../../../types/type/types';
 // import DatePickers from '../../../themes/buttons/datePicker';
 
-export const ReportingUnsafe = () => {
+type HomeNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  'Home'
+>;
+export const ReportingUnsafe = ({navigation}:{navigation:HomeNavigationProp}) => {
   // Scroll View End
   const [checkboxes, setCheckboxes] = useState<CheckboxItem[]>(loadingCapacity);
   const [selectedFiles, setSelectedFiles] = useState<DocumentPickerResponse[]>(
@@ -103,6 +109,7 @@ export const ReportingUnsafe = () => {
 
   const handleCustomAlertClose = () => {
     setCustomAlertVisible(false);
+    navigation.navigate("Home")
   };
 
   const handleSubmit1 = async (values: any) => {
@@ -171,9 +178,10 @@ export const ReportingUnsafe = () => {
           initialValues={initialValues}
           enableReinitialize={true}
           // validationSchema={validationSchema}
-          onSubmit={async values => {
+          onSubmit={async (values, { resetForm }) => {
             setLoading(true);
             await handleSubmit1(values);
+            resetForm()
             setLoading(false);
           }}>
           {({handleSubmit, values}) => (

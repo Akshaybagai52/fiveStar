@@ -25,8 +25,15 @@ import {CanvasSignature} from '../../../themes/buttons/canvas-signature';
 import RadioAudio from '../../../components/screens/pre-start/RadioAudio';
 import { SelectPicker } from '../../../themes/buttons/selectDropdown';
 import { useSelector } from 'react-redux';
+import { RootStackParamList } from '../../../types/type/types';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
-export const PreStart = () => {
+type HomeNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  'Home'
+>;
+
+export const PreStart = ({navigation}:{navigation:HomeNavigationProp}) => {
   const [selectedFiles, setSelectedFiles] = useState<DocumentPickerResponse[]>(
     [],
   );
@@ -52,6 +59,7 @@ export const PreStart = () => {
 
   const handleCustomAlertClose = () => {
     setCustomAlertVisible(false);
+    navigation.navigate("Home")
   };
 
   const handleSubmit1 = async (values: any) => {
@@ -112,9 +120,10 @@ export const PreStart = () => {
           initialValues={initialValues}
           enableReinitialize={true}
         //   validationSchema={validationSchema}
-          onSubmit={async values => {
+          onSubmit={async (values, { resetForm }) => {
             setLoading(true);
             handleSubmit1(values);
+            resetForm()
             setLoading(false);
           }}>
           {({handleSubmit, values, setFieldValue}) => (

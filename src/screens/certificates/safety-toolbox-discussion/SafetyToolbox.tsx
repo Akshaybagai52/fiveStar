@@ -44,8 +44,15 @@ import {CanvasSignature} from '../../../themes/buttons/canvas-signature';
 import { SelectPicker } from '../../../themes/buttons/selectDropdown';
 import { useSelector } from 'react-redux';
 import useUserInformation from '../../../hooks/userInformation';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../../../types/type/types';
 
-export const SafetyToolbox = () => {
+type HomeNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  'Home'
+>;
+
+export const SafetyToolbox = ({navigation}:{navigation:HomeNavigationProp}) => {
   const [checkboxes, setCheckboxes] = useState<CheckboxItem[]>(loadingCapacity);
 
   const [selectedFiles, setSelectedFiles] = useState<DocumentPickerResponse[]>(
@@ -103,6 +110,7 @@ export const SafetyToolbox = () => {
 
   const handleCustomAlertClose = () => {
     setCustomAlertVisible(false);
+    navigation.navigate("Home")
   };
   const addressOptions = useSelector((state: any) => state.addressOptions);
 
@@ -186,9 +194,10 @@ export const SafetyToolbox = () => {
           initialValues={initialValues}
           enableReinitialize={true}
           validationSchema={validationSchema}
-          onSubmit={async values => {
+          onSubmit={async (values, { resetForm }) => {
             setLoading(true);
             await handleSubmit1(values);
+            resetForm();
             setLoading(false);
           }}>
           {({handleSubmit, values, setFieldValue}) => (

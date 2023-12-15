@@ -27,8 +27,15 @@ import {CanvasSignature} from '../../../themes/buttons/canvas-signature';
 import RadioAudio from '../../../components/screens/pre-start/RadioAudio';
 import { SelectPicker } from '../../../themes/buttons/selectDropdown';
 import { useSelector } from 'react-redux';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../../../types/type/types';
 
-export const PostTender = () => {
+type HomeNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  'Home'
+>;
+
+export const PostTender = ({navigation}:{navigation:HomeNavigationProp}) => {
   const [selectedFiles, setSelectedFiles] = useState<DocumentPickerResponse[]>(
     [],
   );
@@ -54,6 +61,7 @@ export const PostTender = () => {
 
   const handleCustomAlertClose = () => {
     setCustomAlertVisible(false);
+    navigation.navigate("Home")
   };
 
   const handleSubmit1 = async (values: any) => {
@@ -114,9 +122,10 @@ export const PostTender = () => {
           initialValues={initialValues}
           enableReinitialize={true}
           //   validationSchema={validationSchema}
-          onSubmit={async values => {
+          onSubmit={async (values, { resetForm }) => {
             setLoading(true);
             handleSubmit1(values);
+            resetForm()
             setLoading(false);
           }}>
           {({handleSubmit, values, setFieldValue}) => (

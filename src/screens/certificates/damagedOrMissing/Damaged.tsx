@@ -44,9 +44,15 @@ import {
 import {SelectPicker} from '../../../themes/buttons/selectDropdown';
 import {useSelector} from 'react-redux';
 import useUserInformation from '../../../hooks/userInformation';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../../../types/type/types';
 // import DatePickers from '../../../themes/buttons/datePicker';
 
-export const Damaged = () => {
+type HomeNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  'Home'
+>;
+export const Damaged = ({navigation}:{navigation:HomeNavigationProp}) => {
   // Scroll View End
   const [checkboxes, setCheckboxes] = useState<CheckboxItem[]>(loadingCapacity);
   const [selectedFiles, setSelectedFiles] = useState<DocumentPickerResponse[]>(
@@ -100,6 +106,7 @@ export const Damaged = () => {
 
   const handleCustomAlertClose = () => {
     setCustomAlertVisible(false);
+    navigation.navigate("Home")
   };
 
   const handleSubmit1 = async (values: DamagedFormValues) => {
@@ -118,15 +125,15 @@ export const Damaged = () => {
       };
       // console.log(requestData, 'req');
 
-      const response = await axios.post(
-        'https://fivestaraccess.com.au/custom_form/damaged_scaffold_app.php',
-        requestData,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        },
-      );
+      // const response = await axios.post(
+      //   'https://fivestaraccess.com.au/custom_form/damaged_scaffold_app.php',
+      //   requestData,
+      //   {
+      //     headers: {
+      //       'Content-Type': 'application/json',
+      //     },
+      //   },
+      // );
       console.log('Post Response:', requestData);
       // console.log('signature', values.projectDetails.certificationRelation);
       // Alert.alert("Document submitted successfully")
@@ -167,10 +174,11 @@ export const Damaged = () => {
         <Formik
           initialValues={initialValues}
           enableReinitialize={true}
-          validationSchema={validationSchema}
-          onSubmit={async values => {
+          // validationSchema={validationSchema}
+          onSubmit={async (values, { resetForm }) => {
             setLoading(true);
             await handleSubmit1(values);
+            resetForm()
             setLoading(false);
           }}>
           {({handleSubmit, values}) => (
