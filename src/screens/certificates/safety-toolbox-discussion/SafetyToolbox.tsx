@@ -51,10 +51,6 @@ export const SafetyToolbox = () => {
   const [selectedFiles, setSelectedFiles] = useState<DocumentPickerResponse[]>(
     [],
   );
-  // const [signatures, setSignatures] = useState({
-  //   signature1: '',
-  //   signature2: '',
-  // });
   const [isCustomAlertVisible, setCustomAlertVisible] = useState(false);
   const [loading, setLoading] = useState(false);
   const {username, userEmail} = useUserInformation();

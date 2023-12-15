@@ -101,14 +101,20 @@ export const userPersonalData: Partial<InputField>[] = [
     label: 'Your Name',
     showAsterisk: true,
     name: 'your_name',
+    prefilled:true,
+    prefilledUsername: true,
   },
   {
     label: 'Your Phone Number',
     name: 'your_number',
+    prefilled:true,
+    prefilledUserPhoneNumber: true,
   },
   {
     label: 'Your Email Address ',
     name: 'your_email',
+    prefilled:true,
+    prefilledUserEmail: true,
   },
 ];
 

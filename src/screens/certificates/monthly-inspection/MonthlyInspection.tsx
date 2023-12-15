@@ -37,6 +37,7 @@ import Address from '../../../components/common/Address';
 import {CanvasSignature} from '../../../themes/buttons/canvas-signature';
 import { useSelector } from 'react-redux';
 import { SelectPicker } from '../../../themes/buttons/selectDropdown';
+import useUserInformation from '../../../hooks/userInformation';
 
 export const MonthlyInspection = () => {
   // Scroll View End
@@ -53,6 +54,7 @@ export const MonthlyInspection = () => {
   const [isCustomAlertVisible, setCustomAlertVisible] = useState(false);
   const [loading, setLoading] = useState(false);
   const addressOptions = useSelector((state: any) => state.addressOptions);
+  const {username, userEmail} = useUserInformation();
 
   // Scroll View start
   const scrollViewRef: any = useRef(null);
@@ -301,7 +303,7 @@ export const MonthlyInspection = () => {
                   injury or death.
                 </Text>
               </View>
-              <TextInputGroup inputFields={userPersonalData} />
+              <TextInputGroup inputFields={userPersonalData} username={username} userEmail={userEmail} />
               <View style={{width: '90%', marginBottom: 50}}>
                 <FilePicker
                   selectedFiles={selectedFiles}

@@ -71,6 +71,8 @@ export const userPersonalData: Partial<InputField>[] = [
     label: 'Name of person preparing this Certificate ',
     showAsterisk: true,
     name: 'name_prepare_certificate',
+    prefilled: true,
+    prefilledUsername: true,
   },
   {
     label: 'Handover Date and Time ',
@@ -80,6 +82,8 @@ export const userPersonalData: Partial<InputField>[] = [
   {
     label: 'Write your email to receive a pdf copy ',
     name: 'email_receive_copy',
+    prefilled: true,
+    prefilledUserEmail: true,
   },
   {
     label: 'Write your Customer email for them to receive a pdf copy ',

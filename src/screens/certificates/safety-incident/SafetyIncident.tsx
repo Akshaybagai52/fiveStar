@@ -47,6 +47,7 @@ import RadioGroupButton from '../../../themes/buttons/radioButtonGroup';
 import {SafetyFieldArray} from '../../../themes/buttons/fieldArray-safetyInjured';
 import {useSelector} from 'react-redux';
 import SafetyInjuredFieldArray from '../../../components/screens/safetyInjured/FieldArray';
+import useUserInformation from '../../../hooks/userInformation';
 
 export const SafetyIncident = () => {
   const [checkboxes, setCheckboxes] = useState<CheckboxItem[]>(loadingCapacity);
@@ -64,7 +65,7 @@ export const SafetyIncident = () => {
   const [isCustomAlertVisible, setCustomAlertVisible] = useState(false);
   const [loading, setLoading] = useState(false);
   const addressOptions = useSelector((state: any) => state.addressOptions);
-
+  const {username, userEmail} = useUserInformation();
   // Scroll View start
   const scrollViewRef: any = useRef(null);
 
@@ -293,7 +294,11 @@ export const SafetyIncident = () => {
               />
               <Field name="specify_measures" component={AudioConverter} />
               <View style={[commonStyles.mTop15]}>
-                <TextInputGroup inputFields={userPersonalData} />
+                <TextInputGroup
+                  inputFields={userPersonalData}
+                  username={username}
+                  userEmail={userEmail}
+                />
                 <Text style={[commonStyles.text16, commonStyles.mb5]}>
                   Signature 1
                 </Text>

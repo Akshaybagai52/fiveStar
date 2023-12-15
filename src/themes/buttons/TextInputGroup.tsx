@@ -3,16 +3,18 @@ import {View, TextInput, StyleSheet, Text} from 'react-native';
 import {Field, ErrorMessage, useFormikContext} from 'formik';
 import {useSelector} from 'react-redux';
 import commonStyles from '../../styles/commonStyles';
-import { PrefilledValuesMap, TextInputGroupProps } from '../../types/interfaces/types';
+import { TextInputGroupProps } from '../../types/interfaces/types';
 
 const TextInputGroup: React.FC<TextInputGroupProps> = ({
   inputFields,
   username,
-  userEmail
+  userEmail,
+  userPhoneNumber
 }) => {
   const [inputValues, setInputValues] = useState<{[name: string]: string}>({});
   if (username) {
     console.log(username, 'inifdgnput');
+    console.log(userPhoneNumber, 'inifdgnput');
   }
   const speechReducerValues = useSelector((state: any) => state?.speech);
   const addingZero = (time: number) => {
@@ -56,6 +58,9 @@ const TextInputGroup: React.FC<TextInputGroupProps> = ({
         }
         if (inputField.prefilledUserEmail && userEmail) {
           formik.setFieldValue(inputField.name, userEmail);
+        }
+        if (inputField.prefilledUserPhoneNumber && userPhoneNumber) {
+          formik.setFieldValue(inputField.name, userPhoneNumber);
         }
       }
     });

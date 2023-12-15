@@ -60,8 +60,10 @@ const Login = ({navigation}: {navigation: GetStartedNavigationProp}) => {
         console.log(res.data.name);
 
         if (status === 'approved') {
-          await AsyncStorage.setItem('userEmail', firstName);
+          console.log(res.data.mobile_number)
+          await AsyncStorage.setItem('userEmail', res.data.email);
           await AsyncStorage.setItem('username', res.data.name);
+          await AsyncStorage.setItem('userPhoneNumber', res.data.mobile_number);
           navigation.navigate('MyTabs');
         } else {
           Alert.alert('Login Failed', 'Invalid Details.');

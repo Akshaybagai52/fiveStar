@@ -10,6 +10,7 @@ export interface InputField {
   prefilled?: boolean;
   prefilledUserEmail?: boolean;
   prefilledUsername?: boolean;
+  prefilledUserPhoneNumber?: boolean;
 }
 
 export interface RadioOption {
@@ -67,9 +68,13 @@ export interface TextInputGroupProps {
     prefilledUserEmail?: boolean;
     prefilledUsername?: boolean;
     prefilled?: boolean;
+    prefilledUserPhoneNumber?: boolean;
+
   }>[];
   username?:string | null;
   userEmail?: string | null;
+  userPhoneNumber?: string | null;
+
 }
 export interface PrefilledValuesMap {
   [fieldName: string]: string | undefined | null;
