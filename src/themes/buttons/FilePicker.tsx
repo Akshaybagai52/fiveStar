@@ -1,5 +1,5 @@
 // Importing necessary components and modules from React Native
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect, useImperativeHandle} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -14,18 +14,29 @@ import {
 import DocumentPicker, {
   DocumentPickerResponse,
 } from 'react-native-document-picker';
+import {Button} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 // Define the properties for the FilePicker component
 interface FilePickerProps {
   selectedFiles: DocumentPickerResponse[];
-  setSelectedFiles: React.Dispatch<React.SetStateAction<DocumentPickerResponse[]>>;
+  setSelectedFiles: React.Dispatch<
+    React.SetStateAction<DocumentPickerResponse[]>
+  >;
 }
 
 // FilePicker component
-const FilePicker: React.FC<FilePickerProps> = ({ selectedFiles, setSelectedFiles }) => {
+const FilePicker: React.FC<FilePickerProps> = (
+  {
+    selectedFiles,
+    setSelectedFiles,
+  }: {selectedFiles: any; setSelectedFiles: any},
+  clearRef: any,
+) => {
   // State to store selected files
-  const [multipleFile, setMultipleFile] = useState<DocumentPickerResponse[]>([]);
+  const [multipleFile, setMultipleFile] = useState<DocumentPickerResponse[]>(
+    [],
+  );
 
   // Function to handle multiple file selection
   const selectMultipleFile = async () => {
@@ -55,9 +66,15 @@ const FilePicker: React.FC<FilePickerProps> = ({ selectedFiles, setSelectedFiles
 
   // Function to truncate text for display
   const textTruncate = (text: string | null) => {
-    if (text) return text.length > 6 ? text.substring(0, 6) + "..." : text;
+    if (text) return text.length > 6 ? text.substring(0, 6) + '...' : text;
+  };
+  const clearAllFiles = () => {
+    setMultipleFile([]);
   };
 
+  useImperativeHandle(clearRef, () => ({
+    clearAllFiles,
+  }));
   // useEffect to update selectedFiles state when multipleFile state changes
   useEffect(() => {
     setSelectedFiles(multipleFile);
@@ -65,7 +82,7 @@ const FilePicker: React.FC<FilePickerProps> = ({ selectedFiles, setSelectedFiles
 
   // JSX structure for the FilePicker component
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{flex: 1}}>
       <Text style={styles.titleText}>Upload Your File</Text>
       <View style={styles.container}>
         <View style={styles.divider} />
@@ -74,7 +91,7 @@ const FilePicker: React.FC<FilePickerProps> = ({ selectedFiles, setSelectedFiles
           activeOpacity={0.5}
           style={styles.buttonStyle}
           onPress={selectMultipleFile}>
-          <Text style={{ marginRight: 10, fontSize: 19 }}>
+          <Text style={{marginRight: 10, fontSize: 19}}>
             Click here to upload files
           </Text>
           <Image
@@ -86,12 +103,12 @@ const FilePicker: React.FC<FilePickerProps> = ({ selectedFiles, setSelectedFiles
         </TouchableOpacity>
         {/* Display selected files */}
         <ScrollView>
-          <View style={{ flexWrap: 'wrap', flexDirection: 'row' }}>
+          <View style={{flexWrap: 'wrap', flexDirection: 'row'}}>
             {multipleFile.map((item, index) => (
               <View key={index}>
                 {/* Display selected file image */}
                 <Image
-                  source={{ uri: item.uri }}
+                  source={{uri: item.uri}}
                   style={{
                     width: 50,
                     height: 50,
@@ -100,7 +117,13 @@ const FilePicker: React.FC<FilePickerProps> = ({ selectedFiles, setSelectedFiles
                   }}
                 />
                 {/* Button to remove selected file */}
-                <Icon name='cancel' color="#ef233c" size={18} style={{ position: 'absolute', right: 0 }} onPress={() => removeFile(index)} />
+                <Icon
+                  name="cancel"
+                  color="#ef233c"
+                  size={18}
+                  style={{position: 'absolute', right: 0}}
+                  onPress={() => removeFile(index)}
+                />
                 {/* Display truncated file name */}
                 <Text>{textTruncate(item.name)}</Text>
               </View>
@@ -113,7 +136,7 @@ const FilePicker: React.FC<FilePickerProps> = ({ selectedFiles, setSelectedFiles
 };
 
 // Export the FilePicker component
-export default FilePicker;
+export default React.forwardRef(FilePicker);
 
 // Styles for the component
 const styles = StyleSheet.create({

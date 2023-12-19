@@ -1,7 +1,7 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useImperativeHandle, forwardRef} from 'react';
 import {Field, useFormik, useFormikContext} from 'formik';
 import DropDownPicker from 'react-native-dropdown-picker';
-import {Text} from 'react-native-paper';
+import {Button, Text} from 'react-native-paper';
 import {View} from 'react-native';
 import commonStyles from '../../../styles/commonStyles';
 
@@ -35,12 +35,12 @@ type SelectedValueProps = {
   value: string | undefined;
 };
 
-export function SelectPicker({
+export const SelectPicker =forwardRef(({
   data,
   label,
   name,
   searchable,
-}: SelectPickerProps) {
+}: SelectPickerProps, ref) =>{
   const [open, setOpen] = useState<boolean>(false);
   const [value, setValue] = useState<string | null>(null);
   const [items, setItems] = useState<Item[]>(data);
@@ -70,6 +70,14 @@ export function SelectPicker({
       }
     }, [selectedProjectId]);
   }
+  const clearPickerData = () => {
+    setValue(null);
+    setOpen(false)
+  }
+
+  useImperativeHandle(ref, () => ({
+    clearPickerData: clearPickerData
+   }));
 
   return (
     <Field name={label.name ? label.name : name}>
@@ -113,4 +121,4 @@ export function SelectPicker({
       )}
     </Field>
   );
-}
+})

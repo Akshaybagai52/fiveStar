@@ -79,11 +79,11 @@ export const userPersonalData: Partial<InputField>[] = [
     label: 'Write your email to receive a pdf copy',
     name: 'signatures.customerEmail2',
   },
-  {
-    label: 'Handover Date and Time ',
-    showAsterisk: true,
-    name: 'signatures.DateTime',
-  },
+  // {
+  //   label: 'Handover Date and Time ',
+  //   showAsterisk: true,
+  //   name: 'signatures.DateTime',
+  // },
   {
     label: 'Name of authorised Customer Representative ',
     showAsterisk: true,

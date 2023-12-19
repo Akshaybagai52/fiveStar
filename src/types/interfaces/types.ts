@@ -69,19 +69,17 @@ export interface TextInputGroupProps {
     prefilledUsername?: boolean;
     prefilled?: boolean;
     prefilledUserPhoneNumber?: boolean;
-
   }>[];
-  username?:string | null;
+  username?: string | null;
   userEmail?: string | null;
   userPhoneNumber?: string | null;
-
 }
 export interface PrefilledValuesMap {
   [fieldName: string]: string | undefined | null;
 }
 
-interface DrawingsSupplied {
-  // Define properties here
+export interface MySignatureCanvasRef {
+  handleClearSignature: () => void;
 }
 
 interface Elevations {
@@ -90,6 +88,22 @@ interface Elevations {
 
 interface InputDetails {
   // Define properties here
+}
+
+export interface DatePickersRef {
+  clearDate: () => void;
+}
+
+export interface SignatureCanvasRef {
+  handleClearSignature: () => void;
+}
+
+export interface SelectPickerRef {
+  clearPickerData: () => void;
+}
+
+export interface FilePickerRef {
+  clearAllFiles: () => void;
 }
 
 interface ScaffoldDetails {
@@ -122,14 +136,12 @@ export interface Reporting {
   reportingCheck: {
     damaged_Components: string;
     missing_order: string;
-  }
+  };
   menon_job: string;
   estimated_time: string;
   total_hours: string;
   extra_truck: string;
   comments: string;
-
-
 }
 
 export interface DamagedSignature {
@@ -138,15 +150,12 @@ export interface DamagedSignature {
   supervisor_name: string;
   date_time: string;
   supervisor_email: string;
-
 }
 
 export interface DamagedFormValues {
   projectId: string;
   reporting: Reporting;
   signatures: DamagedSignature;
-  
-
 }
 
 export interface ProjectIdProps {

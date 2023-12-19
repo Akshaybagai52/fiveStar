@@ -22,8 +22,10 @@ import {PreStart} from '../screens/certificates/pre-start-baseout-checklist';
 import {PostTender} from '../screens/certificates/post-tender-checklist';
 import {SiteAudit} from '../screens/certificates/site-audit-form';
 import {MaterialCheckout} from '../screens/material-checkout';
+import { TransportChecklist } from '../screens/certificates/transport-CheckList';
 import { useRoute} from '@react-navigation/native';
 import Login from '../screens/login/LoginForm';
+import { PickingChecklist } from '../screens/certificates/picking-checklist';
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
@@ -81,6 +83,10 @@ export function HandoverDrawer() {
         options={{headerShown: false, drawerLabel:undefined}}
         
       />
+      <Drawer.Screen name="Transport Checklist" component={TransportChecklist} />
+      <Drawer.Screen name="Picking/Loading Checklist" component={PickingChecklist} />
+
+
       {/* <Drawer.Screen name="Material Checkout" component={MaterialCheckout
       } /> */}
       {/* <Drawer.Screen name="Help Center" component={Contact} /> */}
