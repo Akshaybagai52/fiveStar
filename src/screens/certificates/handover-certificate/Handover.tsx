@@ -6,7 +6,14 @@ import RadioGroup from '../../../themes/buttons/RadioButtons';
 import TextInputGroup from '../../../themes/buttons/TextInputGroup';
 import CustomHeader from '../../../themes/text/TextWithGreenBg';
 import CheckBox from '../../../themes/buttons/Checkbox';
-import {CheckboxItem} from '../../../types/interfaces/types';
+import {
+  CheckboxItem,
+  DatePickersRef,
+  FilePickerRef,
+  MySignatureCanvasRef,
+  SelectPickerRef,
+  SignatureCanvasRef,
+} from '../../../types/interfaces/types';
 import {ButtonGreen} from '../../../themes/text/ButtonGreen';
 import Recorder from '../../../themes/buttons/AudioRecorder';
 import {MySignatureCanvas} from '../../../themes/buttons/SignatureCanvas';
@@ -41,15 +48,15 @@ import {useSelector} from 'react-redux';
 // import {fetchAddressOptions} from '../../../redux/addressSlice';
 import {SelectPicker} from '../../../themes/buttons/selectDropdown';
 import useUserInformation from '../../../hooks/userInformation';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../../../types/type/types';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import {RootStackParamList} from '../../../types/type/types';
+import { DatePickers } from '../../../themes/buttons/datePicker';
 
-type HomeNavigationProp = NativeStackNavigationProp<
-  RootStackParamList,
-  'Home'
->;
+type HomeNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Home'>;
 
-const Handover = ({navigation}:{navigation:HomeNavigationProp}) => {
+
+
+const Handover = ({navigation}: {navigation: HomeNavigationProp}) => {
   // Scroll View End
   const [checkboxes, setCheckboxes] = useState<CheckboxItem[]>(loadingCapacity);
   const [elevationData, setElevationData] =
@@ -72,6 +79,10 @@ const Handover = ({navigation}:{navigation:HomeNavigationProp}) => {
   //   formik.setFieldValue('signatures.customerName', username)
 
   // }
+  const mySignatureCanvasRefs = useRef<SignatureCanvasRef[]>([]);
+  const myDatePickerRefs = useRef<DatePickersRef[]>([]);
+  const mySelectPickerRef = useRef<SelectPickerRef>(null);
+  const myFilePickerRef = useRef<FilePickerRef>(null);
   // Scroll View start
   const scrollViewRef: any = useRef(null);
 
@@ -134,7 +145,7 @@ const Handover = ({navigation}:{navigation:HomeNavigationProp}) => {
 
   const handleCustomAlertClose = () => {
     setCustomAlertVisible(false);
-    navigation.navigate("Home")
+    navigation.navigate('Home');
   };
 
   const handleSubmit1 = async (values: HandoverFormValues) => {
@@ -169,6 +180,12 @@ const Handover = ({navigation}:{navigation:HomeNavigationProp}) => {
       console.log('Post Response:', requestData);
       // console.log('signature', values.projectDetails.certificationRelation);
       // Alert.alert("Document submitted successfully")
+      mySelectPickerRef?.current?.clearPickerData();
+
+      mySignatureCanvasRefs?.current?.forEach((ref:SignatureCanvasRef) => ref.handleClearSignature());
+      myDatePickerRefs?.current?.forEach((ref:DatePickersRef) => ref.clearDate());
+      // mySelectPickerRefs?.current?.forEach((ref:SelectPickerRef) => ref.clearPickerData());
+      myFilePickerRef?.current?.clearAllFiles();
       setCustomAlertVisible(true);
     } catch (error) {
       console.error('Error:', error);
@@ -198,10 +215,10 @@ const Handover = ({navigation}:{navigation:HomeNavigationProp}) => {
           initialValues={initialValues}
           enableReinitialize={true}
           // validationSchema={validationSchema}
-          onSubmit={async (values, { resetForm }) => {
+          onSubmit={async (values, {resetForm}) => {
             setLoading(true);
             await handleSubmit1(values);
-            resetForm()
+            resetForm();
             setLoading(false);
             // navigation.navigate("Home")
           }}>
@@ -272,8 +289,8 @@ const Handover = ({navigation}:{navigation:HomeNavigationProp}) => {
                 )}
               </View>
               <View>
-                <SelectPicker label={AddresOptionsData} data={addressOptions} />
-                <TextInputGroup inputFields={initialFormData}  />
+                <SelectPicker ref={mySelectPickerRef} label={AddresOptionsData} data={addressOptions} />
+                <TextInputGroup inputFields={initialFormData} />
               </View>
               <View style={{marginBottom: 15, marginTop: 15}}>
                 <Recorder />
@@ -388,9 +405,16 @@ const Handover = ({navigation}:{navigation:HomeNavigationProp}) => {
                   injury or death.
                 </Text>
               </View>
-              <TextInputGroup inputFields={userPersonalData} username={username} userEmail={userEmail} />
+              <TextInputGroup
+                inputFields={userPersonalData}
+                username={username}
+                userEmail={userEmail}
+              />
+              <Text style={[commonStyles.text16,commonStyles.mb5, commonStyles.mTop15]}>Handover Date and Time <Text style={[commonStyles.errorText]}>*</Text></Text>
+              <DatePickers ref={(el: DatePickersRef) => myDatePickerRefs.current[0] = el} mode="datetime" name='signatures.DateTime'  />
               <View style={{width: '90%', marginBottom: 50}}>
                 <FilePicker
+                  ref={myFilePickerRef}
                   selectedFiles={selectedFiles}
                   setSelectedFiles={setSelectedFiles}
                 />
@@ -398,6 +422,7 @@ const Handover = ({navigation}:{navigation:HomeNavigationProp}) => {
 
               {/* <SignatureScreen /> */}
               <MySignatureCanvas
+                 ref={(el:SignatureCanvasRef) => mySignatureCanvasRefs.current[0] = el}
                 onBegin={handleCanvasBegin}
                 onEnd={handleCanvasEnd}
                 signature={signatures}
@@ -410,6 +435,7 @@ const Handover = ({navigation}:{navigation:HomeNavigationProp}) => {
               />
 
               <MySignatureCanvas
+                 ref={(el:SignatureCanvasRef) => mySignatureCanvasRefs.current[1] = el}
                 onBegin={handleCanvasBegin}
                 onEnd={handleCanvasEnd}
                 signature={signatures}

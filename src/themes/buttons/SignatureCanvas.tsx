@@ -1,10 +1,10 @@
-import React, {useRef, useState, useEffect} from 'react';
+import React, {useRef, useState, useEffect, useImperativeHandle, forwardRef} from 'react';
 import {View, StyleSheet, Image} from 'react-native';
 import SignatureCanvas, {SignatureViewRef} from 'react-native-signature-canvas';
 import {Button} from 'react-native-paper';
 import { useFormikContext } from 'formik';
 
-export const MySignatureCanvas = ({onBegin, onEnd, signature, setSignature}: any) => {
+export const MySignatureCanvas = forwardRef(({onBegin, onEnd, signature, setSignature}: any, ref: any) => {
   const [signatureImage, setSignatureImage] = useState<string>('');
   const {values, setFieldValue} = useFormikContext<any>();
 
@@ -32,6 +32,9 @@ export const MySignatureCanvas = ({onBegin, onEnd, signature, setSignature}: any
   const handleOK = (signature: any) => {
     setSignature(signature)
   };
+  useImperativeHandle(ref, () => ({
+    handleClearSignature,
+  }));
 
   return (
     <View>
@@ -62,7 +65,7 @@ export const MySignatureCanvas = ({onBegin, onEnd, signature, setSignature}: any
       </View>
     </View>
   );
-};
+});
 
 const styles = StyleSheet.create({
   container: {
@@ -84,3 +87,5 @@ const styles = StyleSheet.create({
     width: '90%',
   },
 })
+
+// export default React.forwardRef(MySignatureCanvas);

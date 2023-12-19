@@ -140,19 +140,19 @@ export const MaterialCheckout = () => {
         address: addressOptions.deliveryAddress,
         products: mappedItems,
       };
-      console.log(requestData);
+      // console.log(requestData);
 
-      //   const response = await axios.post(
-      //     'https://fivestaraccess.com.au/custom_form/scaffold_tampering_app.php',
-      //     requestData,
-      //     {
-      //       headers: {
-      //         'Content-Type': 'application/json',
-      //       },
-      //     },
-      //   );
+        const response = await axios.post(
+          'https://fivestaraccess.com.au/custom_form/material_order_process_app.php',
+          requestData,
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          },
+        );
       // dispatch(updateAddressResults(values))
-      // console.log('Post Response:', requestData);
+      console.log('Post Response:', response);
 
       // setCustomAlertVisible(true);
     } catch (error) {
