@@ -15,6 +15,7 @@ import {SelectPicker} from '../../themes/buttons/selectDropdown';
 import TextInputGroup from '../../themes/buttons/TextInputGroup';
 import {colors} from '../../colors/colors';
 import {ButtonGreen} from '../../themes/text/ButtonGreen';
+// import useUserInformation from '../../hooks/userInformation';
 
 interface productProps {
   id: string;
@@ -62,7 +63,7 @@ export const MaterialCheckout = () => {
   const [updatedItems, setUpdatedItems] = useState<productProps[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [mappedItems, setMappedItems] = useState<productProps[]>([]);
-
+  
   const dataResponse = async () => {
     try {
       const response = await axios.get(
@@ -152,7 +153,7 @@ export const MaterialCheckout = () => {
           },
         );
       // dispatch(updateAddressResults(values))
-      console.log('Post Response:', response);
+      console.log('Post Response:', requestData);
 
       // setCustomAlertVisible(true);
     } catch (error) {
