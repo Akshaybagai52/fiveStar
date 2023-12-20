@@ -214,7 +214,7 @@ const Handover = ({navigation}: {navigation: HomeNavigationProp}) => {
         <Formik
           initialValues={initialValues}
           enableReinitialize={true}
-          // validationSchema={validationSchema}
+          validationSchema={validationSchema}
           onSubmit={async (values, {resetForm}) => {
             setLoading(true);
             await handleSubmit1(values);

@@ -59,6 +59,7 @@ export const PickingChecklist = ({
     signature1: '',
     signature2: '',
   });
+
   const [isCustomAlertVisible, setCustomAlertVisible] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -87,7 +88,8 @@ export const PickingChecklist = ({
     navigation.navigate('Home');
   };
 
-  const handleSubmit1 = async (values: HandoverFormValues) => {
+  const handleSubmit1 = async (values:any) => {
+ 
     try {
       const base64Images = await Promise.all(
         selectedFiles.map(async file => {

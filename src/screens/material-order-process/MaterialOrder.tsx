@@ -14,6 +14,7 @@ import {colors} from '../../colors/colors';
 import {useDispatch, useSelector} from 'react-redux';
 import {fetchAddressOptions} from '../../redux/addressSlice';
 import {updateAddressResults} from '../../redux/mainSlice';
+import useUserInformation from '../../hooks/userInformation';
 
 const initialValues = {
   date: '',
@@ -57,6 +58,9 @@ export const MaterialOrder = ({navigation}: any) => {
   };
   const dispatch = useDispatch<any>();
   const addressOptions = useSelector((state: any) => state.addressOptions);
+
+  const {username} = useUserInformation();
+console.log(username)
 
   useEffect(() => {
     dispatch(fetchAddressOptions());
@@ -155,7 +159,7 @@ export const MaterialOrder = ({navigation}: any) => {
                     SUBMITTER
                   </Text>
                   <TextInput
-                    value="Manisha Kumari"
+                    value={username || ''}
                     style={[
                       commonStyles.textInput,
                       {width: '90%', borderColor: colors.darkBlue},
