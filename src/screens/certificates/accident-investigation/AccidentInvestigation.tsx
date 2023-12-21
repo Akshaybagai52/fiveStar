@@ -8,7 +8,7 @@ import CustomHeader from '../../../themes/text/TextWithGreenBg';
 import CheckBox from '../../../themes/buttons/Checkbox';
 import {CheckboxItem} from '../../../types/interfaces/types';
 import {ButtonGreen} from '../../../themes/text/ButtonGreen';
-import MySignatureCanvas from '../../../themes/buttons/SignatureCanvas';
+// import MySignatureCanvas from '../../../themes/buttons/SignatureCanvas';
 import FilePicker from '../../../themes/buttons/FilePicker';
 import {Field, Formik} from 'formik';
 import * as Yup from 'yup';
@@ -210,6 +210,7 @@ export const AccidentInvestigation = ({navigation}:{navigation:HomeNavigationPro
     //     .required('Subcontractor Email is required'),
     // }),
   });
+  
   return (
     <SafeAreaView style={{padding: 20, backgroundColor: '#fff'}}>
       <ScrollView ref={scrollViewRef} scrollEnabled>

@@ -6,7 +6,13 @@ import RadioGroup from '../../../themes/buttons/RadioButtons';
 import TextInputGroup from '../../../themes/buttons/TextInputGroup';
 import CustomHeader from '../../../themes/text/TextWithGreenBg';
 import CheckBox from '../../../themes/buttons/Checkbox';
-import {CheckboxItem} from '../../../types/interfaces/types';
+import {
+  CheckboxItem,
+  DatePickersRef,
+  FilePickerRef,
+  SelectPickerRef,
+  SignatureCanvasRef,
+} from '../../../types/interfaces/types';
 import {ButtonGreen} from '../../../themes/text/ButtonGreen';
 import Recorder from '../../../themes/buttons/AudioRecorder';
 import {MySignatureCanvas} from '../../../themes/buttons/SignatureCanvas';
@@ -36,18 +42,15 @@ import {AudioConverter} from '../../../themes/buttons/speechToText';
 import Address from '../../../components/common/Address';
 import {DatePickers} from '../../../themes/buttons/datePicker';
 import WorkCalculate from '../../../themes/buttons/work-calculation/WorkCalculate';
-import { SelectPicker } from '../../../themes/buttons/selectDropdown';
-import { useSelector } from 'react-redux';
+import {SelectPicker} from '../../../themes/buttons/selectDropdown';
+import {useSelector} from 'react-redux';
 import useUserInformation from '../../../hooks/userInformation';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../../../types/type/types';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import {RootStackParamList} from '../../../types/type/types';
 
-type HomeNavigationProp = NativeStackNavigationProp<
-  RootStackParamList,
-  'Home'
->;
+type HomeNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Home'>;
 
-export const DayLabour = ({navigation}:{navigation:HomeNavigationProp}) => {
+export const DayLabour = ({navigation}: {navigation: HomeNavigationProp}) => {
   // Scroll View End
   const [checkboxes, setCheckboxes] = useState<CheckboxItem[]>(loadingCapacity);
   const [elevationData, setElevationData] =
@@ -62,15 +65,17 @@ export const DayLabour = ({navigation}:{navigation:HomeNavigationProp}) => {
   const [isCustomAlertVisible, setCustomAlertVisible] = useState(false);
   const [loading, setLoading] = useState(false);
   const [numFields, setNumFields] = useState(1);
-  const [names, setNames] = useState<any>([{
-    "number1": '',
-    "number2": '',
-  }]);
+  const [names, setNames] = useState<any>([
+    {
+      number1: '',
+      number2: '',
+    },
+  ]);
   const addressOptions = useSelector((state: any) => state.addressOptions);
-  const {username, userEmail}  = useUserInformation();
+  const {username, userEmail} = useUserInformation();
 
   const handleAddComponent = () => {
-    setNames([...names, { number1: '', number2: '', result: '' }]);
+    setNames([...names, {number1: '', number2: '', result: ''}]);
   };
   const addField = () => {
     if (numFields < 3) {
@@ -91,6 +96,11 @@ export const DayLabour = ({navigation}:{navigation:HomeNavigationProp}) => {
     }
     return audioConverters;
   };
+
+  const mySignatureCanvasRefs = useRef<SignatureCanvasRef[]>([]);
+  const myDatePickerRefs = useRef<DatePickersRef[]>([]);
+  const mySelectPickerRef = useRef<SelectPickerRef>(null);
+  const myFilePickerRef = useRef<FilePickerRef>(null);
   // Scroll View start
   const scrollViewRef: any = useRef(null);
 
@@ -153,7 +163,7 @@ export const DayLabour = ({navigation}:{navigation:HomeNavigationProp}) => {
 
   const handleCustomAlertClose = () => {
     setCustomAlertVisible(false);
-    navigation.navigate("Home")
+    navigation.navigate('Home');
   };
 
   const handleSubmit1 = async (values: any) => {
@@ -165,7 +175,6 @@ export const DayLabour = ({navigation}:{navigation:HomeNavigationProp}) => {
         }),
       );
       const requestData = {
-        
         projectDetails: {
           building_level: values.projectDetails.building_level,
           date: values.projectDetails.date,
@@ -175,10 +184,10 @@ export const DayLabour = ({navigation}:{navigation:HomeNavigationProp}) => {
               .hourlyLabour,
           variation:
             values.projectDetails.docketRelation.selectedOptionData.variation,
-            nameOf_customer: values.projectDetails.nameOf_customer,
-            project_id: values.projectDetails.project_id,
-            purchase_order: values.projectDetails.purchase_order,
-            workRelation: values.projectDetails.workRelation,
+          nameOf_customer: values.projectDetails.nameOf_customer,
+          project_id: values.projectDetails.project_id,
+          purchase_order: values.projectDetails.purchase_order,
+          workRelation: values.projectDetails.workRelation,
         },
         // scaffoldDetails: {
         //   elevations: values.scaffoldDetails.elevations,
@@ -197,7 +206,7 @@ export const DayLabour = ({navigation}:{navigation:HomeNavigationProp}) => {
         },
         imagesAttached: base64Images,
         signature: signatures,
-        numbers: values.number
+        numbers: values.number,
       };
 
       // const response = await axios.post(
@@ -210,6 +219,14 @@ export const DayLabour = ({navigation}:{navigation:HomeNavigationProp}) => {
       //   },
       // );
       console.log('Post Response:', requestData);
+      mySignatureCanvasRefs?.current?.forEach((ref: SignatureCanvasRef) =>
+        ref.handleClearSignature(),
+      );
+      myDatePickerRefs?.current?.forEach((ref: DatePickersRef) =>
+        ref.clearDate(),
+      );
+      myFilePickerRef?.current?.clearAllFiles();
+      mySelectPickerRef?.current?.clearPickerData();
       // console.log('signature', values.projectDetails.certificationRelation);
       // Alert.alert("Document submitted successfully")
       setCustomAlertVisible(true);
@@ -221,8 +238,8 @@ export const DayLabour = ({navigation}:{navigation:HomeNavigationProp}) => {
     projectDetails: Yup.object().shape({
       building_level: Yup.string(),
       date: Yup.date(),
-      docketRelation: Yup.object().shape({ 
-        selectOption: Yup.string()
+      docketRelation: Yup.object().shape({
+        selectOption: Yup.string(),
       }),
       hourlyLabour: Yup.string(),
       variation: Yup.string(),
@@ -248,10 +265,10 @@ export const DayLabour = ({navigation}:{navigation:HomeNavigationProp}) => {
           initialValues={initialValues}
           enableReinitialize={true}
           // validationSchema={validationSchema}
-          onSubmit={async (values, { resetForm }) => {
+          onSubmit={async (values, {resetForm}) => {
             setLoading(true);
             await handleSubmit1(values);
-            resetForm()
+            resetForm();
             setLoading(false);
           }}>
           {({handleSubmit, values}) => (
@@ -265,7 +282,8 @@ export const DayLabour = ({navigation}:{navigation:HomeNavigationProp}) => {
                 </View>
                 <CustomHeader text="Project Details" />
                 <Text style={[{fontSize: 19}, commonStyles.mTop15]}>
-                  What is this Docket relating to ? <Text style={[commonStyles.errorText]}>*</Text>
+                  What is this Docket relating to ?{' '}
+                  <Text style={[commonStyles.errorText]}>*</Text>
                 </Text>
                 {/* <Text>Choose One </Text> */}
                 <RadioGroup
@@ -295,9 +313,19 @@ export const DayLabour = ({navigation}:{navigation:HomeNavigationProp}) => {
                 {/* {values.projectDetails.certificationRelation.selectedOptionData.variation.dayLabourErection === "dayLabourErection" ? <Text> "hey"</Text> : <Text> "dsfhey"</Text>} */}
               </View>
               <View style={[commonStyles.mTop15]}>
-              <SelectPicker label={dayLabourProjectIdData} data={addressOptions} />
+                <SelectPicker
+                ref={mySelectPickerRef}
+                  label={dayLabourProjectIdData}
+                  data={addressOptions}
+                />
 
-              <DatePickers name="projectDetails.date" mode="date" />
+                <DatePickers
+                  ref={(el: DatePickersRef) =>
+                    (myDatePickerRefs.current[0] = el)
+                  }
+                  name="projectDetails.date"
+                  mode="date"
+                />
                 <TextInputGroup inputFields={initialFormData} />
               </View>
               <View>
@@ -333,6 +361,7 @@ export const DayLabour = ({navigation}:{navigation:HomeNavigationProp}) => {
                 </View>
                 <View style={{width: '90%', marginBottom: 50}}>
                   <FilePicker
+                   ref={myFilePickerRef}
                     selectedFiles={selectedFiles}
                     setSelectedFiles={setSelectedFiles}
                   />
@@ -340,7 +369,7 @@ export const DayLabour = ({navigation}:{navigation:HomeNavigationProp}) => {
               </View>
               <View>
                 {/* <TextInputGroup inputFields={scaffoldData} /> */}
-                <WorkCalculate number='number' />
+                <WorkCalculate number="number" />
               </View>
 
               <View style={{marginBottom: 15, marginTop: 15}}>
@@ -357,10 +386,17 @@ export const DayLabour = ({navigation}:{navigation:HomeNavigationProp}) => {
                   authorised by Five Star Scaffolding
                 </Text>
               </View>
-              <TextInputGroup inputFields={userPersonalData} userEmail={userEmail} username={username}/>
+              <TextInputGroup
+                inputFields={userPersonalData}
+                userEmail={userEmail}
+                username={username}
+              />
 
               {/* <SignatureScreen /> */}
               <MySignatureCanvas
+                ref={(el: SignatureCanvasRef) =>
+                  (mySignatureCanvasRefs.current[0] = el)
+                }
                 onBegin={handleCanvasBegin}
                 onEnd={handleCanvasEnd}
                 signature={signatures}
@@ -373,6 +409,9 @@ export const DayLabour = ({navigation}:{navigation:HomeNavigationProp}) => {
               />
 
               <MySignatureCanvas
+                ref={(el: SignatureCanvasRef) =>
+                  (mySignatureCanvasRefs.current[1] = el)
+                }
                 onBegin={handleCanvasBegin}
                 onEnd={handleCanvasEnd}
                 signature={signatures}
@@ -383,7 +422,12 @@ export const DayLabour = ({navigation}:{navigation:HomeNavigationProp}) => {
                   }))
                 }
               />
-              <Text style={[commonStyles.text16,commonStyles.fontBold, commonStyles.mb15]}>
+              <Text
+                style={[
+                  commonStyles.text16,
+                  commonStyles.fontBold,
+                  commonStyles.mb15,
+                ]}>
                 This document is issued in accordance with the terms and
                 conditions of contract and constitutes formal notification of
                 variation, extension of time and any related additional cost

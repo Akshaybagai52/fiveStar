@@ -15,7 +15,11 @@ import CheckBox from '../../../themes/buttons/Checkbox';
 import {
   CheckboxItem,
   DamagedFormValues,
+  DatePickersRef,
+  FilePickerRef,
   InputField,
+  SelectPickerRef,
+  SignatureCanvasRef,
 } from '../../../types/interfaces/types';
 
 import {ButtonGreen} from '../../../themes/text/ButtonGreen';
@@ -44,15 +48,12 @@ import {
 import {SelectPicker} from '../../../themes/buttons/selectDropdown';
 import {useSelector} from 'react-redux';
 import useUserInformation from '../../../hooks/userInformation';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../../../types/type/types';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import {RootStackParamList} from '../../../types/type/types';
 // import DatePickers from '../../../themes/buttons/datePicker';
 
-type HomeNavigationProp = NativeStackNavigationProp<
-  RootStackParamList,
-  'Home'
->;
-export const Damaged = ({navigation}:{navigation:HomeNavigationProp}) => {
+type HomeNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Home'>;
+export const Damaged = ({navigation}: {navigation: HomeNavigationProp}) => {
   // Scroll View End
   const [checkboxes, setCheckboxes] = useState<CheckboxItem[]>(loadingCapacity);
   const [selectedFiles, setSelectedFiles] = useState<DocumentPickerResponse[]>(
@@ -66,6 +67,11 @@ export const Damaged = ({navigation}:{navigation:HomeNavigationProp}) => {
   const [loading, setLoading] = useState(false);
   const addressOptions = useSelector((state: any) => state.addressOptions);
   const {username} = useUserInformation();
+
+  const mySignatureCanvasRefs = useRef<SignatureCanvasRef[]>([]);
+  const myDatePickerRefs = useRef<DatePickersRef[]>([]);
+  const mySelectPickerRef = useRef<SelectPickerRef>(null);
+  const myFilePickerRef = useRef<FilePickerRef>(null);
   // Scroll View start
   const scrollViewRef: any = useRef(null);
 
@@ -106,7 +112,7 @@ export const Damaged = ({navigation}:{navigation:HomeNavigationProp}) => {
 
   const handleCustomAlertClose = () => {
     setCustomAlertVisible(false);
-    navigation.navigate("Home")
+    navigation.navigate('Home');
   };
 
   const handleSubmit1 = async (values: DamagedFormValues) => {
@@ -135,6 +141,15 @@ export const Damaged = ({navigation}:{navigation:HomeNavigationProp}) => {
       //   },
       // );
       console.log('Post Response:', requestData);
+      mySignatureCanvasRefs?.current?.forEach((ref: SignatureCanvasRef) =>
+        ref.handleClearSignature(),
+      );
+      myDatePickerRefs?.current?.forEach((ref: DatePickersRef) =>
+        ref.clearDate(),
+      );
+      myFilePickerRef?.current?.clearAllFiles();
+      mySelectPickerRef?.current?.clearPickerData();
+
       // console.log('signature', values.projectDetails.certificationRelation);
       // Alert.alert("Document submitted successfully")
       setCustomAlertVisible(true);
@@ -175,10 +190,10 @@ export const Damaged = ({navigation}:{navigation:HomeNavigationProp}) => {
           initialValues={initialValues}
           enableReinitialize={true}
           // validationSchema={validationSchema}
-          onSubmit={async (values, { resetForm }) => {
+          onSubmit={async (values, {resetForm}) => {
             setLoading(true);
             await handleSubmit1(values);
-            resetForm()
+            resetForm();
             setLoading(false);
           }}>
           {({handleSubmit, values}) => (
@@ -203,6 +218,7 @@ export const Damaged = ({navigation}:{navigation:HomeNavigationProp}) => {
               </View>
               <View>
                 <SelectPicker
+                  ref={mySelectPickerRef}
                   label={damagedProjectIdData}
                   data={addressOptions}
                 />
@@ -231,6 +247,7 @@ export const Damaged = ({navigation}:{navigation:HomeNavigationProp}) => {
               </View>
               <View style={{width: '90%', marginBottom: 50}}>
                 <FilePicker
+                  ref={myFilePickerRef}
                   selectedFiles={selectedFiles}
                   setSelectedFiles={setSelectedFiles}
                 />
@@ -256,13 +273,22 @@ export const Damaged = ({navigation}:{navigation:HomeNavigationProp}) => {
                   ]}>
                   Reporting Date And Time
                 </Text>
-                <DatePickers name="signatures.date_time" mode="datetime" />
+                <DatePickers
+                  ref={(el: DatePickersRef) =>
+                    (myDatePickerRefs.current[0] = el)
+                  }
+                  name="signatures.date_time"
+                  mode="datetime"
+                />
               </View>
               <Text style={[commonStyles.text16, commonStyles.mb15]}>
                 Your Signature (please sign)
               </Text>
 
               <MySignatureCanvas
+                ref={(el: SignatureCanvasRef) =>
+                  (mySignatureCanvasRefs.current[0] = el)
+                }
                 onBegin={handleCanvasBegin}
                 onEnd={handleCanvasEnd}
                 signature={signatures}

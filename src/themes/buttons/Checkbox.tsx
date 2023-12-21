@@ -3,7 +3,7 @@ import { View, TouchableOpacity } from 'react-native';
 import { Text } from 'react-native-paper';
 import { Checkbox } from 'react-native-paper';
 import { CheckboxItem } from '../../types/interfaces/types';
-import { Field, useFormikContext } from 'formik'; // Import useFormikContext
+import { ErrorMessage, Field } from 'formik'; // Import useFormikContext
 import commonStyles from '../../styles/commonStyles';
 
 interface CheckBoxProps {
@@ -20,7 +20,7 @@ const CheckBox: React.FC<CheckBoxProps> = ({ checkboxes, onPress }) => {
           {({ field, form }:any) => (
             <TouchableOpacity
               onPress={() => {
-                onPress(checkbox.label);
+                onPress(checkbox?.label);
                 form.setFieldValue(field.name, !field.value); // Manually toggle checkbox value
               }}
             >
@@ -37,6 +37,9 @@ const CheckBox: React.FC<CheckBoxProps> = ({ checkboxes, onPress }) => {
               </View>
             </TouchableOpacity>
           )}
+          {/* <ErrorMessage name={name}>
+              {msg => <Text style={{color: 'red'}}>{msg}</Text>}
+            </ErrorMessage> */}
         </Field>
       ))}
     </>

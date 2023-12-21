@@ -8,13 +8,14 @@ import {
   transPortHeading,
   transPortHeading1,
   transportUserPersonalData,
+  initialValues
 } from '../../../data/TransportChecklist';
 import {
   DatePickersRef,
   SignatureCanvasRef,
 } from '../../../types/interfaces/types';
 import {Formik, Field} from 'formik';
-import {initialFormData, initialValues} from '../../../data/siteAudit';
+
 import TextInputGroup from '../../../themes/buttons/TextInputGroup';
 import useUserInformation from '../../../hooks/userInformation';
 import {DatePickers} from '../../../themes/buttons/datePicker';
@@ -26,7 +27,9 @@ import {RootStackParamList} from '../../../types/type/types';
 import {AudioConverter} from '../../../themes/buttons/speechToText';
 import {DocumentPickerResponse} from 'react-native-document-picker';
 import RNFetchBlob from 'rn-fetch-blob';
-import { CanvasSignature } from '../../../themes/buttons/canvas-signature';
+import {CanvasSignature} from '../../../themes/buttons/canvas-signature';
+import * as Yup from 'yup';
+
 
 type HomeNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Home'>;
 
@@ -72,7 +75,7 @@ export const TransportChecklist = ({
       );
       const requestData = {
         values,
-        signature: signatures
+        signature: signatures,
       };
 
       // const response = await axios.post(
@@ -114,17 +117,27 @@ export const TransportChecklist = ({
     navigation.navigate('Home');
   };
 
+  // validation transport checklist
+  const validationSchema = Yup.object().shape({
+    transporter_name: Yup.string().required('employee is required'),
+   
+  })
+  
+  // console.log(transportUserPersonalData,"trans")
+  // console.log(initialValues,"initialValues")
+
   return (
     <SafeAreaView>
-      <ScrollView  ref={scrollViewRef} >
+      <ScrollView ref={scrollViewRef}>
         <View style={style.transPortForm}>
           <Address />
           <Text style={style.transport_heading}>Transport Checklist</Text>
           <Formik
             initialValues={initialValues}
             enableReinitialize={true}
-            //   validationSchema={validationSchema}
+              validationSchema={validationSchema}
             onSubmit={async (values, {resetForm}) => {
+            //  console.log(values,"lllll")
               setLoading(true);
               await handleSubmit1(values);
               resetForm();
@@ -133,15 +146,17 @@ export const TransportChecklist = ({
             {({handleSubmit, values, setFieldValue}) => (
               <View>
                 <View>
-                  <CustomHeader text="Details" />
+                  <View>
+                    <CustomHeader text="Details" />
+                  </View>
                   <View>
                     <TextInputGroup
                       inputFields={transportUserPersonalData}
-                      username={username}
                     />
                   </View>
+
                   <View style={style.dateSpace}>
-                    <Text style={style.dateSpace}>Date</Text>
+                    <Text style={style.dateText}>Date</Text>
                     <DatePickers name="date" mode="date" />
                   </View>
                 </View>
@@ -183,16 +198,20 @@ const style = StyleSheet.create({
     fontWeight: '700',
     textAlign: 'center',
     fontSize: 30,
+    marginBottom:10
   },
   transPortForm: {
     marginLeft: 15,
     marginRight: 15,
     marginBottom: 5,
   },
-
+  dateText:{
+marginBottom:5,
+fontSize:16
+  },
   dateSpace: {
-    marginBottom: 6,
-    marginTop: 10,
+    marginBottom: 15,
+    marginTop: 3,
   },
   commentsSpace: {
     marginBottom: 20,
@@ -201,4 +220,5 @@ const style = StyleSheet.create({
   commentText: {
     fontWeight: '700',
   },
+
 });
