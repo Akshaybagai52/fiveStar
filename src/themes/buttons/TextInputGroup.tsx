@@ -16,6 +16,7 @@ const TextInputGroup: React.FC<TextInputGroupProps> = ({
   //   console.log(username, 'inifdgnput');
   //   console.log(userPhoneNumber, 'inifdgnput');
   // }
+
   const speechReducerValues = useSelector((state: any) => state?.speech);
   const addingZero = (time: number) => {
     return time >= 10 ? time : `0${time}`;
@@ -89,13 +90,15 @@ const TextInputGroup: React.FC<TextInputGroupProps> = ({
                   multiline={inputField.multiline}
                   numberOfLines={inputField.numberOfLines}
                 />
-              
+               
                 <ErrorMessage
                   name={inputField.name}
                   render={msg => (
                     msg ? <Text style={[commonStyles.errorText]}>{msg}</Text> : null
                   )} // Use your own Text component
-                />
+                /> 
+                
+
               </>
             )}
           </Field>

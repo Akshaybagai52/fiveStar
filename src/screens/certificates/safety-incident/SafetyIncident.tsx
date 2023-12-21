@@ -1,20 +1,15 @@
-import {View, ScrollView, TouchableOpacity, Image, Alert} from 'react-native';
-import {Text, ActivityIndicator, Button} from 'react-native-paper';
-import React, {useState, useRef, useEffect} from 'react';
+import {View, ScrollView} from 'react-native';
+import {Text, ActivityIndicator} from 'react-native-paper';
+import React, {useState, useRef} from 'react';
 import {myStyles} from '../damagedOrMissing';
-import RadioGroup from '../../../themes/buttons/RadioButtons';
 import TextInputGroup from '../../../themes/buttons/TextInputGroup';
-import CustomHeader from '../../../themes/text/TextWithGreenBg';
 import CheckBox from '../../../themes/buttons/Checkbox';
 import {CheckboxItem} from '../../../types/interfaces/types';
 import {ButtonGreen} from '../../../themes/text/ButtonGreen';
-import Recorder from '../../../themes/buttons/AudioRecorder';
 import {MySignatureCanvas} from '../../../themes/buttons/SignatureCanvas';
 import FilePicker from '../../../themes/buttons/FilePicker';
 import {Field, Formik} from 'formik';
-import * as Yup from 'yup';
 import axios from 'axios';
-import {HandoverFormValues} from '../../../types/interfaces/types';
 import {DocumentPickerResponse} from 'react-native-document-picker';
 import RNFetchBlob from 'rn-fetch-blob';
 import CustomAlert from '../../../themes/buttons/Alert';
@@ -48,6 +43,7 @@ import {SafetyFieldArray} from '../../../themes/buttons/fieldArray-safetyInjured
 import {useSelector} from 'react-redux';
 import SafetyInjuredFieldArray from '../../../components/screens/safetyInjured/FieldArray';
 import useUserInformation from '../../../hooks/userInformation';
+import {safetyIncidentSchema} from '../../../schema/yup-schema/fomsSchema';
 
 export const SafetyIncident = () => {
   const [checkboxes, setCheckboxes] = useState<CheckboxItem[]>(loadingCapacity);
@@ -157,49 +153,13 @@ export const SafetyIncident = () => {
       console.error('Error:', error);
     }
   };
-  const validationSchema = Yup.object().shape({
-    projectDetails: Yup.object().shape({
-      stageDiscussion: Yup.object().shape({
-        Dismantle: Yup.string().required('Dismantle is required'),
-        Existing_Scaffold: Yup.string().required(
-          'Existing Scaffold is required',
-        ),
-      }),
-      date: Yup.string().required('Date is required'),
-      project_id: Yup.string().required('Project ID is required'),
-      building_level: Yup.string(),
-      nameOf_customer: Yup.string().required('Customer Name is required'),
-      supervisor_name: Yup.string().required('Supervisor Name is required'),
-      number_of_attendence: Yup.string().required(
-        'Number of Attendance is required',
-      ),
-      start_time: Yup.string().required('Start Time is required'),
-      finish_time: Yup.string().required('Finish Time is required'),
-      duration: Yup.string().required('Duration is required'),
-      work_description: Yup.string().required('Work Description is required'),
-    }),
-    supervisor_notes: Yup.string(),
-    record: Yup.object().shape({
-      name_1: Yup.string(),
-      additional_cmt: Yup.string().required('Additional Comment is required'),
-    }),
-    signatures: Yup.object().shape({
-      name_of_person: Yup.string().required('Name is required'),
-      email_receive_copy: Yup.string()
-        .email('Invalid email format')
-        .required('Email is required'),
-      subcontractor_email: Yup.string()
-        .email('Invalid email format')
-        .required('Subcontractor Email is required'),
-    }),
-  });
   return (
     <View style={{padding: 20, backgroundColor: '#fff'}}>
       <ScrollView ref={scrollViewRef} scrollEnabled>
         <Formik
           initialValues={initialValues}
           enableReinitialize={true}
-          // validationSchema={validationSchema}
+          validationSchema={safetyIncidentSchema}
           onSubmit={async values => {
             setLoading(true);
             await handleSubmit1(values);
