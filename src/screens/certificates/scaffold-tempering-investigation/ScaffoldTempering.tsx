@@ -1,11 +1,11 @@
 import {View, ScrollView, SafeAreaView} from 'react-native';
-import {Text, ActivityIndicator, Button} from 'react-native-paper';
-import React, {useState, useRef, useEffect} from 'react';
+import {Text, ActivityIndicator} from 'react-native-paper';
+import React, {useState, useRef} from 'react';
 import {myStyles} from '../damagedOrMissing';
 import TextInputGroup from '../../../themes/buttons/TextInputGroup';
 import {ButtonGreen} from '../../../themes/text/ButtonGreen';
 import FilePicker from '../../../themes/buttons/FilePicker';
-import {ErrorMessage, Field, Formik} from 'formik';
+import {Field, Formik} from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
 import {DocumentPickerResponse} from 'react-native-document-picker';
@@ -15,8 +15,6 @@ import {
   userPersonalData,
   initialFormData,
   initialValues,
-  // secondListHeading,
-  // scaffoldingData,
   erectionRadioData,
   list,
   scaffoldTemperingProjectIdData,
@@ -25,21 +23,28 @@ import commonStyles from '../../../styles/commonStyles';
 import {AudioConverter} from '../../../themes/buttons/speechToText';
 import Address from '../../../components/common/Address';
 import {DatePickers} from '../../../themes/buttons/datePicker';
-import ListWithBullets from '../../../components/common/ListComp';
 import {CanvasSignature} from '../../../themes/buttons/canvas-signature';
 import RadioGroupButton from '../../../themes/buttons/radioButtonGroup';
 import ListCompGroup from '../../../components/common/ListCompGroup';
-import { useSelector } from 'react-redux';
-import { SelectPicker } from '../../../themes/buttons/selectDropdown';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../../../types/type/types';
+import {useSelector} from 'react-redux';
+import {SelectPicker} from '../../../themes/buttons/selectDropdown';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import {RootStackParamList} from '../../../types/type/types';
+import {scaffoldTamperingSchema} from '../../../schema/yup-schema/fomsSchema';
+import {
+  DatePickersRef,
+  FilePickerRef,
+  SelectPickerRef,
+  SignatureCanvasRef,
+} from '../../../types/interfaces/types';
 
-type HomeNavigationProp = NativeStackNavigationProp<
-  RootStackParamList,
-  'Home'
->;
+type HomeNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Home'>;
 
-export const ScaffoldTempering = ({navigation}:{navigation:HomeNavigationProp}) => {
+export const ScaffoldTempering = ({
+  navigation,
+}: {
+  navigation: HomeNavigationProp;
+}) => {
   const [selectedFiles, setSelectedFiles] = useState<DocumentPickerResponse[]>(
     [],
   );
@@ -47,6 +52,10 @@ export const ScaffoldTempering = ({navigation}:{navigation:HomeNavigationProp}) 
   const [loading, setLoading] = useState(false);
   const addressOptions = useSelector((state: any) => state.addressOptions);
 
+  const mySignatureCanvasRefs = useRef<SignatureCanvasRef[]>([]);
+  const myDatePickerRefs = useRef<DatePickersRef[]>([]);
+  const mySelectPickerRef = useRef<SelectPickerRef>(null);
+  const myFilePickerRef = useRef<FilePickerRef>(null);
   // Scroll View start
   const scrollViewRef: any = useRef(null);
 
@@ -65,7 +74,7 @@ export const ScaffoldTempering = ({navigation}:{navigation:HomeNavigationProp}) 
 
   const handleCustomAlertClose = () => {
     setCustomAlertVisible(false);
-    navigation.navigate("Home")
+    navigation.navigate('Home');
   };
 
   const handleSubmit1 = async (values: any) => {
@@ -95,29 +104,20 @@ export const ScaffoldTempering = ({navigation}:{navigation:HomeNavigationProp}) 
       console.log('Post Response:', requestData);
       // console.log('signature', values.projectDetails.certificationRelation);
       // Alert.alert("Document submitted successfully")
+      mySelectPickerRef?.current?.clearPickerData();
+      mySignatureCanvasRefs?.current?.forEach((ref: SignatureCanvasRef) =>
+        ref.handleClearSignature(),
+      );
+      myDatePickerRefs?.current?.forEach((ref: DatePickersRef) =>
+        ref.clearDate(),
+      );
+      myFilePickerRef?.current?.clearAllFiles();
       setCustomAlertVisible(true);
     } catch (error) {
       console.error('Error:', error);
     }
   };
 
-  const validationSchema = Yup.object().shape({
-    project_id: Yup.string().required('This is required Field'),
-    date: Yup.string(),
-    nameOf_customer: Yup.string(),
-    unapproved_modification: Yup.string().required('This is required Field'),
-    structural_integrity: Yup.string().required('This is required Field'),
-    falling_objects: Yup.string().required('This is required Field'),
-    general_access: Yup.string().required('This is required Field'),
-    affacted_area: Yup.string().required('This is required Field'),
-    repair_scaffold: Yup.string().required('This is required Field'),
-    prevent_recurrence: Yup.string().required('This is required Field'),
-    Supervisor_Name: Yup.string().required('This is required Field'),
-    supervisor_emails: Yup.string().required('This is required Field'),
-    customer_representative: Yup.string(),
-    representative_email: Yup.string(),
-    supervisorSignature: Yup.string(),
-  });
   return (
     <SafeAreaView style={{padding: 20, backgroundColor: '#fff'}}>
       <ScrollView
@@ -127,11 +127,11 @@ export const ScaffoldTempering = ({navigation}:{navigation:HomeNavigationProp}) 
         <Formik
           initialValues={initialValues}
           enableReinitialize={true}
-          validationSchema={validationSchema}
-          onSubmit={async (values, { resetForm }) => {
+          validationSchema={scaffoldTamperingSchema}
+          onSubmit={async (values, {resetForm}) => {
             setLoading(true);
             handleSubmit1(values);
-            resetForm()
+            resetForm();
             setLoading(false);
           }}>
           {({handleSubmit, values, setFieldValue}) => (
@@ -145,11 +145,22 @@ export const ScaffoldTempering = ({navigation}:{navigation:HomeNavigationProp}) 
                 </View>
               </View>
               <View style={[commonStyles.mTop15]}>
+                
+                <SelectPicker
+                  ref={mySelectPickerRef}
+                  label={scaffoldTemperingProjectIdData}
+                  data={addressOptions}
+                />
                 <Text style={[commonStyles.text16, commonStyles.mb5]}>
                   Date
                 </Text>
-                <DatePickers name="date" mode="date" />
-                <SelectPicker label={scaffoldTemperingProjectIdData} data={addressOptions} />
+                <DatePickers
+                  name="date"
+                  mode="date"
+                  ref={(el: DatePickersRef) =>
+                    (myDatePickerRefs.current[0] = el)
+                  }
+                />
                 <TextInputGroup inputFields={initialFormData} />
                 {/* <ListWithBullets
                   heading={secondListHeading}
@@ -184,6 +195,7 @@ export const ScaffoldTempering = ({navigation}:{navigation:HomeNavigationProp}) 
                 </View>
                 <View style={{width: '90%', marginBottom: 20}}>
                   <FilePicker
+                    ref={myFilePickerRef}
                     selectedFiles={selectedFiles}
                     setSelectedFiles={setSelectedFiles}
                   />
@@ -200,6 +212,9 @@ export const ScaffoldTempering = ({navigation}:{navigation:HomeNavigationProp}) 
               </Text>
 
               <CanvasSignature
+                ref={(el: SignatureCanvasRef) =>
+                  (mySignatureCanvasRefs.current[0] = el)
+                }
                 onBegin={handleCanvasBegin}
                 onEnd={handleCanvasEnd}
                 name="signatures.signature_img"

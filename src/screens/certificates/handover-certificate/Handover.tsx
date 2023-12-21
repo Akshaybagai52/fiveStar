@@ -181,10 +181,8 @@ const Handover = ({navigation}: {navigation: HomeNavigationProp}) => {
       // console.log('signature', values.projectDetails.certificationRelation);
       // Alert.alert("Document submitted successfully")
       mySelectPickerRef?.current?.clearPickerData();
-
       mySignatureCanvasRefs?.current?.forEach((ref:SignatureCanvasRef) => ref.handleClearSignature());
       myDatePickerRefs?.current?.forEach((ref:DatePickersRef) => ref.clearDate());
-      // mySelectPickerRefs?.current?.forEach((ref:SelectPickerRef) => ref.clearPickerData());
       myFilePickerRef?.current?.clearAllFiles();
       setCustomAlertVisible(true);
     } catch (error) {

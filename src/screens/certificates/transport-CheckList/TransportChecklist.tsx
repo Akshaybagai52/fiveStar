@@ -8,7 +8,7 @@ import {
   transPortHeading,
   transPortHeading1,
   transportUserPersonalData,
-  initialValues
+  initialValues,
 } from '../../../data/TransportChecklist';
 import {
   DatePickersRef,
@@ -28,8 +28,8 @@ import {AudioConverter} from '../../../themes/buttons/speechToText';
 import {DocumentPickerResponse} from 'react-native-document-picker';
 import RNFetchBlob from 'rn-fetch-blob';
 import {CanvasSignature} from '../../../themes/buttons/canvas-signature';
-import * as Yup from 'yup';
-
+import {transportChecklistSchema} from '../../../schema/yup-schema/fomsSchema';
+import { style } from './style';
 
 type HomeNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Home'>;
 
@@ -106,25 +106,11 @@ export const TransportChecklist = ({
     }
   };
 
-  // const handleCanvasEnd = () => {
-  //   if (scrollViewRef.current) {
-  //     scrollViewRef.current.setNativeProps({scrollEnabled: true});
-  //   }
-  // };
 
   const handleCustomAlertClose = () => {
     setCustomAlertVisible(false);
     navigation.navigate('Home');
   };
-
-  // validation transport checklist
-  const validationSchema = Yup.object().shape({
-    transporter_name: Yup.string().required('employee is required'),
-   
-  })
-  
-  // console.log(transportUserPersonalData,"trans")
-  // console.log(initialValues,"initialValues")
 
   return (
     <SafeAreaView>
@@ -135,24 +121,22 @@ export const TransportChecklist = ({
           <Formik
             initialValues={initialValues}
             enableReinitialize={true}
-              validationSchema={validationSchema}
+            validationSchema={transportChecklistSchema}
             onSubmit={async (values, {resetForm}) => {
-            //  console.log(values,"lllll")
+              //  console.log(values,"lllll")
               setLoading(true);
               await handleSubmit1(values);
               resetForm();
               setLoading(false);
             }}>
-            {({handleSubmit, values, setFieldValue}) => (
+            {({handleSubmit}) => (
               <View>
                 <View>
                   <View>
                     <CustomHeader text="Details" />
                   </View>
                   <View>
-                    <TextInputGroup
-                      inputFields={transportUserPersonalData}
-                    />
+                    <TextInputGroup inputFields={transportUserPersonalData} />
                   </View>
 
                   <View style={style.dateSpace}>
@@ -193,32 +177,3 @@ export const TransportChecklist = ({
   );
 };
 
-const style = StyleSheet.create({
-  transport_heading: {
-    fontWeight: '700',
-    textAlign: 'center',
-    fontSize: 30,
-    marginBottom:10
-  },
-  transPortForm: {
-    marginLeft: 15,
-    marginRight: 15,
-    marginBottom: 5,
-  },
-  dateText:{
-marginBottom:5,
-fontSize:16
-  },
-  dateSpace: {
-    marginBottom: 15,
-    marginTop: 3,
-  },
-  commentsSpace: {
-    marginBottom: 20,
-    marginTop: 10,
-  },
-  commentText: {
-    fontWeight: '700',
-  },
-
-});

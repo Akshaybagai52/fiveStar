@@ -6,10 +6,14 @@ import RadioGroup from '../../../themes/buttons/RadioButtons';
 import TextInputGroup from '../../../themes/buttons/TextInputGroup';
 import CustomHeader from '../../../themes/text/TextWithGreenBg';
 import CheckBox from '../../../themes/buttons/Checkbox';
-import {CheckboxItem} from '../../../types/interfaces/types';
+import {
+  CheckboxItem,
+  FilePickerRef,
+  SelectPickerRef,
+  SignatureCanvasRef,
+} from '../../../types/interfaces/types';
 import {ButtonGreen} from '../../../themes/text/ButtonGreen';
 import Recorder from '../../../themes/buttons/AudioRecorder';
-import {MySignatureCanvas} from '../../../themes/buttons/SignatureCanvas';
 import FilePicker from '../../../themes/buttons/FilePicker';
 import {Field, Formik} from 'formik';
 import * as Yup from 'yup';
@@ -35,19 +39,20 @@ import RadioGroupButton from '../../../themes/buttons/radioButtonGroup';
 import {AudioConverter} from '../../../themes/buttons/speechToText';
 import Address from '../../../components/common/Address';
 import {CanvasSignature} from '../../../themes/buttons/canvas-signature';
-import { useSelector } from 'react-redux';
-import { SelectPicker } from '../../../themes/buttons/selectDropdown';
+import {useSelector} from 'react-redux';
+import {SelectPicker} from '../../../themes/buttons/selectDropdown';
 import useUserInformation from '../../../hooks/userInformation';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../../../types/type/types';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import {RootStackParamList} from '../../../types/type/types';
+import {monthlyInspectionSchema} from '../../../schema/yup-schema/fomsSchema';
 
+type HomeNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Home'>;
 
-type HomeNavigationProp = NativeStackNavigationProp<
-  RootStackParamList,
-  'Home'
->;
-
-export const MonthlyInspection = ({navigation}:{navigation:HomeNavigationProp}) => {
+export const MonthlyInspection = ({
+  navigation,
+}: {
+  navigation: HomeNavigationProp;
+}) => {
   // Scroll View End
   const [checkboxes, setCheckboxes] = useState<CheckboxItem[]>(loadingCapacity);
   const [elevationData, setElevationData] =
@@ -64,6 +69,9 @@ export const MonthlyInspection = ({navigation}:{navigation:HomeNavigationProp}) 
   const addressOptions = useSelector((state: any) => state.addressOptions);
   const {username, userEmail} = useUserInformation();
 
+  const mySignatureCanvasRefs = useRef<SignatureCanvasRef[]>([]);
+  const mySelectPickerRef = useRef<SelectPickerRef>(null);
+  const myFilePickerRef = useRef<FilePickerRef>(null);
   // Scroll View start
   const scrollViewRef: any = useRef(null);
 
@@ -126,7 +134,7 @@ export const MonthlyInspection = ({navigation}:{navigation:HomeNavigationProp}) 
 
   const handleCustomAlertClose = () => {
     setCustomAlertVisible(false);
-    navigation.navigate("Home");
+    navigation.navigate('Home');
   };
 
   const handleSubmit1 = async (values: any) => {
@@ -162,39 +170,29 @@ export const MonthlyInspection = ({navigation}:{navigation:HomeNavigationProp}) 
       console.log('Post Response:', requestData);
       // console.log('signature', values.projectDetails.certificationRelation);
       // Alert.alert("Document submitted successfully")
+      mySelectPickerRef?.current?.clearPickerData();
+
+      mySignatureCanvasRefs?.current?.forEach((ref: SignatureCanvasRef) =>
+        ref.handleClearSignature(),
+      );
+      myFilePickerRef?.current?.clearAllFiles();
       setCustomAlertVisible(true);
     } catch (error) {
       console.error('Error:', error);
     }
   };
-  const validationSchema = Yup.object({
-    projectDetails: Yup.object().shape({
-      projectId: Yup.string().required('Project ID is required'),
-      buildingLevel: Yup.string(),
-      nameOfBuilder: Yup.string(),
-      customerABN: Yup.string(),
-      workCompletion: Yup.string().required('Work completion is required'),
-    }),
-    signatures: Yup.object().shape({
-      customerName: Yup.string().required('Name is required'),
-      HRWLNumber: Yup.string(),
-      customerEmail: Yup.string().email('Invalid email'),
-      customerEmail2: Yup.string().email('Invalid email'),
-      // DateTime: Yup.string().required('Handover Date and Time is required'),
-      customerName2: Yup.string().required('Name is required'),
-    }),
-  });
+
   return (
     <View style={{padding: 20, backgroundColor: '#fff'}}>
       <ScrollView ref={scrollViewRef} scrollEnabled>
         <Formik
           initialValues={initialValues}
           enableReinitialize={true}
-          // validationSchema={validationSchema}
-          onSubmit={async (values, { resetForm }) => {
+          validationSchema={monthlyInspectionSchema}
+          onSubmit={async (values, {resetForm}) => {
             setLoading(true);
             await handleSubmit1(values);
-            resetForm()
+            resetForm();
             setLoading(false);
           }}>
           {({handleSubmit, values}) => (
@@ -222,7 +220,11 @@ export const MonthlyInspection = ({navigation}:{navigation:HomeNavigationProp}) 
                 {/* {values.projectDetails.certificationRelation.selectedOptionData.variation.dayLabourErection === "dayLabourErection" ? <Text> "hey"</Text> : <Text> "dsfhey"</Text>} */}
               </View>
               <View>
-              <SelectPicker label={monthlyInspectionProjectIdData} data={addressOptions} />
+                <SelectPicker
+                  ref={mySelectPickerRef}
+                  label={monthlyInspectionProjectIdData}
+                  data={addressOptions}
+                />
 
                 <TextInputGroup inputFields={initialFormData} />
               </View>
@@ -313,9 +315,14 @@ export const MonthlyInspection = ({navigation}:{navigation:HomeNavigationProp}) 
                   injury or death.
                 </Text>
               </View>
-              <TextInputGroup inputFields={userPersonalData} username={username} userEmail={userEmail} />
+              <TextInputGroup
+                inputFields={userPersonalData}
+                username={username}
+                userEmail={userEmail}
+              />
               <View style={{width: '90%', marginBottom: 50}}>
                 <FilePicker
+                  ref={myFilePickerRef}
                   selectedFiles={selectedFiles}
                   setSelectedFiles={setSelectedFiles}
                 />
@@ -323,12 +330,18 @@ export const MonthlyInspection = ({navigation}:{navigation:HomeNavigationProp}) 
 
               {/* <SignatureScreen /> */}
               <CanvasSignature
+                ref={(el: SignatureCanvasRef) =>
+                  (mySignatureCanvasRefs.current[0] = el)
+                }
                 onBegin={handleCanvasBegin}
                 onEnd={handleCanvasEnd}
                 name={'personSignature'}
               />
 
               <CanvasSignature
+                ref={(el: SignatureCanvasRef) =>
+                  (mySignatureCanvasRefs.current[1] = el)
+                }
                 onBegin={handleCanvasBegin}
                 onEnd={handleCanvasEnd}
                 name={'customerSignature'}

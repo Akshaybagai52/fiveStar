@@ -15,7 +15,9 @@ import CheckBox from '../../../themes/buttons/Checkbox';
 import {
   CheckboxItem,
   DamagedFormValues,
+  FilePickerRef,
   InputField,
+  SelectPickerRef,
 } from '../../../types/interfaces/types';
 
 import {ButtonGreen} from '../../../themes/text/ButtonGreen';
@@ -41,30 +43,27 @@ import {
   loadingCapacity,
   loadingCapacity2,
   loadingCapacity3,
-  // scaffoldData,
   userPersonalData,
 } from '../../../data/reportingUnsafeData';
 import {SelectPicker} from '../../../themes/buttons/selectDropdown';
 import {useSelector} from 'react-redux';
 import useUserInformation from '../../../hooks/userInformation';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../../../types/type/types';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import {RootStackParamList} from '../../../types/type/types';
+import {reportingUnsafeSchema} from '../../../schema/yup-schema/fomsSchema';
 // import DatePickers from '../../../themes/buttons/datePicker';
 
-type HomeNavigationProp = NativeStackNavigationProp<
-  RootStackParamList,
-  'Home'
->;
-export const ReportingUnsafe = ({navigation}:{navigation:HomeNavigationProp}) => {
+type HomeNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Home'>;
+export const ReportingUnsafe = ({
+  navigation,
+}: {
+  navigation: HomeNavigationProp;
+}) => {
   // Scroll View End
   const [checkboxes, setCheckboxes] = useState<CheckboxItem[]>(loadingCapacity);
   const [selectedFiles, setSelectedFiles] = useState<DocumentPickerResponse[]>(
     [],
   );
-  const [signatures, setSignatures] = useState({
-    signature1: '',
-    signature2: '',
-  });
   const [isCustomAlertVisible, setCustomAlertVisible] = useState(false);
   const [loading, setLoading] = useState(false);
   // Scroll View start
@@ -72,17 +71,8 @@ export const ReportingUnsafe = ({navigation}:{navigation:HomeNavigationProp}) =>
   const addressOptions = useSelector((state: any) => state.addressOptions);
   const {username, userEmail, userPhoneNumber} = useUserInformation();
 
-  const handleCanvasBegin = () => {
-    if (scrollViewRef.current) {
-      scrollViewRef.current.setNativeProps({scrollEnabled: false});
-    }
-  };
-
-  const handleCanvasEnd = () => {
-    if (scrollViewRef.current) {
-      scrollViewRef.current.setNativeProps({scrollEnabled: true});
-    }
-  };
+  const mySelectPickerRef = useRef<SelectPickerRef>(null);
+  const myFilePickerRef = useRef<FilePickerRef>(null);
 
   const handleCheckboxPress = (label: string) => {
     // @ts-ignore
@@ -109,7 +99,7 @@ export const ReportingUnsafe = ({navigation}:{navigation:HomeNavigationProp}) =>
 
   const handleCustomAlertClose = () => {
     setCustomAlertVisible(false);
-    navigation.navigate("Home")
+    navigation.navigate('Home');
   };
 
   const handleSubmit1 = async (values: any) => {
@@ -137,6 +127,8 @@ export const ReportingUnsafe = ({navigation}:{navigation:HomeNavigationProp}) =>
       //     },
       //   },
       // );
+      myFilePickerRef?.current?.clearAllFiles();
+      mySelectPickerRef?.current?.clearPickerData();
       console.log('Post Response:', requestData);
       // console.log('signature', values.projectDetails.certificationRelation);
       // Alert.alert("Document submitted successfully")
@@ -145,31 +137,6 @@ export const ReportingUnsafe = ({navigation}:{navigation:HomeNavigationProp}) =>
       console.error('Error:', error);
     }
   };
-  const validationSchema = Yup.object().shape({
-    projectId: Yup.string().required('Project ID is required'),
-
-    reporting: Yup.object().shape({
-      reportingCheck: Yup.object().shape({
-        damaged_Components: Yup.string(),
-        missing_order: Yup.string(),
-      }),
-      menon_job: Yup.string(),
-      estimated_time: Yup.string(),
-      total_hours: Yup.string(),
-      extra_truck: Yup.string(),
-      comments: Yup.string().required('Comments is required'),
-    }),
-
-    signatures: Yup.object().shape({
-      your_name: Yup.string(),
-      subcontractor_name: Yup.string(),
-      supervisor_name: Yup.string().required('Supervisor Name is required'),
-      date_time: Yup.string().required('Date and Time is required'),
-      supervisor_email: Yup.string()
-        .email('Invalid email address')
-        .required('Supervisor Email is required'),
-    }),
-  });
 
   return (
     <View style={{padding: 20, backgroundColor: '#fff'}}>
@@ -177,11 +144,11 @@ export const ReportingUnsafe = ({navigation}:{navigation:HomeNavigationProp}) =>
         <Formik
           initialValues={initialValues}
           enableReinitialize={true}
-          // validationSchema={validationSchema}
-          onSubmit={async (values, { resetForm }) => {
+          validationSchema={reportingUnsafeSchema}
+          onSubmit={async (values, {resetForm}) => {
             setLoading(true);
             await handleSubmit1(values);
-            resetForm()
+            resetForm();
             setLoading(false);
           }}>
           {({handleSubmit, values}) => (
@@ -214,6 +181,7 @@ export const ReportingUnsafe = ({navigation}:{navigation:HomeNavigationProp}) =>
               </View>
               <View>
                 <SelectPicker
+                  ref={mySelectPickerRef}
                   label={ReportingUnsafeProjectIdData}
                   data={addressOptions}
                 />
@@ -267,6 +235,7 @@ export const ReportingUnsafe = ({navigation}:{navigation:HomeNavigationProp}) =>
               </View>
               <View style={{width: '90%', marginBottom: 50}}>
                 <FilePicker
+                  ref={myFilePickerRef}
                   selectedFiles={selectedFiles}
                   setSelectedFiles={setSelectedFiles}
                 />

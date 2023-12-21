@@ -96,4 +96,5 @@ export const transPortHeading1 = [
       order_and_load:''
     },
     signature: '',
+    date:''
   };

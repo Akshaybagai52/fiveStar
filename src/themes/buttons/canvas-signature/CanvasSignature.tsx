@@ -1,4 +1,4 @@
-import React, {useRef, useState, useEffect} from 'react';
+import React, {useRef, useState, useEffect, useImperativeHandle, forwardRef} from 'react';
 import {View, StyleSheet, Image} from 'react-native';
 import SignatureCanvas, {SignatureViewRef} from 'react-native-signature-canvas';
 import {Button} from 'react-native-paper';
@@ -10,11 +10,12 @@ interface CanvasProps {
   name: string;
 }
 
-export const CanvasSignature = ({onBegin, onEnd, name}: CanvasProps) => {
+export const CanvasSignature = forwardRef(({onBegin, onEnd, name}: CanvasProps, ref:any) => {
   const {values, setFieldValue} = useFormikContext<any>();
 
   const signatureRef = useRef<SignatureViewRef>(null); // Create a ref for the signature canvas
 
+  
   const handleClearSignature = () => {
     signatureRef.current?.clearSignature();
     setFieldValue(name, '');
@@ -27,6 +28,9 @@ export const CanvasSignature = ({onBegin, onEnd, name}: CanvasProps) => {
   const handleOK = (signature: any) => {
     setFieldValue(name, signature);
   };
+  useImperativeHandle(ref, () => ({
+    handleClearSignature,
+  }));
 
   return (
     <View>
@@ -57,7 +61,7 @@ export const CanvasSignature = ({onBegin, onEnd, name}: CanvasProps) => {
       </View>
     </View>
   );
-};
+});
 
 const styles = StyleSheet.create({
   container: {
