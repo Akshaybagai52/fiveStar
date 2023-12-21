@@ -89,10 +89,11 @@ const TextInputGroup: React.FC<TextInputGroupProps> = ({
                   multiline={inputField.multiline}
                   numberOfLines={inputField.numberOfLines}
                 />
+              
                 <ErrorMessage
                   name={inputField.name}
                   render={msg => (
-                    <Text style={[commonStyles.errorText]}>{msg}</Text>
+                    msg ? <Text style={[commonStyles.errorText]}>{msg}</Text> : null
                   )} // Use your own Text component
                 />
               </>

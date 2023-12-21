@@ -204,7 +204,7 @@ const Handover = ({navigation}: {navigation: HomeNavigationProp}) => {
       HRWLNumber: Yup.string(),
       customerEmail: Yup.string().email('Invalid email'),
       customerEmail2: Yup.string().email('Invalid email'),
-      // DateTime: Yup.string().required('Handover Date and Time is required'),
+      DateTime: Yup.string().required('Date and Time is required'),
       customerName2: Yup.string().required('Name is required'),
     }),
   });
@@ -217,6 +217,7 @@ const Handover = ({navigation}: {navigation: HomeNavigationProp}) => {
           validationSchema={validationSchema}
           onSubmit={async (values, {resetForm}) => {
             setLoading(true);
+            console.log("hansover")
             await handleSubmit1(values);
             resetForm();
             setLoading(false);
