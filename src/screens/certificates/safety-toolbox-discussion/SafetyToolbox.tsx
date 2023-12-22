@@ -2,28 +2,26 @@ import {View, ScrollView, TouchableOpacity, Image, Alert} from 'react-native';
 import {Text, ActivityIndicator, Button} from 'react-native-paper';
 import React, {useState, useRef, useEffect} from 'react';
 import {myStyles} from '../damagedOrMissing';
-import RadioGroup from '../../../themes/buttons/RadioButtons';
 import TextInputGroup from '../../../themes/buttons/TextInputGroup';
 import CustomHeader from '../../../themes/text/TextWithGreenBg';
 import CheckBox from '../../../themes/buttons/Checkbox';
-import {CheckboxItem} from '../../../types/interfaces/types';
+import {
+  CheckboxItem,
+  DatePickersRef,
+  FilePickerRef,
+  SelectPickerRef,
+  SignatureCanvasRef,
+} from '../../../types/interfaces/types';
 import {ButtonGreen} from '../../../themes/text/ButtonGreen';
-import Recorder from '../../../themes/buttons/AudioRecorder';
-import {MySignatureCanvas} from '../../../themes/buttons/SignatureCanvas';
 import FilePicker from '../../../themes/buttons/FilePicker';
 import {Field, Formik} from 'formik';
-import * as Yup from 'yup';
 import axios from 'axios';
-import {HandoverFormValues} from '../../../types/interfaces/types';
 import {DocumentPickerResponse} from 'react-native-document-picker';
 import RNFetchBlob from 'rn-fetch-blob';
 import CustomAlert from '../../../themes/buttons/Alert';
 import {
   userPersonalData,
   initialFormData,
-  scaffoldData,
-  // options,
-  // elevations,
   loadingCapacity,
   initialValues,
   firstListHeading,
@@ -31,8 +29,6 @@ import {
   secondListHeading,
   scaffoldingData,
   safetyToolboxProjectIdData,
-  // erectionData,
-  // variationData,
 } from '../../../data/safetyToolbox';
 import commonStyles from '../../../styles/commonStyles';
 import {AudioConverter} from '../../../themes/buttons/speechToText';
@@ -41,18 +37,20 @@ import {DatePickers} from '../../../themes/buttons/datePicker';
 import ListWithBullets from '../../../components/common/ListComp';
 import {TimePicker} from '../../../themes/buttons/timeCalculation';
 import {CanvasSignature} from '../../../themes/buttons/canvas-signature';
-import { SelectPicker } from '../../../themes/buttons/selectDropdown';
-import { useSelector } from 'react-redux';
+import {SelectPicker} from '../../../themes/buttons/selectDropdown';
+import {useSelector} from 'react-redux';
 import useUserInformation from '../../../hooks/userInformation';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../../../types/type/types';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import {RootStackParamList} from '../../../types/type/types';
+import {safetyToolboxSchema} from '../../../schema/yup-schema/fomsSchema';
 
-type HomeNavigationProp = NativeStackNavigationProp<
-  RootStackParamList,
-  'Home'
->;
+type HomeNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Home'>;
 
-export const SafetyToolbox = ({navigation}:{navigation:HomeNavigationProp}) => {
+export const SafetyToolbox = ({
+  navigation,
+}: {
+  navigation: HomeNavigationProp;
+}) => {
   const [checkboxes, setCheckboxes] = useState<CheckboxItem[]>(loadingCapacity);
 
   const [selectedFiles, setSelectedFiles] = useState<DocumentPickerResponse[]>(
@@ -61,6 +59,11 @@ export const SafetyToolbox = ({navigation}:{navigation:HomeNavigationProp}) => {
   const [isCustomAlertVisible, setCustomAlertVisible] = useState(false);
   const [loading, setLoading] = useState(false);
   const {username, userEmail} = useUserInformation();
+
+  const mySignatureCanvasRefs = useRef<SignatureCanvasRef[]>([]);
+  const myDatePickerRefs = useRef<DatePickersRef[]>([]);
+  const mySelectPickerRef = useRef<SelectPickerRef>(null);
+  const myFilePickerRef = useRef<FilePickerRef>(null);
 
   // Scroll View start
   const scrollViewRef: any = useRef(null);
@@ -110,7 +113,7 @@ export const SafetyToolbox = ({navigation}:{navigation:HomeNavigationProp}) => {
 
   const handleCustomAlertClose = () => {
     setCustomAlertVisible(false);
-    navigation.navigate("Home")
+    navigation.navigate('Home');
   };
   const addressOptions = useSelector((state: any) => state.addressOptions);
 
@@ -141,6 +144,15 @@ export const SafetyToolbox = ({navigation}:{navigation:HomeNavigationProp}) => {
         },
       );
       console.log('Post Response:', requestData);
+
+      mySelectPickerRef?.current?.clearPickerData();
+      mySignatureCanvasRefs?.current?.forEach((ref: SignatureCanvasRef) =>
+        ref.handleClearSignature(),
+      );
+      myDatePickerRefs?.current?.forEach((ref: DatePickersRef) =>
+        ref.clearDate(),
+      );
+      myFilePickerRef?.current?.clearAllFiles();
       // console.log('signature', values.projectDetails.certificationRelation);
       // Alert.alert("Document submitted successfully")
       setCustomAlertVisible(true);
@@ -148,42 +160,7 @@ export const SafetyToolbox = ({navigation}:{navigation:HomeNavigationProp}) => {
       console.error('Error:', error);
     }
   };
-  const validationSchema = Yup.object().shape({
-    projectDetails: Yup.object().shape({
-      stageDiscussion: Yup.object().shape({
-        Dismantle: Yup.string().required('Dismantle is required'),
-        Existing_Scaffold: Yup.string().required(
-          'Existing Scaffold is required',
-        ),
-      }),
-      date: Yup.string().required('Date is required'),
-      project_id: Yup.string().required('Project ID is required'),
-      building_level: Yup.string(),
-      nameOf_customer: Yup.string().required('Customer Name is required'),
-      supervisor_name: Yup.string().required('Supervisor Name is required'),
-      number_of_attendence: Yup.string().required(
-        'Number of Attendance is required',
-      ),
-      start_time: Yup.string().required('Start Time is required'),
-      finish_time: Yup.string().required('Finish Time is required'),
-      duration: Yup.string().required('Duration is required'),
-      work_description: Yup.string().required('Work Description is required'),
-    }),
-    supervisor_notes: Yup.string(),
-    record: Yup.object().shape({
-      name_1: Yup.string(),
-      additional_cmt: Yup.string().required('Additional Comment is required'),
-    }),
-    signatures: Yup.object().shape({
-      name_of_person: Yup.string().required('Name is required'),
-      email_receive_copy: Yup.string()
-        .email('Invalid email format')
-        .required('Email is required'),
-      subcontractor_email: Yup.string()
-        .email('Invalid email format')
-        .required('Subcontractor Email is required'),
-    }),
-  });
+
   return (
     <View style={{padding: 20, backgroundColor: '#fff'}}>
       <ScrollView
@@ -193,8 +170,8 @@ export const SafetyToolbox = ({navigation}:{navigation:HomeNavigationProp}) => {
         <Formik
           initialValues={initialValues}
           enableReinitialize={true}
-          validationSchema={validationSchema}
-          onSubmit={async (values, { resetForm }) => {
+          // validationSchema={safetyToolboxSchema}
+          onSubmit={async (values, {resetForm}) => {
             setLoading(true);
             await handleSubmit1(values);
             resetForm();
@@ -224,8 +201,18 @@ export const SafetyToolbox = ({navigation}:{navigation:HomeNavigationProp}) => {
                 <Text style={[commonStyles.text16, commonStyles.mb5]}>
                   Date of Safety Tool Box Meeting *
                 </Text>
-                <DatePickers name="projectDetails.date" mode="date" />
-                <SelectPicker label={safetyToolboxProjectIdData} data={addressOptions} />
+                <DatePickers
+                  ref={(el: DatePickersRef) =>
+                    (myDatePickerRefs.current[0] = el)
+                  }
+                  name="projectDetails.date"
+                  mode="date"
+                />
+                <SelectPicker
+                  ref={mySelectPickerRef}
+                  label={safetyToolboxProjectIdData}
+                  data={addressOptions}
+                />
 
                 <TextInputGroup inputFields={initialFormData} />
                 <TimePicker names={TimeNames} />
@@ -256,6 +243,7 @@ export const SafetyToolbox = ({navigation}:{navigation:HomeNavigationProp}) => {
                 />
                 <View style={{width: '90%', marginBottom: 20}}>
                   <FilePicker
+                    ref={myFilePickerRef}
                     selectedFiles={selectedFiles}
                     setSelectedFiles={setSelectedFiles}
                   />
@@ -270,7 +258,8 @@ export const SafetyToolbox = ({navigation}:{navigation:HomeNavigationProp}) => {
                     commonStyles.fontBold,
                     commonStyles.mTop15,
                   ]}>
-                  Supervisors Notes <Text style={[commonStyles.errorText]}>*</Text>
+                  Supervisors Notes{' '}
+                  <Text style={[commonStyles.errorText]}>*</Text>
                 </Text>
                 <Field
                   name="projectDetails.supervisor_notes"
@@ -297,14 +286,22 @@ export const SafetyToolbox = ({navigation}:{navigation:HomeNavigationProp}) => {
                       Signature {index + 1}
                     </Text>
                     <CanvasSignature
+                      ref={(el: SignatureCanvasRef) =>
+                        (mySignatureCanvasRefs.current[0] = el)
+                      }
                       onBegin={handleCanvasBegin}
                       onEnd={handleCanvasEnd}
-                      name={`recordSign_${index+1}`}
+                      name={`recordSign_${index + 1}`}
                     />
                   </View>
                 ))}
 
-                <Text style={[commonStyles.text16, commonStyles.mb5, commonStyles.mTop15]}>
+                <Text
+                  style={[
+                    commonStyles.text16,
+                    commonStyles.mb5,
+                    commonStyles.mTop15,
+                  ]}>
                   Worker Feedback
                 </Text>
                 <Field
@@ -327,7 +324,11 @@ export const SafetyToolbox = ({navigation}:{navigation:HomeNavigationProp}) => {
                   and I have truly and accurately recorded today's discussion.
                 </Text>
               </View>
-              <TextInputGroup inputFields={userPersonalData} username={username} userEmail={userEmail} />
+              <TextInputGroup
+                inputFields={userPersonalData}
+                username={username}
+                userEmail={userEmail}
+              />
 
               {/* <SignatureScreen /> */}
               <Text style={[commonStyles.text16, commonStyles.mb15]}>
@@ -335,6 +336,9 @@ export const SafetyToolbox = ({navigation}:{navigation:HomeNavigationProp}) => {
               </Text>
 
               <CanvasSignature
+                ref={(el: SignatureCanvasRef) =>
+                  (mySignatureCanvasRefs.current[0] = el)
+                }
                 onBegin={handleCanvasBegin}
                 onEnd={handleCanvasEnd}
                 name="signatures.signature_img"

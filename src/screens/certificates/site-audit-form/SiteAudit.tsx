@@ -54,16 +54,19 @@ import {
   supervisorEmailData,
   supervisorNameData,
 } from '../../../data/globalData';
-import { useSelector } from 'react-redux';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../../../types/type/types';
+import {useSelector} from 'react-redux';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import {RootStackParamList} from '../../../types/type/types';
+import {
+  DatePickersRef,
+  FilePickerRef,
+  SelectPickerRef,
+  SignatureCanvasRef,
+} from '../../../types/interfaces/types';
 
-type HomeNavigationProp = NativeStackNavigationProp<
-  RootStackParamList,
-  'Home'
->;
+type HomeNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Home'>;
 
-export const SiteAudit = ({navigation}:{navigation:HomeNavigationProp}) => {
+export const SiteAudit = ({navigation}: {navigation: HomeNavigationProp}) => {
   const [selectedFiles3, setSelectedFiles3] = useState<
     DocumentPickerResponse[]
   >([]);
@@ -100,6 +103,10 @@ export const SiteAudit = ({navigation}:{navigation:HomeNavigationProp}) => {
   const [loading, setLoading] = useState(false);
   const addressOptions = useSelector((state: any) => state.addressOptions);
 
+  const mySignatureCanvasRefs = useRef<SignatureCanvasRef[]>([]);
+  const myDatePickerRefs = useRef<DatePickersRef[]>([]);
+  const mySelectPickerRef = useRef<SelectPickerRef[]>([]);
+  const myFilePickerRef = useRef<FilePickerRef[]>([]);
   // Scroll View start
   const scrollViewRef: any = useRef(null);
 
@@ -118,7 +125,7 @@ export const SiteAudit = ({navigation}:{navigation:HomeNavigationProp}) => {
 
   const handleCustomAlertClose = () => {
     setCustomAlertVisible(false);
-    navigation.navigate("Home")
+    navigation.navigate('Home');
   };
 
   const handleSubmit1 = async (values: any) => {
@@ -159,16 +166,28 @@ export const SiteAudit = ({navigation}:{navigation:HomeNavigationProp}) => {
       };
       console.log(requestData);
 
-        const response = await axios.post(
-          'https://fivestaraccess.com.au/custom_form/site_audit_formapp.php',
-          requestData,
-          {
-            headers: {
-              'Content-Type': 'application/json',
-            },
+      const response = await axios.post(
+        'https://fivestaraccess.com.au/custom_form/site_audit_formapp.php',
+        requestData,
+        {
+          headers: {
+            'Content-Type': 'application/json',
           },
-        );
-        // console.log('Post Response:', response);
+        },
+      );
+      // console.log('Post Response:', response);
+      mySelectPickerRef?.current?.forEach((ref: SelectPickerRef) =>
+        ref.clearPickerData(),
+      );
+      mySignatureCanvasRefs?.current?.forEach((ref: SignatureCanvasRef) =>
+        ref.handleClearSignature(),
+      );
+      myDatePickerRefs?.current?.forEach((ref: DatePickersRef) =>
+        ref.clearDate(),
+      );
+      myFilePickerRef?.current?.forEach((ref: FilePickerRef) =>
+        ref.clearAllFiles(),
+      );
       setCustomAlertVisible(true);
     } catch (error) {
       console.error('Error:', error);
@@ -202,10 +221,10 @@ export const SiteAudit = ({navigation}:{navigation:HomeNavigationProp}) => {
           initialValues={initialValues}
           enableReinitialize={true}
           //   validationSchema={validationSchema}
-          onSubmit={async (values, { resetForm }) => {
+          onSubmit={async (values, {resetForm}) => {
             setLoading(true);
             handleSubmit1(values);
-            resetForm()
+            resetForm();
             setLoading(false);
           }}>
           {({handleSubmit, values, setFieldValue}) => (
@@ -219,7 +238,15 @@ export const SiteAudit = ({navigation}:{navigation:HomeNavigationProp}) => {
                 </View>
                 <View>
                   <CustomHeader text="Project Details" />
-                  <SelectPicker label={siteAuditProjectIdData} data={addressOptions} />
+                  <View style={[commonStyles.mTop15]}>
+                    <SelectPicker
+                      ref={(el: SelectPickerRef) =>
+                        (mySelectPickerRef.current[0] = el)
+                      }
+                      label={siteAuditProjectIdData}
+                      data={addressOptions}
+                    />
+                  </View>
                   {/* <TextInputGroup inputFields={initialFormData} /> */}
                 </View>
               </View>
@@ -252,6 +279,9 @@ export const SiteAudit = ({navigation}:{navigation:HomeNavigationProp}) => {
                     <RadioGroupButton options={siteAuditRadio3} />
                     <TextInputGroup inputFields={inputField3} />
                     <FilePicker
+                      ref={(el: FilePickerRef) =>
+                        (myFilePickerRef.current[0] = el)
+                      }
                       selectedFiles={selectedFiles3}
                       setSelectedFiles={setSelectedFiles3}
                     />
@@ -260,6 +290,9 @@ export const SiteAudit = ({navigation}:{navigation:HomeNavigationProp}) => {
                     <RadioGroupButton options={siteAuditRadio4} />
                     <TextInputGroup inputFields={inputField4} />
                     <FilePicker
+                      ref={(el: FilePickerRef) =>
+                        (myFilePickerRef.current[1] = el)
+                      }
                       selectedFiles={selectedFiles4}
                       setSelectedFiles={setSelectedFiles4}
                     />
@@ -268,6 +301,9 @@ export const SiteAudit = ({navigation}:{navigation:HomeNavigationProp}) => {
                     <RadioGroupButton options={siteAuditRadio5} />
                     <TextInputGroup inputFields={inputField5} />
                     <FilePicker
+                      ref={(el: FilePickerRef) =>
+                        (myFilePickerRef.current[2] = el)
+                      }
                       selectedFiles={selectedFiles5}
                       setSelectedFiles={setSelectedFiles5}
                     />
@@ -276,6 +312,9 @@ export const SiteAudit = ({navigation}:{navigation:HomeNavigationProp}) => {
                     <RadioGroupButton options={siteAuditRadio6} />
                     <TextInputGroup inputFields={inputField6} />
                     <FilePicker
+                      ref={(el: FilePickerRef) =>
+                        (myFilePickerRef.current[3] = el)
+                      }
                       selectedFiles={selectedFiles6}
                       setSelectedFiles={setSelectedFiles6}
                     />
@@ -284,6 +323,9 @@ export const SiteAudit = ({navigation}:{navigation:HomeNavigationProp}) => {
                     <RadioGroupButton options={siteAuditRadio7} />
                     <TextInputGroup inputFields={inputField7} />
                     <FilePicker
+                      ref={(el: FilePickerRef) =>
+                        (myFilePickerRef.current[4] = el)
+                      }
                       selectedFiles={selectedFiles7}
                       setSelectedFiles={setSelectedFiles7}
                     />
@@ -292,6 +334,9 @@ export const SiteAudit = ({navigation}:{navigation:HomeNavigationProp}) => {
                     <RadioGroupButton options={siteAuditRadio8} />
                     <TextInputGroup inputFields={inputField8} />
                     <FilePicker
+                      ref={(el: FilePickerRef) =>
+                        (myFilePickerRef.current[5] = el)
+                      }
                       selectedFiles={selectedFiles8}
                       setSelectedFiles={setSelectedFiles8}
                     />
@@ -300,6 +345,9 @@ export const SiteAudit = ({navigation}:{navigation:HomeNavigationProp}) => {
                     <RadioGroupButton options={siteAuditRadio9} />
                     <TextInputGroup inputFields={inputField9} />
                     <FilePicker
+                      ref={(el: FilePickerRef) =>
+                        (myFilePickerRef.current[6] = el)
+                      }
                       selectedFiles={selectedFiles9}
                       setSelectedFiles={setSelectedFiles9}
                     />
@@ -307,6 +355,9 @@ export const SiteAudit = ({navigation}:{navigation:HomeNavigationProp}) => {
                   <View style={[commonStyles.mTop15]}>
                     <TextInputGroup inputFields={inputField10} />
                     <FilePicker
+                      ref={(el: FilePickerRef) =>
+                        (myFilePickerRef.current[7] = el)
+                      }
                       selectedFiles={selectedFiles10}
                       setSelectedFiles={setSelectedFiles10}
                     />
@@ -317,6 +368,9 @@ export const SiteAudit = ({navigation}:{navigation:HomeNavigationProp}) => {
                     </Text>
                     <TextInputGroup inputFields={inputField11} />
                     <FilePicker
+                      ref={(el: FilePickerRef) =>
+                        (myFilePickerRef.current[8] = el)
+                      }
                       selectedFiles={selectedFiles11}
                       setSelectedFiles={setSelectedFiles11}
                     />
@@ -324,6 +378,9 @@ export const SiteAudit = ({navigation}:{navigation:HomeNavigationProp}) => {
                   <View style={[commonStyles.mTop15]}>
                     <RadioGroupButton options={siteAuditRadio12} />
                     <FilePicker
+                      ref={(el: FilePickerRef) =>
+                        (myFilePickerRef.current[9] = el)
+                      }
                       selectedFiles={selectedFiles12}
                       setSelectedFiles={setSelectedFiles12}
                     />
@@ -334,7 +391,13 @@ export const SiteAudit = ({navigation}:{navigation:HomeNavigationProp}) => {
                       Next scheduled Inspection date{' '}
                       <Text style={[commonStyles.errorText]}>*</Text>
                     </Text>
-                    <DatePickers name="inspection.date" mode="date" />
+                    <DatePickers
+                      name="inspection.date"
+                      mode="date"
+                      ref={(el: DatePickersRef) =>
+                        (myDatePickerRefs.current[0] = el)
+                      }
+                    />
                   </View>
                 </View>
               </View>
@@ -344,6 +407,9 @@ export const SiteAudit = ({navigation}:{navigation:HomeNavigationProp}) => {
                 {/* <TextInputGroup inputFields={userPersonalData} /> */}
                 <View style={[commonStyles.mTop15]}>
                   <SelectPicker
+                    ref={(el: SelectPickerRef) =>
+                      (mySelectPickerRef.current[1] = el)
+                    }
                     label={supervisorName}
                     data={supervisorNameData}
                   />
@@ -352,15 +418,27 @@ export const SiteAudit = ({navigation}:{navigation:HomeNavigationProp}) => {
                   Site Inspection Date and Time{' '}
                   <Text style={[commonStyles.errorText]}>*</Text>
                 </Text>
-                <DatePickers name="inspection_date" mode="date" />
+                <DatePickers
+                  ref={(el: DatePickersRef) =>
+                    (myDatePickerRefs.current[1] = el)
+                  }
+                  name="inspection_date"
+                  mode="date"
+                />
                 <View style={[commonStyles.mTop15]}>
                   <SelectPicker
+                    ref={(el: SelectPickerRef) =>
+                      (mySelectPickerRef.current[2] = el)
+                    }
                     label={supervisorEmail}
                     data={supervisorEmailData}
                   />
                 </View>
                 <View style={[commonStyles.mTop15]}>
                   <SelectPicker
+                    ref={(el: SelectPickerRef) =>
+                      (mySelectPickerRef.current[3] = el)
+                    }
                     label={subcontractor}
                     data={subcontractorData}
                   />
@@ -373,6 +451,9 @@ export const SiteAudit = ({navigation}:{navigation:HomeNavigationProp}) => {
               </Text>
 
               <CanvasSignature
+                ref={(el: SignatureCanvasRef) =>
+                  (mySignatureCanvasRefs.current[0] = el)
+                }
                 onBegin={handleCanvasBegin}
                 onEnd={handleCanvasEnd}
                 name="inspectorSignature"
