@@ -25,17 +25,20 @@ import Address from '../../../components/common/Address';
 import {DatePickers} from '../../../themes/buttons/datePicker';
 import {CanvasSignature} from '../../../themes/buttons/canvas-signature';
 import RadioAudio from '../../../components/screens/pre-start/RadioAudio';
-import { SelectPicker } from '../../../themes/buttons/selectDropdown';
-import { useSelector } from 'react-redux';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../../../types/type/types';
+import {SelectPicker} from '../../../themes/buttons/selectDropdown';
+import {useSelector} from 'react-redux';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import {RootStackParamList} from '../../../types/type/types';
+import {
+  DatePickersRef,
+  FilePickerRef,
+  SelectPickerRef,
+  SignatureCanvasRef,
+} from '../../../types/interfaces/types';
 
-type HomeNavigationProp = NativeStackNavigationProp<
-  RootStackParamList,
-  'Home'
->;
+type HomeNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Home'>;
 
-export const PostTender = ({navigation}:{navigation:HomeNavigationProp}) => {
+export const PostTender = ({navigation}: {navigation: HomeNavigationProp}) => {
   const [selectedFiles, setSelectedFiles] = useState<DocumentPickerResponse[]>(
     [],
   );
@@ -43,6 +46,9 @@ export const PostTender = ({navigation}:{navigation:HomeNavigationProp}) => {
   const [loading, setLoading] = useState(false);
   const addressOptions = useSelector((state: any) => state.addressOptions);
 
+  const mySignatureCanvasRefs = useRef<SignatureCanvasRef[]>([]);
+  const myDatePickerRefs = useRef<DatePickersRef[]>([]);
+  const mySelectPickerRef = useRef<SelectPickerRef>(null);
   // Scroll View start
   const scrollViewRef: any = useRef(null);
 
@@ -61,7 +67,7 @@ export const PostTender = ({navigation}:{navigation:HomeNavigationProp}) => {
 
   const handleCustomAlertClose = () => {
     setCustomAlertVisible(false);
-    navigation.navigate("Home")
+    navigation.navigate('Home');
   };
 
   const handleSubmit1 = async (values: any) => {
@@ -89,6 +95,13 @@ export const PostTender = ({navigation}:{navigation:HomeNavigationProp}) => {
         },
       );
       console.log('Post Response:', requestData);
+      mySelectPickerRef?.current?.clearPickerData();
+      mySignatureCanvasRefs?.current?.forEach((ref: SignatureCanvasRef) =>
+        ref.handleClearSignature(),
+      );
+      myDatePickerRefs?.current?.forEach((ref: DatePickersRef) =>
+        ref.clearDate(),
+      );
       setCustomAlertVisible(true);
     } catch (error) {
       console.error('Error:', error);
@@ -122,10 +135,10 @@ export const PostTender = ({navigation}:{navigation:HomeNavigationProp}) => {
           initialValues={initialValues}
           enableReinitialize={true}
           //   validationSchema={validationSchema}
-          onSubmit={async (values, { resetForm }) => {
+          onSubmit={async (values, {resetForm}) => {
             setLoading(true);
             handleSubmit1(values);
-            resetForm()
+            resetForm();
             setLoading(false);
           }}>
           {({handleSubmit, values, setFieldValue}) => (
@@ -144,12 +157,22 @@ export const PostTender = ({navigation}:{navigation:HomeNavigationProp}) => {
                 </View>
               </View>
               <View style={[commonStyles.mTop15]}>
-              <SelectPicker label={postTenderProjectIdData} data={addressOptions} />
+                <SelectPicker
+                  ref={mySelectPickerRef}
+                  label={postTenderProjectIdData}
+                  data={addressOptions}
+                />
                 {/* <TextInputGroup inputFields={initialFormData} /> */}
                 <Text style={[commonStyles.text16, commonStyles.mb5]}>
                   Date
                 </Text>
-                <DatePickers name="date" mode="date" />
+                <DatePickers
+                  ref={(el: DatePickersRef) =>
+                    (myDatePickerRefs.current[0] = el)
+                  }
+                  name="date"
+                  mode="date"
+                />
                 <TextInputGroup inputFields={secondFormData} />
 
                 {/* <RadioAudio combinedData={combinedData} /> */}
@@ -183,6 +206,9 @@ export const PostTender = ({navigation}:{navigation:HomeNavigationProp}) => {
               </Text>
 
               <CanvasSignature
+                ref={(el: SignatureCanvasRef) =>
+                  (mySignatureCanvasRefs.current[0] = el)
+                }
                 onBegin={handleCanvasBegin}
                 onEnd={handleCanvasEnd}
                 name="supervisorSignature"
@@ -191,6 +217,9 @@ export const PostTender = ({navigation}:{navigation:HomeNavigationProp}) => {
                 Signature of Customer
               </Text>
               <CanvasSignature
+                ref={(el: SignatureCanvasRef) =>
+                  (mySignatureCanvasRefs.current[1] = el)
+                }
                 onBegin={handleCanvasBegin}
                 onEnd={handleCanvasEnd}
                 name="customerSignature"

@@ -185,6 +185,10 @@ export const monthlyInspectionSchema = Yup.object().shape({
 
 
 
+// Scaffold Tampering ***************************************************************
+
+
+
 export const scaffoldTamperingSchema = Yup.object().shape({
   project_id: Yup.string().required('This is required Field'),
   date: Yup.string(),
@@ -201,5 +205,68 @@ export const scaffoldTamperingSchema = Yup.object().shape({
   customer_representative: Yup.string(),
   representative_email: Yup.string(),
   supervisorSignature: Yup.string(),
+});
+
+
+// Safety Toolbox Discussion ***************************************************************
+
+
+export const safetyToolboxSchema = Yup.object().shape({
+  projectDetails: Yup.object().shape({
+    stageDiscussion: Yup.object().shape({
+      Dismantle: Yup.string().required('Dismantle is required'),
+      Existing_Scaffold: Yup.string().required(
+        'Existing Scaffold is required',
+      ),
+    }),
+    date: Yup.string().required('Date is required'),
+    project_id: Yup.string().required('Project ID is required'),
+    building_level: Yup.string(),
+    nameOf_customer: Yup.string().required('Customer Name is required'),
+    supervisor_name: Yup.string().required('Supervisor Name is required'),
+    number_of_attendence: Yup.string().required(
+      'Number of Attendance is required',
+    ),
+    start_time: Yup.string().required('Start Time is required'),
+    finish_time: Yup.string().required('Finish Time is required'),
+    duration: Yup.string().required('Duration is required'),
+    work_description: Yup.string().required('Work Description is required'),
+  }),
+  supervisor_notes: Yup.string(),
+  record: Yup.object().shape({
+    name_1: Yup.string(),
+    additional_cmt: Yup.string().required('Additional Comment is required'),
+  }),
+  signatures: Yup.object().shape({
+    name_of_person: Yup.string().required('Name is required'),
+    email_receive_copy: Yup.string()
+      .email('Invalid email format')
+      .required('Email is required'),
+    subcontractor_email: Yup.string()
+      .email('Invalid email format')
+      .required('Subcontractor Email is required'),
+  }),
+});
+
+
+// Safety Toolbox Discussion ***************************************************************
+
+
+export const handoverSchema = Yup.object({
+  projectDetails: Yup.object().shape({
+    projectId: Yup.string().required('Project ID is required'),
+    buildingLevel: Yup.string(),
+    nameOfBuilder: Yup.string(),
+    customerABN: Yup.string(),
+    workCompletion: Yup.string().required('Work completion is required'),
+  }),
+  signatures: Yup.object().shape({
+    customerName: Yup.string().required('Name is required'),
+    HRWLNumber: Yup.string(),
+    customerEmail: Yup.string().email('Invalid email'),
+    customerEmail2: Yup.string().email('Invalid email'),
+    DateTime: Yup.string().required('Date and Time is required'),
+    customerName2: Yup.string().required('Name is required'),
+  }),
 });
 

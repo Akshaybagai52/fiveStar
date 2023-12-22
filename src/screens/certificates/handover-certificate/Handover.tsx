@@ -50,11 +50,10 @@ import {SelectPicker} from '../../../themes/buttons/selectDropdown';
 import useUserInformation from '../../../hooks/userInformation';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../../../types/type/types';
-import { DatePickers } from '../../../themes/buttons/datePicker';
+import {DatePickers} from '../../../themes/buttons/datePicker';
+import {handoverSchema} from '../../../schema/yup-schema/fomsSchema';
 
 type HomeNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Home'>;
-
-
 
 const Handover = ({navigation}: {navigation: HomeNavigationProp}) => {
   // Scroll View End
@@ -181,41 +180,29 @@ const Handover = ({navigation}: {navigation: HomeNavigationProp}) => {
       // console.log('signature', values.projectDetails.certificationRelation);
       // Alert.alert("Document submitted successfully")
       mySelectPickerRef?.current?.clearPickerData();
-      mySignatureCanvasRefs?.current?.forEach((ref:SignatureCanvasRef) => ref.handleClearSignature());
-      myDatePickerRefs?.current?.forEach((ref:DatePickersRef) => ref.clearDate());
+      mySignatureCanvasRefs?.current?.forEach((ref: SignatureCanvasRef) =>
+        ref.handleClearSignature(),
+      );
+      myDatePickerRefs?.current?.forEach((ref: DatePickersRef) =>
+        ref.clearDate(),
+      );
       myFilePickerRef?.current?.clearAllFiles();
       setCustomAlertVisible(true);
     } catch (error) {
       console.error('Error:', error);
     }
   };
-  const validationSchema = Yup.object({
-    projectDetails: Yup.object().shape({
-      projectId: Yup.string().required('Project ID is required'),
-      buildingLevel: Yup.string(),
-      nameOfBuilder: Yup.string(),
-      customerABN: Yup.string(),
-      workCompletion: Yup.string().required('Work completion is required'),
-    }),
-    signatures: Yup.object().shape({
-      customerName: Yup.string().required('Name is required'),
-      HRWLNumber: Yup.string(),
-      customerEmail: Yup.string().email('Invalid email'),
-      customerEmail2: Yup.string().email('Invalid email'),
-      DateTime: Yup.string().required('Date and Time is required'),
-      customerName2: Yup.string().required('Name is required'),
-    }),
-  });
+
   return (
     <View style={{padding: 20, backgroundColor: '#fff'}}>
       <ScrollView ref={scrollViewRef} scrollEnabled>
         <Formik
           initialValues={initialValues}
           enableReinitialize={true}
-          validationSchema={validationSchema}
+          validationSchema={handoverSchema}
           onSubmit={async (values, {resetForm}) => {
             setLoading(true);
-            console.log("hansover")
+            console.log('hansover');
             await handleSubmit1(values);
             resetForm();
             setLoading(false);
@@ -288,7 +275,11 @@ const Handover = ({navigation}: {navigation: HomeNavigationProp}) => {
                 )}
               </View>
               <View>
-                <SelectPicker ref={mySelectPickerRef} label={AddresOptionsData} data={addressOptions} />
+                <SelectPicker
+                  ref={mySelectPickerRef}
+                  label={AddresOptionsData}
+                  data={addressOptions}
+                />
                 <TextInputGroup inputFields={initialFormData} />
               </View>
               <View style={{marginBottom: 15, marginTop: 15}}>
@@ -409,8 +400,20 @@ const Handover = ({navigation}: {navigation: HomeNavigationProp}) => {
                 username={username}
                 userEmail={userEmail}
               />
-              <Text style={[commonStyles.text16,commonStyles.mb5, commonStyles.mTop15]}>Handover Date and Time <Text style={[commonStyles.errorText]}>*</Text></Text>
-              <DatePickers ref={(el: DatePickersRef) => myDatePickerRefs.current[0] = el} mode="datetime" name='signatures.DateTime'  />
+              <Text
+                style={[
+                  commonStyles.text16,
+                  commonStyles.mb5,
+                  commonStyles.mTop15,
+                ]}>
+                Handover Date and Time{' '}
+                <Text style={[commonStyles.errorText]}>*</Text>
+              </Text>
+              <DatePickers
+                ref={(el: DatePickersRef) => (myDatePickerRefs.current[0] = el)}
+                mode="datetime"
+                name="signatures.DateTime"
+              />
               <View style={{width: '90%', marginBottom: 50}}>
                 <FilePicker
                   ref={myFilePickerRef}
@@ -421,7 +424,9 @@ const Handover = ({navigation}: {navigation: HomeNavigationProp}) => {
 
               {/* <SignatureScreen /> */}
               <MySignatureCanvas
-                 ref={(el:SignatureCanvasRef) => mySignatureCanvasRefs.current[0] = el}
+                ref={(el: SignatureCanvasRef) =>
+                  (mySignatureCanvasRefs.current[0] = el)
+                }
                 onBegin={handleCanvasBegin}
                 onEnd={handleCanvasEnd}
                 signature={signatures}
@@ -434,7 +439,9 @@ const Handover = ({navigation}: {navigation: HomeNavigationProp}) => {
               />
 
               <MySignatureCanvas
-                 ref={(el:SignatureCanvasRef) => mySignatureCanvasRefs.current[1] = el}
+                ref={(el: SignatureCanvasRef) =>
+                  (mySignatureCanvasRefs.current[1] = el)
+                }
                 onBegin={handleCanvasBegin}
                 onEnd={handleCanvasEnd}
                 signature={signatures}

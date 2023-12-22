@@ -4,7 +4,13 @@ import React, {useState, useRef} from 'react';
 import {myStyles} from '../damagedOrMissing';
 import TextInputGroup from '../../../themes/buttons/TextInputGroup';
 import CheckBox from '../../../themes/buttons/Checkbox';
-import {CheckboxItem} from '../../../types/interfaces/types';
+import {
+  CheckboxItem,
+  DatePickersRef,
+  FilePickerRef,
+  SelectPickerRef,
+  SignatureCanvasRef,
+} from '../../../types/interfaces/types';
 import {ButtonGreen} from '../../../themes/text/ButtonGreen';
 import {MySignatureCanvas} from '../../../themes/buttons/SignatureCanvas';
 import FilePicker from '../../../themes/buttons/FilePicker';
@@ -62,6 +68,11 @@ export const SafetyIncident = () => {
   const [loading, setLoading] = useState(false);
   const addressOptions = useSelector((state: any) => state.addressOptions);
   const {username, userEmail} = useUserInformation();
+
+  const mySignatureCanvasRefs = useRef<SignatureCanvasRef[]>([]);
+  const myDatePickerRefs = useRef<DatePickersRef[]>([]);
+  const mySelectPickerRef = useRef<SelectPickerRef[]>([]);
+  const myFilePickerRef = useRef<FilePickerRef>(null);
   // Scroll View start
   const scrollViewRef: any = useRef(null);
 
@@ -147,6 +158,17 @@ export const SafetyIncident = () => {
       // );
       // console.log('Post Response:', response);
       // console.log('signature', values.projectDetails.certificationRelation);
+
+      mySelectPickerRef?.current?.forEach((ref: SelectPickerRef) =>
+        ref.clearPickerData(),
+      );
+      mySignatureCanvasRefs?.current?.forEach((ref: SignatureCanvasRef) =>
+        ref.handleClearSignature(),
+      );
+      myDatePickerRefs?.current?.forEach((ref: DatePickersRef) =>
+        ref.clearDate(),
+      );
+      myFilePickerRef?.current?.clearAllFiles();
       // Alert.alert("Document submitted successfully")
       setCustomAlertVisible(true);
     } catch (error) {
@@ -192,18 +214,45 @@ export const SafetyIncident = () => {
                 <Text style={[commonStyles.text16, commonStyles.mb5]}>
                   Incident Date <Text style={[commonStyles.errorText]}>*</Text>
                 </Text>
-                <DatePickers name="date_of_incident" mode="date" />
+                <DatePickers
+                  ref={(el: DatePickersRef) =>
+                    (myDatePickerRefs.current[0] = el)
+                  }
+                  name="date_of_incident"
+                  mode="date"
+                />
               </View>
-              <SelectPicker label={label} data={subcontractorData} />
+              <SelectPicker
+                ref={(el: SelectPickerRef) =>
+                  (mySelectPickerRef.current[0] = el)
+                }
+                label={label}
+                data={subcontractorData}
+              />
               <TextInputGroup inputFields={scaffoldData} />
               <SelectPicker
+                ref={(el: SelectPickerRef) =>
+                  (mySelectPickerRef.current[1] = el)
+                }
                 label={safetyIncidentProjectIdData}
                 data={addressOptions}
               />
               <Text>Name of Employee Involved in this incident</Text>
               <SafetyInjuredFieldArray number="number" />
-              <SelectPicker label={supervisorName} data={supervisorNameData} />
-              <SelectPicker label={supervisorMail} data={supervisorEmailData} />
+              <SelectPicker
+                ref={(el: SelectPickerRef) =>
+                  (mySelectPickerRef.current[2] = el)
+                }
+                label={supervisorName}
+                data={supervisorNameData}
+              />
+              <SelectPicker
+                ref={(el: SelectPickerRef) =>
+                  (mySelectPickerRef.current[3] = el)
+                }
+                label={supervisorMail}
+                data={supervisorEmailData}
+              />
               <View>
                 <Text style={[commonStyles.text16]}>
                   How you would describe the incident ?{' '}
@@ -218,7 +267,13 @@ export const SafetyIncident = () => {
                   setSelectedFiles={setSelectedFiles}
                 />
               </View>
-              <SelectPicker label={anyOneInjured} data={anyOneInjuredData} />
+              <SelectPicker
+                ref={(el: SelectPickerRef) =>
+                  (mySelectPickerRef.current[4] = el)
+                }
+                label={anyOneInjured}
+                data={anyOneInjuredData}
+              />
               {/* <TextInputGroup inputFields={} /> */}
               <View style={[commonStyles.mb15, commonStyles.mt5]}>
                 <Text style={[commonStyles.text16, commonStyles.mb10]}>
@@ -236,6 +291,9 @@ export const SafetyIncident = () => {
               <RadioGroupButton options={dismantleRadioData} />
               <View style={[commonStyles.mTop15]}>
                 <SelectPicker
+                  ref={(el: SelectPickerRef) =>
+                    (mySelectPickerRef.current[5] = el)
+                  }
                   label={investigationOfficer}
                   data={investigationOfficerData}
                 />
@@ -263,6 +321,9 @@ export const SafetyIncident = () => {
                   Signature 1
                 </Text>
                 <MySignatureCanvas
+                  ref={(el: SignatureCanvasRef) =>
+                    (mySignatureCanvasRefs.current[0] = el)
+                  }
                   onBegin={handleCanvasBegin}
                   onEnd={handleCanvasEnd}
                   signature={signatures}
