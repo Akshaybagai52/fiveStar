@@ -27,6 +27,7 @@ import { useRoute} from '@react-navigation/native';
 import Login from '../screens/login/LoginForm';
 import { PickingChecklist } from '../screens/certificates/picking-checklist';
 import { RecordToolbox } from '../screens/certificates/record-of-toolbox';
+import MaterialBuy from '../screens/material-buy/MaterialBuy';
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
@@ -87,6 +88,7 @@ export function HandoverDrawer() {
       <Drawer.Screen name="Transport Checklist" component={TransportChecklist} />
       <Drawer.Screen name="Picking/Loading Checklist" component={PickingChecklist} />
       <Drawer.Screen name="Record Of Toolbox Talk" component={RecordToolbox} />
+      <Drawer.Screen name="Material Buy" component={MaterialBuy} />
 
 
       {/* <Drawer.Screen name="Material Checkout" component={MaterialCheckout
