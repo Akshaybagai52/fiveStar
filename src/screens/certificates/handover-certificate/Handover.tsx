@@ -72,12 +72,7 @@ const Handover = ({navigation}: {navigation: HomeNavigationProp}) => {
 
   const addressOptions = useSelector((state: any) => state.addressOptions);
   const {username, userEmail} = useUserInformation();
-  // const formik = useFormikContext()
-  // console.log(username)
-  // if(username) {
-  //   formik.setFieldValue('signatures.customerName', username)
 
-  // }
   const mySignatureCanvasRefs = useRef<SignatureCanvasRef[]>([]);
   const myDatePickerRefs = useRef<DatePickersRef[]>([]);
   const mySelectPickerRef = useRef<SelectPickerRef>(null);

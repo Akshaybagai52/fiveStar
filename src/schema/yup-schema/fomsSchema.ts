@@ -270,3 +270,26 @@ export const handoverSchema = Yup.object({
   }),
 });
 
+
+
+// Site Audit ***************************************************************
+
+
+
+export const siteAuditSchema = Yup.object().shape({
+  project_id: Yup.string().required('This is required Field'),
+  date: Yup.string(),
+  nameOf_customer: Yup.string(),
+  unapproved_modification: Yup.string().required('This is required Field'),
+  structural_integrity: Yup.string().required('This is required Field'),
+  falling_objects: Yup.string().required('This is required Field'),
+  general_access: Yup.string().required('This is required Field'),
+  affacted_area: Yup.string().required('This is required Field'),
+  repair_scaffold: Yup.string().required('This is required Field'),
+  prevent_recurrence: Yup.string().required('This is required Field'),
+  Supervisor_Name: Yup.string().required('This is required Field'),
+  supervisor_emails: Yup.string().required('This is required Field'),
+  customer_representative: Yup.string(),
+  representative_email: Yup.string(),
+  supervisorSignature: Yup.string(),
+});

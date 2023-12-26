@@ -3,13 +3,13 @@ import {View, TextInput, StyleSheet, Text} from 'react-native';
 import {Field, ErrorMessage, useFormikContext} from 'formik';
 import {useSelector} from 'react-redux';
 import commonStyles from '../../styles/commonStyles';
-import { TextInputGroupProps } from '../../types/interfaces/types';
+import {TextInputGroupProps} from '../../types/interfaces/types';
 
 const TextInputGroup: React.FC<TextInputGroupProps> = ({
   inputFields,
   username,
   userEmail,
-  userPhoneNumber
+  userPhoneNumber,
 }) => {
   const [inputValues, setInputValues] = useState<{[name: string]: string}>({});
   // if (username) {
@@ -52,8 +52,8 @@ const TextInputGroup: React.FC<TextInputGroupProps> = ({
   const formik = useFormikContext();
 
   useEffect(() => {
-    inputFields.forEach((inputField) => {
-      if(inputField.prefilled) {
+    inputFields.forEach(inputField => {
+      if (inputField.prefilled) {
         if (inputField.prefilledUsername && username) {
           formik.setFieldValue(inputField.name, username);
         }
@@ -65,9 +65,8 @@ const TextInputGroup: React.FC<TextInputGroupProps> = ({
         }
       }
     });
-  }, [ username]);
-  
-  
+  }, [username]);
+
   return (
     <View>
       {inputFields.map((inputField, index) => (
@@ -81,7 +80,10 @@ const TextInputGroup: React.FC<TextInputGroupProps> = ({
               <>
                 <TextInput
                   value={field.value}
-                  style={styles.textInput}
+                  style={[
+                    styles.textInput,
+                    inputField.multiline ? commonStyles.minH90 : null,
+                  ]}
                   onChangeText={(e: any) => {
                     form.setFieldValue(inputField.name, e);
                     handleInputChange(inputField.name, e);
@@ -90,15 +92,15 @@ const TextInputGroup: React.FC<TextInputGroupProps> = ({
                   multiline={inputField.multiline}
                   numberOfLines={inputField.numberOfLines}
                 />
-               
+
                 <ErrorMessage
                   name={inputField.name}
-                  render={msg => (
-                    msg ? <Text style={[commonStyles.errorText]}>{msg}</Text> : null
-                  )} // Use your own Text component
-                /> 
-                
-
+                  render={msg =>
+                    msg ? (
+                      <Text style={[commonStyles.errorText]}>{msg}</Text>
+                    ) : null
+                  } // Use your own Text component
+                />
               </>
             )}
           </Field>
