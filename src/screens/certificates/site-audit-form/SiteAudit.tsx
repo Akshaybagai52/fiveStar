@@ -63,6 +63,7 @@ import {
   SelectPickerRef,
   SignatureCanvasRef,
 } from '../../../types/interfaces/types';
+import { siteAuditSchema } from '../../../schema/yup-schema/fomsSchema';
 
 type HomeNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Home'>;
 
@@ -194,23 +195,7 @@ export const SiteAudit = ({navigation}: {navigation: HomeNavigationProp}) => {
     }
   };
 
-  const validationSchema = Yup.object().shape({
-    project_id: Yup.string().required('This is required Field'),
-    date: Yup.string(),
-    nameOf_customer: Yup.string(),
-    unapproved_modification: Yup.string().required('This is required Field'),
-    structural_integrity: Yup.string().required('This is required Field'),
-    falling_objects: Yup.string().required('This is required Field'),
-    general_access: Yup.string().required('This is required Field'),
-    affacted_area: Yup.string().required('This is required Field'),
-    repair_scaffold: Yup.string().required('This is required Field'),
-    prevent_recurrence: Yup.string().required('This is required Field'),
-    Supervisor_Name: Yup.string().required('This is required Field'),
-    supervisor_emails: Yup.string().required('This is required Field'),
-    customer_representative: Yup.string(),
-    representative_email: Yup.string(),
-    supervisorSignature: Yup.string(),
-  });
+
   return (
     <SafeAreaView style={{padding: 20, backgroundColor: '#fff'}}>
       <ScrollView
@@ -220,7 +205,7 @@ export const SiteAudit = ({navigation}: {navigation: HomeNavigationProp}) => {
         <Formik
           initialValues={initialValues}
           enableReinitialize={true}
-          //   validationSchema={validationSchema}
+            validationSchema={siteAuditSchema}
           onSubmit={async (values, {resetForm}) => {
             setLoading(true);
             handleSubmit1(values);

@@ -85,6 +85,9 @@ const commonStyles = StyleSheet.create({
     mR5: {
       marginRight: 5
     },
+    minH90: {
+      minHeight: 90,
+    },
     card: {
       backgroundColor: 'white',
       borderRadius: 8,
