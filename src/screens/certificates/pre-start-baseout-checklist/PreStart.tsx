@@ -16,7 +16,7 @@ import {
   initialValues,
   combinedData,
   preStartProjectIdData,
-} from '../../../data/PreStartData';
+} from '../../../data/preStartData';
 import commonStyles from '../../../styles/commonStyles';
 import {AudioConverter} from '../../../themes/buttons/speechToText';
 import Address from '../../../components/common/Address';

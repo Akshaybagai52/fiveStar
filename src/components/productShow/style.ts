@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { colors } from "../../colors/colors";
 
 export  const productStyles = StyleSheet.create({
     main_product_box: {
@@ -18,7 +19,7 @@ export  const productStyles = StyleSheet.create({
     },
     heading: {
       fontSize: 30,
-      color: '#60cf1d',
+      color: colors.darkBlue,
       fontWeight: '600',
       fontFamily: 'Jost',
     },
@@ -28,7 +29,7 @@ export  const productStyles = StyleSheet.create({
       justifyContent: 'space-between',
       width: 365,
       borderBottomWidth: 1,
-      borderColor: '#44444',
+      borderColor: 'black',
     },
     product_text: {
       fontWeight: 'bold',
@@ -44,11 +45,12 @@ export  const productStyles = StyleSheet.create({
     Standard_Text: {
       fontWeight: 'bold',
       fontSize: 15,
-      color: '#44444',
+      color: '#444444',
     },
     Standard_data: {
       display: 'flex',
       flexDirection: 'row',
+      justifyContent: 'space-between',
       marginBottom: 10,
     },
     sub_Standard_Text: {
@@ -69,6 +71,7 @@ export  const productStyles = StyleSheet.create({
       fontWeight: '500',
     },
     checkout_button:{
-      marginTop:10
+      marginTop:10,
+      paddingBottom: 40,
     }
   });
