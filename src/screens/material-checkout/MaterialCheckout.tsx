@@ -4,7 +4,7 @@ import axios from 'axios';
 import LoadingSpinner from '../../components/loader/LoadingSpinner';
 import commonStyles from '../../styles/commonStyles';
 import {SafeAreaView} from 'react-native';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {updateAddressResults} from '../../redux/mainSlice';
 import {Button} from 'react-native-paper';
 import ProductsInput from '../../components/screens/material-checkout/ProductsInput';
@@ -15,6 +15,7 @@ import {SelectPicker} from '../../themes/buttons/selectDropdown';
 import TextInputGroup from '../../themes/buttons/TextInputGroup';
 import {colors} from '../../colors/colors';
 import {ButtonGreen} from '../../themes/text/ButtonGreen';
+import { updateCheckoutDetails } from '../../redux/delieverySlice';
 // import useUserInformation from '../../hooks/userInformation';
 
 interface productProps {
@@ -117,6 +118,7 @@ export const MaterialCheckout = () => {
 
     // console.log(updatedItems);
   };
+  const dispatch = useDispatch()
   const handleAddToCart = () => {
     const mappedData = updatedItems.map((item: productProps) => ({
       id: item.id,
@@ -131,6 +133,8 @@ export const MaterialCheckout = () => {
     // setData([])
     // setUpdatedItems([]);
   };
+  const deliveryDetails = useSelector((state) => state.delieveryDetails);
+
   const handleSubmit1 = async (values: any) => {
     try {
       const requestData = {
@@ -140,6 +144,7 @@ export const MaterialCheckout = () => {
         gearCondition: values.gearCondition || addressOptions.gearCondition,
         address: addressOptions.deliveryAddress,
         products: mappedItems,
+        submitter: addressOptions.submitter,
       };
       // console.log(requestData);
 
@@ -152,8 +157,11 @@ export const MaterialCheckout = () => {
             },
           },
         );
-      // dispatch(updateAddressResults(values))
+        
+      await dispatch(updateCheckoutDetails(requestData))
       console.log('Post Response:', requestData);
+  // console.log(checkoutDetails, "checkout");
+  console.log(deliveryDetails, "checkout");
 
       // setCustomAlertVisible(true);
     } catch (error) {
@@ -203,6 +211,10 @@ export const MaterialCheckout = () => {
     (state: any) => state.address.address,
   );
   // console.log(addressOptions);
+  // const checkoutDetails: any = useSelector<any>(
+  //   (state: any) => state.delieveryDetails.address,
+  // );
+ 
 
   useEffect(() => {
     dataResponse();
@@ -345,7 +357,7 @@ export const MaterialCheckout = () => {
                     <DatePickers
                       name="date"
                       mode="date"
-                      initialValue={addressOptions.date}
+                      initialValue={addressOptions?.date || null}
                     />
                   </View>
                   <View style={[commonStyles.mTop15]}>

@@ -46,7 +46,6 @@ const delieveryAddress = {
   showAsterisk: true,
 };
 
-
 export const MaterialOrder = ({navigation}: any) => {
   const [isCustomAlertVisible, setCustomAlertVisible] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -60,7 +59,7 @@ export const MaterialOrder = ({navigation}: any) => {
   const addressOptions = useSelector((state: any) => state.addressOptions);
 
   const {username} = useUserInformation();
-console.log(username)
+  // console.log(username);
 
   useEffect(() => {
     dispatch(fetchAddressOptions());
@@ -86,7 +85,7 @@ console.log(username)
         },
       );
       dispatch(updateAddressResults(values));
-      console.log('Post Response:', response);
+      console.log('Post Response:', requestData);
       handleGetStartedPress();
 
       setCustomAlertVisible(true);
@@ -97,21 +96,12 @@ console.log(username)
   // console.log(addressOptions)
 
   const validationSchema = Yup.object().shape({
-    project_id: Yup.string().required('This is required Field'),
-    date: Yup.string(),
-    nameOf_customer: Yup.string(),
-    unapproved_modification: Yup.string().required('This is required Field'),
-    structural_integrity: Yup.string().required('This is required Field'),
-    falling_objects: Yup.string().required('This is required Field'),
-    general_access: Yup.string().required('This is required Field'),
-    affacted_area: Yup.string().required('This is required Field'),
-    repair_scaffold: Yup.string().required('This is required Field'),
-    prevent_recurrence: Yup.string().required('This is required Field'),
-    Supervisor_Name: Yup.string().required('This is required Field'),
-    supervisor_emails: Yup.string().required('This is required Field'),
-    customer_representative: Yup.string(),
-    representative_email: Yup.string(),
-    supervisorSignature: Yup.string(),
+    date: Yup.string().required('This is required Field'),
+    time: Yup.string().required('This is required Field'),
+    notes: Yup.string().required('This is required Field'),
+    deliveryAddress: Yup.string().required('This is required Field'),
+    gearCondition: Yup.string().required('This is required Field'),
+    submitter: Yup.string().required('This is required Field'),
   });
 
   return (
@@ -120,13 +110,15 @@ console.log(username)
         <Formik
           initialValues={initialValues}
           enableReinitialize={true}
-          //   validationSchema={validationSchema}
-          onSubmit={async values => {
+          validationSchema={validationSchema}
+          onSubmit={async (values, {setFieldValue, setSubmitting}) => {
             setLoading(true);
             handleSubmit1(values);
+            setSubmitting(false);
+            setFieldValue('submitter', username);
             setLoading(false);
           }}>
-          {({handleSubmit, values, setFieldValue}) => (
+          {({handleSubmit}) => (
             <View style={{backgroundColor: '#fff'}}>
               <View>
                 {/* <Address /> */}
@@ -159,7 +151,7 @@ console.log(username)
                     SUBMITTER
                   </Text>
                   <TextInput
-                    value={username || ''}
+                    defaultValue={username || ''}
                     style={[
                       commonStyles.textInput,
                       {width: '90%', borderColor: colors.darkBlue},

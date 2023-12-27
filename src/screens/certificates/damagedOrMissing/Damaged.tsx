@@ -44,7 +44,7 @@ import {
   loadingCapacity,
   scaffoldData,
   userPersonalData,
-} from '../../../data/Damaged';
+} from '../../../data/damagedData';
 import {SelectPicker} from '../../../themes/buttons/selectDropdown';
 import {useSelector} from 'react-redux';
 import useUserInformation from '../../../hooks/userInformation';

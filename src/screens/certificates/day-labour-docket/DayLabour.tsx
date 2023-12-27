@@ -35,7 +35,7 @@ import {
   erectionData,
   variationData,
   dayLabourProjectIdData,
-} from '../../../data/dayLabour';
+} from '../../../data/dayLabourData';
 import commonStyles from '../../../styles/commonStyles';
 import RadioGroupButton from '../../../themes/buttons/radioButtonGroup';
 import {AudioConverter} from '../../../themes/buttons/speechToText';

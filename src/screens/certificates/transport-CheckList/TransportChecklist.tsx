@@ -9,7 +9,7 @@ import {
   transPortHeading1,
   transportUserPersonalData,
   initialValues,
-} from '../../../data/TransportChecklist';
+} from '../../../data/transportChecklistData';
 import {
   DatePickersRef,
   SignatureCanvasRef,
