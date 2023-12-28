@@ -1,9 +1,19 @@
 import React from 'react';
-import {View, Text, Button, ScrollView, FlatList} from 'react-native';
+import {
+  View,
+  Text,
+  Button,
+  ScrollView,
+  FlatList,
+  StyleSheet,
+  ImageBackground,
+} from 'react-native';
 import {productStyles} from './style';
 import {ButtonGreen} from '../../themes/text/ButtonGreen';
 import {useSelector} from 'react-redux';
 import axios from 'axios';
+import commonStyles from '../../styles/commonStyles';
+import {colors} from '../../colors/colors';
 interface ProductProps {
   category: string;
   id: string;
@@ -35,7 +45,6 @@ const ProductsShow = () => {
     time,
     submitter,
   }: DeliveryDetailsProps = deliveryDetails;
-
   const handleSubmit = async (values: any) => {
     try {
       const response = await axios.post(
@@ -59,24 +68,26 @@ const ProductsShow = () => {
   const renderListFooter = () => (
     <View style={productStyles.delivery_details}>
       <Text style={productStyles.delivery_text}>Delivery Details</Text>
-      <Text style={productStyles.delivery_details_text}>{submitter}</Text>
       <Text style={productStyles.delivery_details_text}>
-        Delivery Date :<Text>{date ?? 'N/A'}</Text>
+        {submitter || 'N/A'}
       </Text>
-      <Text style={productStyles.delivery_details_text}>
-        Delivery Time : <Text>{time ?? 'N/A'}</Text>
+      <Text >
+       <Text style={productStyles.delivery_details_text} >Delivery Date :</Text> <Text>{new Date(date).toLocaleDateString() || 'N/A'}</Text>
       </Text>
-      <Text style={productStyles.delivery_details_text}>
-        Delivery Notes : <Text>{notes ?? 'N/A'}</Text>
+      <Text >
+       <Text style={productStyles.delivery_details_text}> Delivery Time :</Text> <Text>{new Date(time).toLocaleTimeString() || 'N/A'}</Text>
       </Text>
-      <Text style={productStyles.delivery_details_text}>
-        Gear Condition : <Text>{gearCondition ?? 'N/A'}</Text>
+      <Text >
+       <Text style={productStyles.delivery_details_text}>Delivery Notes :</Text>  <Text>{notes || 'N/A'}</Text>
       </Text>
-      <Text style={productStyles.delivery_details_text}>
-        Total Weight(KG) : <Text>To Do this</Text>
+      <Text >
+       <Text style={productStyles.delivery_details_text}>Gear Condition :</Text><Text>{gearCondition || 'N/A'}</Text>
       </Text>
-      <Text style={productStyles.delivery_details_text}>
-        Delivery Address :<Text>{address ?? 'N/A'}</Text>
+      <Text >
+        <Text style={productStyles.delivery_details_text}>Total Weight(KG) :</Text> <Text>To Do this</Text>
+      </Text>
+      <Text>
+       <Text style={productStyles.delivery_details_text}>Delivery Address :</Text> <Text>{address || 'N/A'}</Text>
       </Text>
       <View style={productStyles.checkout_button}>
         <ButtonGreen text="Checkout" onPress={handleSubmit} />
@@ -84,27 +95,35 @@ const ProductsShow = () => {
     </View>
   );
   const renderProducts = ({item}: {item: ProductProps}) => (
-    <View style={{marginBottom: 10}}>
+    <View
+      style={[
+        productStyles.product_Category,
+        deliveryDetails.products[deliveryDetails.products.length - 1].id !==
+        item.id
+          ? productStyles.border_bottom
+          : null,
+      ]}>
       <View style={productStyles.Standard_data}>
         <View>
-          <Text style={productStyles.Standard_Text}>{item.label}</Text>
-          <Text style={productStyles.sub_Standard_Text}>
-            Category: {item.category || 'N/A'}
+          <Text style={[productStyles.Standard_Text,commonStyles.mb2]}>{item.label}</Text>
+          <Text style={[productStyles.sub_Standard_Text,commonStyles.mb2]}>
+           <Text style={{fontWeight:'600'}}>Category :</Text> {item.category || 'N/A'}
           </Text>
-          <Text style={productStyles.sub_Standard_Text}>
-            Gear Notes: {item.text || 'N/A'}{' '}
+          <Text style={[productStyles.sub_Standard_Text,commonStyles.mb2]}>
+           <Text style={{fontWeight:'600'}}>Gear Notes :</Text> {item.text || 'N/A'}{' '}
           </Text>
-          <Text style={productStyles.sub_Standard_Text}>
-            Weight(kg): {item.weight || 'N/A'}
+          <Text style={[productStyles.sub_Standard_Text]}>
+           <Text style={{fontWeight:'600'}}>Weight(kg) :</Text> {item.weight || 'N/A'}
           </Text>
         </View>
-        <Text>{item.quantity || 'N/A'}</Text>
+        <Text>{item.quantity}</Text>
       </View>
     </View>
   );
 
   return (
     <FlatList
+      style={{backgroundColor: '#cde2f8', padding: 15}}
       data={deliveryDetails.products}
       keyExtractor={item => item.id}
       ListHeaderComponent={() => (
@@ -112,21 +131,33 @@ const ProductsShow = () => {
           <View style={productStyles.checkOut_headingBox}>
             <Text style={[productStyles.heading]}>Checkout</Text>
           </View>
-          <View>
-            <Text style={{fontSize: 20, fontWeight: 'bold', marginBottom: 10}}>
-              Products
-            </Text>
-          </View>
-          <ScrollView>
-            <FlatList
-              data={deliveryDetails.products}
-              keyExtractor={item => item.id}
-              renderItem={renderProducts}
-              ListFooterComponent={renderListFooter}
-            />
+
+          <ScrollView style={[productStyles.productElevation]}>
+            <View
+              style={[productStyles.product_container]}>
+              <Text
+                style={[productStyles.product_container_heading]}>
+                Products
+              </Text>
+              <Text
+                style={[productStyles.product_container_heading]}>
+                Quantity
+              </Text>
+            </View>
+            <View style={{paddingHorizontal:20}}>
+              <FlatList
+                data={deliveryDetails.products}
+                keyExtractor={item => item.id}
+                renderItem={renderProducts}
+                ListFooterComponentStyle={[productStyles.productElevation]}
+              />
+            </View>
           </ScrollView>
         </View>
       )}
+      ListFooterComponent={renderListFooter}
+      ListFooterComponentStyle={[productStyles.productElevation,commonStyles.mTop15,{marginBottom: 50}]}
+
       // renderItem={renderProducts}
     />
   );
