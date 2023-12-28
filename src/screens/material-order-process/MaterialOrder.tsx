@@ -3,7 +3,6 @@ import {Text, ActivityIndicator, Button} from 'react-native-paper';
 import React, {useEffect, useState} from 'react';
 import {Field, Formik} from 'formik';
 import * as Yup from 'yup';
-import axios from 'axios';
 import {DatePickers} from '../../themes/buttons/datePicker';
 import TextInputGroup from '../../themes/buttons/TextInputGroup';
 import commonStyles from '../../styles/commonStyles';
@@ -59,7 +58,7 @@ export const MaterialOrder = ({navigation}: any) => {
   const addressOptions = useSelector((state: any) => state.addressOptions);
 
   const {username} = useUserInformation();
-  // console.log(username);
+  console.log(username);
 
   useEffect(() => {
     dispatch(fetchAddressOptions());
@@ -69,21 +68,22 @@ export const MaterialOrder = ({navigation}: any) => {
     try {
       const requestData = {
         values,
+        submitter: username
 
         // imagesAttached: base64Images,
         // signature: signatures,
       };
       // console.log(requestData);
 
-      const response = await axios.post(
-        'https://fivestaraccess.com.au/custom_form/material_order_process_app.php',
-        requestData,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        },
-      );
+      // const response = await axios.post(
+      //   'https://fivestaraccess.com.au/custom_form/material_order_process_app.php',
+      //   requestData,
+      //   {
+      //     headers: {
+      //       'Content-Type': 'application/json',
+      //     },
+      //   },
+      // );
       dispatch(updateAddressResults(values));
       console.log('Post Response:', requestData);
       handleGetStartedPress();
@@ -110,7 +110,7 @@ export const MaterialOrder = ({navigation}: any) => {
         <Formik
           initialValues={initialValues}
           enableReinitialize={true}
-          validationSchema={validationSchema}
+          // validationSchema={validationSchema}
           onSubmit={async (values, {setFieldValue, setSubmitting}) => {
             setLoading(true);
             handleSubmit1(values);

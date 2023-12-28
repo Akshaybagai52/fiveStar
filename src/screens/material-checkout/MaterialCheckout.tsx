@@ -210,7 +210,7 @@ export const MaterialCheckout = () => {
   const addressOptions: any = useSelector<any>(
     (state: any) => state.address.address,
   );
-  // console.log(addressOptions);
+  console.log(addressOptions);
   // const checkoutDetails: any = useSelector<any>(
   //   (state: any) => state.delieveryDetails.address,
   // );
