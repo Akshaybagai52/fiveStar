@@ -48,7 +48,7 @@ const ProductsShow = () => {
   const handleSubmit = async (values: any) => {
     try {
       const response = await axios.post(
-        'https://fivestaraccess.com.au/custom_form/material_order_process_app.php',
+        'https://fivestaraccess.com.au/fivestaraccess_formapp/material_order_process_app.php',
         deliveryDetails,
         {
           headers: {

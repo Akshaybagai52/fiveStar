@@ -20,43 +20,27 @@ import {DocumentPickerResponse} from 'react-native-document-picker';
 import RNFetchBlob from 'rn-fetch-blob';
 import CustomAlert from '../../../themes/buttons/Alert';
 import {
-  userPersonalData,
   scaffoldData,
   loadingCapacity,
   initialValues,
-  label,
-  supervisorName,
-  supervisorMail,
-  anyOneInjured,
-  checkboxData,
-  investigationOfficer,
   measuresData,
-  dismantleRadioData,
-  subcontractorData,
-  supervisorNameData,
-  supervisorEmailData,
-  anyOneInjuredData,
-  investigationOfficerData,
-  safetyIncidentProjectIdData,
   listData,
   definationsColumn,
   definationsData,
   rolesAndResColumn,
   rolesAndResData,
+  descriptionField,
+  approveByField,
 } from '../../../data/transportSafetyData';
 import commonStyles from '../../../styles/commonStyles';
-import {AudioConverter} from '../../../themes/buttons/speechToText';
 import Address from '../../../components/common/Address';
 import {DatePickers} from '../../../themes/buttons/datePicker';
-import {SelectPicker} from '../../../themes/buttons/selectDropdown';
-import RadioGroupButton from '../../../themes/buttons/radioButtonGroup';
-import {SafetyFieldArray} from '../../../themes/buttons/fieldArray-safetyInjured';
 import {useSelector} from 'react-redux';
-import SafetyInjuredFieldArray from '../../../components/screens/safetyInjured/FieldArray';
 import useUserInformation from '../../../hooks/userInformation';
 import {safetyIncidentSchema} from '../../../schema/yup-schema/fomsSchema';
 import Table from '../../../components/common/Table';
 import UnorderedList from '../../../components/common/UnorderedList';
+import CheckboxTable from '../../../components/screens/transport-safety-procedure/CheckboxTable';
 
 const tableData = [
   {document: 'Document ID:', information: ' FSS-EHS-PR-024'},
@@ -70,21 +54,12 @@ const tableData = [
 const tableColumns = ['Document', 'Information'];
 const TransportSafety = () => {
   const [checkboxes, setCheckboxes] = useState<CheckboxItem[]>(loadingCapacity);
-
-  const [selectedFiles, setSelectedFiles] = useState<DocumentPickerResponse[]>(
-    [],
-  );
-  const [selectedFiles2, setSelectedFiles2] = useState<
-    DocumentPickerResponse[]
-  >([]);
   const [signatures, setSignatures] = useState({
     signature1: '',
     signature2: '',
   });
   const [isCustomAlertVisible, setCustomAlertVisible] = useState(false);
   const [loading, setLoading] = useState(false);
-  const addressOptions = useSelector((state: any) => state.addressOptions);
-  const {username, userEmail} = useUserInformation();
 
   const mySignatureCanvasRefs = useRef<SignatureCanvasRef[]>([]);
   const myDatePickerRefs = useRef<DatePickersRef[]>([]);
@@ -97,12 +72,6 @@ const TransportSafety = () => {
     if (scrollViewRef.current) {
       scrollViewRef.current.setNativeProps({scrollEnabled: false});
     }
-  };
-
-  const TimeNames: any = {
-    startTime: 'projectDetails.start_time',
-    endTime: 'projectDetails.finish_time',
-    duration: 'projectDetails.duration',
   };
 
   const handleCanvasEnd = () => {
@@ -142,24 +111,8 @@ const TransportSafety = () => {
 
   const handleSubmit1 = async (values: any) => {
     try {
-      const base64Images = await Promise.all(
-        selectedFiles.map(async file => {
-          const base64 = await RNFetchBlob.fs.readFile(file.uri, 'base64');
-          return `data:${file.type};base64,${base64}`;
-        }),
-      );
-      const base64Images2 = await Promise.all(
-        selectedFiles2.map(async file => {
-          const base64 = await RNFetchBlob.fs.readFile(file.uri, 'base64');
-          return `data:${file.type};base64,${base64}`;
-        }),
-      );
       const requestData = {
         values,
-        number: values.number,
-        // stageDiscuss: values.projectDetails.stageDiscussion,
-        incidentImages: base64Images,
-        measureImages: base64Images2,
         signature: signatures,
       };
       console.log(requestData);
@@ -198,7 +151,7 @@ const TransportSafety = () => {
         <Formik
           initialValues={initialValues}
           enableReinitialize={true}
-          validationSchema={safetyIncidentSchema}
+          // validationSchema={safetyIncidentSchema}
           onSubmit={async values => {
             setLoading(true);
             await handleSubmit1(values);
@@ -213,7 +166,41 @@ const TransportSafety = () => {
                     Transport Safety Procedure
                   </Text>
                 </View>
+                <Text style={{fontSize: 20, fontWeight: 'bold'}}>
+                  Document Control:
+                </Text>
                 <Table columns={tableColumns} data={tableData} isList={false} />
+
+                <View style={[commonStyles.mTop15, commonStyles.mb15]}>
+                  <Text style={{fontSize: 20, fontWeight: 'bold'}}>
+                    Document History:
+                  </Text>
+                  <TextInputGroup inputFields={scaffoldData} />
+                  <Text style={[commonStyles.text16, commonStyles.mb5]}>
+                    Date <Text style={[commonStyles.errorText]}>*</Text>
+                  </Text>
+                  <DatePickers
+                    ref={(el: DatePickersRef) =>
+                      (myDatePickerRefs.current[0] = el)
+                    }
+                    name="date"
+                    mode="date"
+                  />
+
+                  <TextInputGroup inputFields={descriptionField} />
+                  <TextInputGroup inputFields={approveByField} />
+                </View>
+                <Text
+                  style={[
+                    {fontSize: 20, fontWeight: 'bold'},
+                    commonStyles.mb10,
+                  ]}>
+                  1. Checklist
+                </Text>
+                <CheckboxTable
+                  checkboxes={measuresData}
+                  onPress={handleCheckboxPress}
+                />
                 <View style={[commonStyles.mTop15]}>
                   <Text style={[commonStyles.text20, commonStyles.fontBold]}>
                     2. Purpose
@@ -267,119 +254,29 @@ const TransportSafety = () => {
                   />
                 </View>
               </View>
-              <View style={[commonStyles.mTop15, commonStyles.mb15]}>
-                <Text style={[commonStyles.text16, commonStyles.mb5]}>
-                  Incident Date <Text style={[commonStyles.errorText]}>*</Text>
-                </Text>
-                <DatePickers
-                  ref={(el: DatePickersRef) =>
-                    (myDatePickerRefs.current[0] = el)
-                  }
-                  name="date_of_incident"
-                  mode="date"
-                />
-              </View>
-              <SelectPicker
-                ref={(el: SelectPickerRef) =>
-                  (mySelectPickerRef.current[0] = el)
-                }
-                label={label}
-                data={subcontractorData}
-              />
-              <TextInputGroup inputFields={scaffoldData} />
-              <SelectPicker
-                ref={(el: SelectPickerRef) =>
-                  (mySelectPickerRef.current[1] = el)
-                }
-                label={safetyIncidentProjectIdData}
-                data={addressOptions}
-              />
-              <Text>Name of Employee Involved in this incident</Text>
-              <SafetyInjuredFieldArray number="number" />
-              <SelectPicker
-                ref={(el: SelectPickerRef) =>
-                  (mySelectPickerRef.current[2] = el)
-                }
-                label={supervisorName}
-                data={supervisorNameData}
-              />
-              <SelectPicker
-                ref={(el: SelectPickerRef) =>
-                  (mySelectPickerRef.current[3] = el)
-                }
-                label={supervisorMail}
-                data={supervisorEmailData}
-              />
-              <View>
-                <Text style={[commonStyles.text16]}>
-                  How you would describe the incident ?{' '}
-                  <Text style={[commonStyles.errorText]}>*</Text>
-                </Text>
 
-                <Field name="describe_incident" component={AudioConverter} />
-              </View>
-              <View style={{width: '90%', marginBottom: 20}}>
-                <FilePicker
-                  selectedFiles={selectedFiles}
-                  setSelectedFiles={setSelectedFiles}
-                />
-              </View>
-              <SelectPicker
-                ref={(el: SelectPickerRef) =>
-                  (mySelectPickerRef.current[4] = el)
-                }
-                label={anyOneInjured}
-                data={anyOneInjuredData}
-              />
-              {/* <TextInputGroup inputFields={} /> */}
-              <View style={[commonStyles.mb15, commonStyles.mt5]}>
-                <Text style={[commonStyles.text16, commonStyles.mb10]}>
-                  Status of Injury / Incident
-                </Text>
-                <CheckBox
-                  checkboxes={checkboxData}
-                  onPress={handleCheckboxPress}
-                />
-              </View>
-              {values.anyone_injured === 'Yes' && (
-                <SafetyFieldArray number="number" />
-              )}
-
-              <RadioGroupButton options={dismantleRadioData} />
               <View style={[commonStyles.mTop15]}>
-                <SelectPicker
-                  ref={(el: SelectPickerRef) =>
-                    (mySelectPickerRef.current[5] = el)
-                  }
-                  label={investigationOfficer}
-                  data={investigationOfficerData}
-                />
-              </View>
-              <Text style={[commonStyles.mb10, commonStyles.text16]}>
-                What measures were taken to prevent recurrence ?{' '}
-                <Text style={[commonStyles.errorText]}>*</Text>
-              </Text>
-              <CheckBox
-                checkboxes={measuresData}
-                onPress={handleCheckboxPress}
-              />
-              <FilePicker
-                selectedFiles={selectedFiles2}
-                setSelectedFiles={setSelectedFiles2}
-              />
-              <Field name="specify_measures" component={AudioConverter} />
-              <View style={[commonStyles.mTop15]}>
-                <TextInputGroup
-                  inputFields={userPersonalData}
-                  username={username}
-                  userEmail={userEmail}
-                />
                 <Text style={[commonStyles.text16, commonStyles.mb5]}>
                   Signature 1
                 </Text>
                 <MySignatureCanvas
                   ref={(el: SignatureCanvasRef) =>
                     (mySignatureCanvasRefs.current[0] = el)
+                  }
+                  onBegin={handleCanvasBegin}
+                  onEnd={handleCanvasEnd}
+                  signature={signatures}
+                  setSignature={(signature: any) =>
+                    setSignatures(prevSignatures => ({
+                      ...prevSignatures,
+                      signature2: signature,
+                    }))
+                  }
+                />
+
+                <MySignatureCanvas
+                  ref={(el: SignatureCanvasRef) =>
+                    (mySignatureCanvasRefs.current[1] = el)
                   }
                   onBegin={handleCanvasBegin}
                   onEnd={handleCanvasEnd}
