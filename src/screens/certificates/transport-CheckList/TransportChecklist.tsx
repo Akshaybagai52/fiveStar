@@ -30,6 +30,7 @@ import RNFetchBlob from 'rn-fetch-blob';
 import {CanvasSignature} from '../../../themes/buttons/canvas-signature';
 import {transportChecklistSchema} from '../../../schema/yup-schema/fomsSchema';
 import { style } from './style';
+import axios from 'axios';
 
 type HomeNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Home'>;
 
@@ -78,18 +79,18 @@ export const TransportChecklist = ({
         signature: signatures,
       };
 
-      // const response = await axios.post(
-      //   'https://fivestaraccess.com.au/custom_form/handover_native_app.php',
-      //   requestData,
-      //   {
-      //     headers: {
-      //       'Content-Type': 'application/json',
-      //     },
-      //   },
-      // );
-      // console.log('Post Response:', requestData);
+      const response = await axios.post(
+        'https://fivestaraccess.com.au/fivestaraccess_formapp/transport_checklist_app.php',
+        requestData,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+      console.log('Post Response:', requestData);
       // console.log('signature', values.projectDetails.certificationRelation);
-      // Alert.alert("Document submitted successfully")
+      // Alerdsdft.alert("Document submitted successfully")
       //   mySelectPickerRef?.current?.clearPickerData();
 
       mySignatureCanvasRefs?.current?.forEach((ref: SignatureCanvasRef) =>

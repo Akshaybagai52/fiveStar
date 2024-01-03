@@ -46,7 +46,6 @@ const Table: React.FC<TableProps> = ({columns, data, isList}) => {
 
 const styles = StyleSheet.create({
   table: {
-    // borderWidth: 1,
     borderColor: '#000',
     margin: 10,
   },
@@ -61,6 +60,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRightColor: '#ccc',
     borderRightWidth: 1,
+    borderLeftColor: '#ccc',
+    borderLeftWidth: 1,
   },
   headerRow: {
     backgroundColor: colors.darkBlue, // Background color for the header
