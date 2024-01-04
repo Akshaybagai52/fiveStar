@@ -1,15 +1,17 @@
 import React from 'react';
-import { TextInput } from 'react-native';
-import { View, StyleSheet} from 'react-native';
+import {TextInput} from 'react-native';
+import {View, StyleSheet} from 'react-native';
 interface productInputProps {
   value: string;
-  onChangeText: (text:string) => void;
+  onChangeText: (text: string) => void;
   placeholder: string;
+  keyboardType?: 'default' | 'numeric';
 }
 const ProductsInput = ({
   value,
   onChangeText,
   placeholder,
+  keyboardType,
 }: productInputProps) => {
   return (
     <View style={styles.inputContainer}>
@@ -18,6 +20,7 @@ const ProductsInput = ({
         value={value}
         onChangeText={onChangeText}
         placeholder={placeholder}
+        keyboardType={keyboardType}
         // mode = 'outlined'
       />
     </View>
@@ -27,7 +30,7 @@ const ProductsInput = ({
 const styles = StyleSheet.create({
   inputContainer: {
     margin: 10,
-    width: '45%'
+    width: '45%',
   },
   input: {
     height: 40,

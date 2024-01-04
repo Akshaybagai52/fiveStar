@@ -16,10 +16,12 @@ const GetStarted = ({navigation}: {navigation: GetStartedNavigationProp}) => {
   //   let route = username && userEmail ? "MyTabs" : "Login"
   //   navigation.navigate(route);
   // };
+  console.log(username)
+  console.log(userEmail)
   const handleGetStartedPress = () => {
-    let route = username && userEmail ? "MyTabs" : "Login"
+    let route:string = username && userEmail ? "MyTabs" : "Login"
 
-    navigation.navigate("MyTabs");
+    navigation.navigate(route);
   };
   return (
     <View style={myStyles.container}>

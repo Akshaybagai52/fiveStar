@@ -6,7 +6,7 @@ export const fetchAddressOptions = createAsyncThunk(
   'addressOptions/fetchAddressOptions',
   async () => {
     const response = await axios.get(
-      'https://fivestaraccess.com.au/FivestarApp/project_master_list.php',
+      'https://fivestaraccess.com.au/fivestaraccess_formapp/project_master_list.php',
     );
     return response.data.map((item: any) => ({
       customer_name: item['Customer Name'],

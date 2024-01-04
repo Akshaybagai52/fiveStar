@@ -58,7 +58,6 @@ export const MaterialOrder = ({navigation}: any) => {
   const addressOptions = useSelector((state: any) => state.addressOptions);
 
   const {username} = useUserInformation();
-  console.log(username);
 
   useEffect(() => {
     dispatch(fetchAddressOptions());

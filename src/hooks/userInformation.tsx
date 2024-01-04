@@ -5,15 +5,20 @@ const useUserInformation = () => {
   const [username, setUsername] = useState<string | null>(null);
   const [userEmail, setUserEmail] = useState<string | null>(null);
   const [userPhoneNumber, setUserPhoneNumber] = useState<string | null>(null);
+  const [userId, setUserId] = useState<string | null>(null);
   useEffect(() => {
     const getUserInfo = async () => {
       try {
         const storedUsername = await AsyncStorage.getItem('username');
         const storedUserEmail = await AsyncStorage.getItem('userEmail');
-        const storedUserPhoneNumber = await AsyncStorage.getItem('userPhoneNumber');
+        const storedUserPhoneNumber = await AsyncStorage.getItem(
+          'userPhoneNumber',
+        );
+        const storedUserId = await AsyncStorage.getItem('userId');
         setUsername(storedUsername);
         setUserEmail(storedUserEmail);
-        setUserPhoneNumber(storedUserPhoneNumber)
+        setUserPhoneNumber(storedUserPhoneNumber);
+        setUserId(storedUserId);
       } catch (error) {
         console.log(error);
       }
@@ -21,7 +26,7 @@ const useUserInformation = () => {
     getUserInfo();
   }, []);
 
-  return {username, userEmail, userPhoneNumber};
+  return {username, userEmail, userPhoneNumber, userId};
 };
 
 export default useUserInformation;
