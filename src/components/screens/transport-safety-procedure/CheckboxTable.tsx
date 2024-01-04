@@ -28,7 +28,7 @@ const CheckboxTable: React.FC<CheckBoxProps> = ({checkboxes, onPress}) => {
           {({field, form}: any) => (
             <TouchableOpacity
               onPress={() => {
-                onPress(checkbox?.label);
+                onPress(checkbox?.label || '');
                 form.setFieldValue(field.name, !field.value); // Manually toggle checkbox value
               }}>
               <View
@@ -43,7 +43,7 @@ const CheckboxTable: React.FC<CheckBoxProps> = ({checkboxes, onPress}) => {
                   <Checkbox
                     status={field.value ? 'checked' : 'unchecked'}
                     onPress={() => {
-                      onPress(checkbox.label);
+                      onPress(checkbox.label || '');
                       form.setFieldValue(field.name, !field.value);
                     }}
                   />

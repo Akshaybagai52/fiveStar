@@ -15,7 +15,7 @@ import {SelectPicker} from '../../themes/buttons/selectDropdown';
 import TextInputGroup from '../../themes/buttons/TextInputGroup';
 import {colors} from '../../colors/colors';
 import {ButtonGreen} from '../../themes/text/ButtonGreen';
-import { updateCheckoutDetails } from '../../redux/delieverySlice';
+import {updateCheckoutDetails} from '../../redux/delieverySlice';
 // import useUserInformation from '../../hooks/userInformation';
 
 interface productProps {
@@ -59,16 +59,16 @@ const gearCondition = {
   label: 'GEAR CONDITION',
   showAsterisk: true,
 };
-export const MaterialCheckout = () => {
+export const MaterialCheckout = ({navigation}: any) => {
   const [data, setData] = useState<any>();
   const [updatedItems, setUpdatedItems] = useState<productProps[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [mappedItems, setMappedItems] = useState<productProps[]>([]);
-  
+
   const dataResponse = async () => {
     try {
       const response = await axios.get(
-        'https://fivestaraccess.com.au/FivestarApp/get_categories.php',
+        'https://fivestaraccess.com.au/fivestaraccess_formapp/get_categories.php',
       );
 
       const modifiedData = response.data.records.map((item: any) => ({
@@ -118,7 +118,7 @@ export const MaterialCheckout = () => {
 
     // console.log(updatedItems);
   };
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const handleAddToCart = () => {
     const mappedData = updatedItems.map((item: productProps) => ({
       id: item.id,
@@ -133,7 +133,7 @@ export const MaterialCheckout = () => {
     // setData([])
     // setUpdatedItems([]);
   };
-  const deliveryDetails = useSelector((state) => state.delieveryDetails);
+  const deliveryDetails = useSelector((state: any) => state.delieveryDetails);
 
   const handleSubmit1 = async (values: any) => {
     try {
@@ -144,24 +144,25 @@ export const MaterialCheckout = () => {
         gearCondition: values.gearCondition || addressOptions.gearCondition,
         address: addressOptions.deliveryAddress,
         products: mappedItems,
-        submitter: addressOptions.submitter,
+        // submitter: addressOptions.submitter,
       };
       // console.log(requestData);
 
-        const response = await axios.post(
-          'https://fivestaraccess.com.au/custom_form/material_order_process_app.php',
-          requestData,
-          {
-            headers: {
-              'Content-Type': 'application/json',
-            },
+      const response = await axios.post(
+        'https://fivestaraccess.com.au/custom_form/material_order_process_app.php',
+        requestData,
+        {
+          headers: {
+            'Content-Type': 'application/json',
           },
-        );
-        
-      await dispatch(updateCheckoutDetails(requestData))
+        },
+      );
+
+      await dispatch(updateCheckoutDetails(requestData));
+      navigation.navigate('Material Buy');
       console.log('Post Response:', requestData);
-  // console.log(checkoutDetails, "checkout");
-  console.log(deliveryDetails, "checkout");
+      // console.log(checkoutDetails, "checkout");
+      console.log(deliveryDetails, 'checkout');
 
       // setCustomAlertVisible(true);
     } catch (error) {
@@ -177,24 +178,28 @@ export const MaterialCheckout = () => {
     const updatedItems = [...mappedItems];
     const updatedItem: any = updatedItems[index];
     if (property === 'quantity') {
-      
       const newQuantity = parseInt(text, 10);
-      if (Number.isNaN(newQuantity)) {
-        let oneQuantity = 1
-        console.log("Nan")
-        updatedItem['quantity'] = oneQuantity.toString(); // Set a default value when the input is not a valid number
-      } else {
-        const weightOfOneQuantity = updatedItem.weight / parseInt(updatedItem.quantity, 10);
-        updatedItem.weight = newQuantity * weightOfOneQuantity;
-        updatedItem[property] = text;
+      console.log(newQuantity);
+      // if (Number.isNaN(newQuantity)) {
+      //   let oneQuantity = 0
+      //   console.log("Nan")
+      //   updatedItem['quantity'] = oneQuantity.toString(); // Set a default value when the input is not a valid number
+      // } else {
+      //   const weightOfOneQuantity = updatedItem.weight / parseInt(updatedItem.quantity, 10);
+      //   updatedItem.weight = newQuantity * weightOfOneQuantity;
+      //   updatedItem[property] = text;
 
-      }
+      // }
+      const weightOfOneQuantity =
+        updatedItem.weight / parseInt(updatedItem.quantity, 10);
+
+      updatedItem.weight = newQuantity * weightOfOneQuantity;
+      updatedItem[property] = text;
     } else {
       updatedItem[property] = text;
     }
 
     console.log(updatedItem);
-    console.log(typeof(property));
     // console.log(mappedItems)
     setMappedItems(updatedItems);
   };
@@ -210,11 +215,10 @@ export const MaterialCheckout = () => {
   const addressOptions: any = useSelector<any>(
     (state: any) => state.address.address,
   );
-  console.log(addressOptions);
+  console.log(addressOptions, 'addresssdfl;ksdf');
   // const checkoutDetails: any = useSelector<any>(
   //   (state: any) => state.delieveryDetails.address,
   // );
- 
 
   useEffect(() => {
     dataResponse();
@@ -229,6 +233,7 @@ export const MaterialCheckout = () => {
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
           <ProductsInput
             value={item.input1}
+            keyboardType="numeric"
             onChangeText={(text: string) =>
               handleInputChange(text, index, 'quantity')
             }
@@ -291,7 +296,7 @@ export const MaterialCheckout = () => {
                   {item.label}
                 </Text>
                 <Text style={[commonStyles.text16, commonStyles.fontBold]}>
-                  Weight(KG) : {item.weight }
+                  Weight(KG) : {item.weight}
                 </Text>
                 <Text style={[commonStyles.text16, commonStyles.fontBold]}>
                   Category : {item.category || 'none'}
@@ -307,6 +312,7 @@ export const MaterialCheckout = () => {
                       handleInputChange1(text, index, 'quantity')
                     }
                     placeholder="Quantity"
+                    keyboardType="numeric"
                   />
                   {/* {item.weight} */}
                   <ProductsInput
@@ -349,7 +355,15 @@ export const MaterialCheckout = () => {
                   </View>
                 </View>
                 <View style={{marginBottom: 50}}>
-                  <View style={[commonStyles.mTop15]}>
+                  <Text
+                    style={[
+                      commonStyles.text16,
+                      commonStyles.fontBold,
+                      commonStyles.mb5,
+                    ]}>
+                    {addressOptions.submitter}
+                  </Text>
+                  <View style={[commonStyles.mt5]}>
                     <Text style={[commonStyles.text16, commonStyles.mb5]}>
                       DELIVERY DATE{' '}
                       <Text style={[commonStyles.errorText]}>*</Text>

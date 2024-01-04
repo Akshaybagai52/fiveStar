@@ -1,19 +1,11 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  Button,
-  ScrollView,
-  FlatList,
-  StyleSheet,
-  ImageBackground,
-} from 'react-native';
+import {View, Text, ScrollView, FlatList} from 'react-native';
 import {productStyles} from './style';
 import {ButtonGreen} from '../../themes/text/ButtonGreen';
 import {useSelector} from 'react-redux';
 import axios from 'axios';
 import commonStyles from '../../styles/commonStyles';
-import {colors} from '../../colors/colors';
+import useUserInformation from '../../hooks/userInformation';
 interface ProductProps {
   category: string;
   id: string;
@@ -26,7 +18,7 @@ interface ProductProps {
 
 interface DeliveryDetailsProps {
   address: string;
-  submitter: string;
+  submitter?: string;
   date: string;
   gearCondition: string;
   notes: string;
@@ -37,26 +29,33 @@ const ProductsShow = () => {
   const deliveryDetails = useSelector(
     (state: any) => state.delieveryDetails.address,
   );
+
+  const {username, userId} = useUserInformation();
   const {
     address,
     date,
     gearCondition,
     notes,
     time,
-    submitter,
   }: DeliveryDetailsProps = deliveryDetails;
+  console.log(deliveryDetails)
   const handleSubmit = async (values: any) => {
+    const data = {
+      deliveryDetails,
+      submitter: username,
+      userId: userId
+    }
     try {
       const response = await axios.post(
         'https://fivestaraccess.com.au/fivestaraccess_formapp/material_order_process_app.php',
-        deliveryDetails,
+        data,
         {
           headers: {
             'Content-Type': 'application/json',
           },
         },
       );
-      console.log('Post Response:', response);
+      console.log('Post Response:', data);
       // handleGetStartedPress();
 
       // setCustomAlertVisible(true);
@@ -69,25 +68,42 @@ const ProductsShow = () => {
     <View style={productStyles.delivery_details}>
       <Text style={productStyles.delivery_text}>Delivery Details</Text>
       <Text style={productStyles.delivery_details_text}>
-        {submitter || 'N/A'}
-      </Text>
-      <Text >
-       <Text style={productStyles.delivery_details_text} >Delivery Date :</Text> <Text>{new Date(date).toLocaleDateString() || 'N/A'}</Text>
-      </Text>
-      <Text >
-       <Text style={productStyles.delivery_details_text}> Delivery Time :</Text> <Text>{new Date(time).toLocaleTimeString() || 'N/A'}</Text>
-      </Text>
-      <Text >
-       <Text style={productStyles.delivery_details_text}>Delivery Notes :</Text>  <Text>{notes || 'N/A'}</Text>
-      </Text>
-      <Text >
-       <Text style={productStyles.delivery_details_text}>Gear Condition :</Text><Text>{gearCondition || 'N/A'}</Text>
-      </Text>
-      <Text >
-        <Text style={productStyles.delivery_details_text}>Total Weight(KG) :</Text> <Text>To Do this</Text>
+        {username || 'N/A'}
       </Text>
       <Text>
-       <Text style={productStyles.delivery_details_text}>Delivery Address :</Text> <Text>{address || 'N/A'}</Text>
+        <Text style={productStyles.delivery_details_text}>Delivery Date :</Text>{' '}
+        <Text>{new Date(date).toLocaleDateString() || 'N/A'}</Text>
+      </Text>
+      <Text>
+        <Text style={productStyles.delivery_details_text}>
+          {' '}
+          Delivery Time :
+        </Text>{' '}
+        <Text>{new Date(time).toLocaleTimeString() || 'N/A'}</Text>
+      </Text>
+      <Text>
+        <Text style={productStyles.delivery_details_text}>
+          Delivery Notes :
+        </Text>{' '}
+        <Text>{notes || 'N/A'}</Text>
+      </Text>
+      <Text>
+        <Text style={productStyles.delivery_details_text}>
+          Gear Condition :
+        </Text>
+        <Text>{gearCondition || 'N/A'}</Text>
+      </Text>
+      <Text>
+        <Text style={productStyles.delivery_details_text}>
+          Total Weight(KG) :
+        </Text>{' '}
+        <Text>To Do this</Text>
+      </Text>
+      <Text>
+        <Text style={productStyles.delivery_details_text}>
+          Delivery Address :
+        </Text>{' '}
+        <Text>{address || 'N/A'}</Text>
       </Text>
       <View style={productStyles.checkout_button}>
         <ButtonGreen text="Checkout" onPress={handleSubmit} />
@@ -105,15 +121,20 @@ const ProductsShow = () => {
       ]}>
       <View style={productStyles.Standard_data}>
         <View>
-          <Text style={[productStyles.Standard_Text,commonStyles.mb2]}>{item.label}</Text>
-          <Text style={[productStyles.sub_Standard_Text,commonStyles.mb2]}>
-           <Text style={{fontWeight:'600'}}>Category :</Text> {item.category || 'N/A'}
+          <Text style={[productStyles.Standard_Text, commonStyles.mb2]}>
+            {item.label}
           </Text>
-          <Text style={[productStyles.sub_Standard_Text,commonStyles.mb2]}>
-           <Text style={{fontWeight:'600'}}>Gear Notes :</Text> {item.text || 'N/A'}{' '}
+          <Text style={[productStyles.sub_Standard_Text, commonStyles.mb2]}>
+            <Text style={{fontWeight: '600'}}>Category :</Text>{' '}
+            {item.category || 'N/A'}
+          </Text>
+          <Text style={[productStyles.sub_Standard_Text, commonStyles.mb2]}>
+            <Text style={{fontWeight: '600'}}>Gear Notes :</Text>{' '}
+            {item.text || 'N/A'}{' '}
           </Text>
           <Text style={[productStyles.sub_Standard_Text]}>
-           <Text style={{fontWeight:'600'}}>Weight(kg) :</Text> {item.weight || 'N/A'}
+            <Text style={{fontWeight: '600'}}>Weight(kg) :</Text>{' '}
+            {item.weight || 'N/A'}
           </Text>
         </View>
         <Text>{item.quantity}</Text>
@@ -133,18 +154,15 @@ const ProductsShow = () => {
           </View>
 
           <ScrollView style={[productStyles.productElevation]}>
-            <View
-              style={[productStyles.product_container]}>
-              <Text
-                style={[productStyles.product_container_heading]}>
+            <View style={[productStyles.product_container]}>
+              <Text style={[productStyles.product_container_heading]}>
                 Products
               </Text>
-              <Text
-                style={[productStyles.product_container_heading]}>
+              <Text style={[productStyles.product_container_heading]}>
                 Quantity
               </Text>
             </View>
-            <View style={{paddingHorizontal:20}}>
+            <View style={{paddingHorizontal: 20}}>
               <FlatList
                 data={deliveryDetails.products}
                 keyExtractor={item => item.id}
@@ -156,7 +174,11 @@ const ProductsShow = () => {
         </View>
       )}
       ListFooterComponent={renderListFooter}
-      ListFooterComponentStyle={[productStyles.productElevation,commonStyles.mTop15,{marginBottom: 50}]}
+      ListFooterComponentStyle={[
+        productStyles.productElevation,
+        commonStyles.mTop15,
+        {marginBottom: 50},
+      ]}
 
       // renderItem={renderProducts}
     />
