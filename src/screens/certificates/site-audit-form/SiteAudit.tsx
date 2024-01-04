@@ -64,6 +64,7 @@ import {
   SignatureCanvasRef,
 } from '../../../types/interfaces/types';
 import { siteAuditSchema } from '../../../schema/yup-schema/fomsSchema';
+import useUserInformation from '../../../hooks/userInformation';
 
 type HomeNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Home'>;
 
@@ -108,6 +109,7 @@ export const SiteAudit = ({navigation}: {navigation: HomeNavigationProp}) => {
   const myDatePickerRefs = useRef<DatePickersRef[]>([]);
   const mySelectPickerRef = useRef<SelectPickerRef[]>([]);
   const myFilePickerRef = useRef<FilePickerRef[]>([]);
+  const {userId} = useUserInformation()
   // Scroll View start
   const scrollViewRef: any = useRef(null);
 
@@ -153,6 +155,7 @@ export const SiteAudit = ({navigation}: {navigation: HomeNavigationProp}) => {
       const base64Images12 = await convertToBase64(selectedFiles12);
       const requestData = {
         values,
+        userId: userId,
         imagesAttached3: base64Images3,
         imagesAttached4: base64Images4,
         imagesAttached5: base64Images5,

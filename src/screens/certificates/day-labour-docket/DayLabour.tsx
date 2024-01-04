@@ -72,7 +72,7 @@ export const DayLabour = ({navigation}: {navigation: HomeNavigationProp}) => {
     },
   ]);
   const addressOptions = useSelector((state: any) => state.addressOptions);
-  const {username, userEmail} = useUserInformation();
+  const {username, userEmail, userId} = useUserInformation();
 
   const handleAddComponent = () => {
     setNames([...names, {number1: '', number2: '', result: ''}]);
@@ -207,6 +207,7 @@ export const DayLabour = ({navigation}: {navigation: HomeNavigationProp}) => {
         imagesAttached: base64Images,
         signature: signatures,
         numbers: values.number,
+        userId: userId,
       };
 
       // const response = await axios.post(

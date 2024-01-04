@@ -44,6 +44,7 @@ import AccidentFieldArray from '../../../components/screens/accident-investigati
 import { useSelector } from 'react-redux';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../../types/type/types';
+import useUserInformation from '../../../hooks/userInformation';
 
 type HomeNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -59,13 +60,11 @@ export const AccidentInvestigation = ({navigation}:{navigation:HomeNavigationPro
   const [selectedFiles2, setSelectedFiles2] = useState<
     DocumentPickerResponse[]
   >([]);
-  const [signatures, setSignatures] = useState({
-    signature1: '',
-    signature2: '',
-  });
+
   const [isCustomAlertVisible, setCustomAlertVisible] = useState(false);
   const [loading, setLoading] = useState(false);
   const addressOptions = useSelector((state: any) => state.addressOptions);
+  const {userId} = useUserInformation();
 
   // Scroll View start
   const scrollViewRef: any = useRef(null);
@@ -76,11 +75,11 @@ export const AccidentInvestigation = ({navigation}:{navigation:HomeNavigationPro
     }
   };
 
-  const TimeNames: any = {
-    startTime: 'projectDetails.start_time',
-    endTime: 'projectDetails.finish_time',
-    duration: 'projectDetails.duration',
-  };
+  // const TimeNames: any = {
+  //   startTime: 'projectDetails.start_time',
+  //   endTime: 'projectDetails.finish_time',
+  //   duration: 'projectDetails.duration',
+  // };
 
   const handleCanvasEnd = () => {
     if (scrollViewRef.current) {
@@ -137,6 +136,7 @@ export const AccidentInvestigation = ({navigation}:{navigation:HomeNavigationPro
         number: values.number,
         // stageDiscuss: values.projectDetails.stageDiscussion,
         recommendationsImages: base64Images,
+        userId: userId,
         // measureImages: base64Images2,
         // signature: signatures,
       };

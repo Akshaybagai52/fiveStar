@@ -39,7 +39,7 @@ export const TransportChecklist = ({
 }: {
   navigation: HomeNavigationProp;
 }) => {
-  const {username} = useUserInformation();
+  const {username, userId} = useUserInformation();
   const [loading, setLoading] = useState(false);
   const [isCustomAlertVisible, setCustomAlertVisible] = useState(false);
   const [numFields, setNumFields] = useState(1);
@@ -77,6 +77,7 @@ export const TransportChecklist = ({
       const requestData = {
         values,
         signature: signatures,
+        userId: userId,
       };
 
       const response = await axios.post(
