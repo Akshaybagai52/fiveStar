@@ -2,11 +2,9 @@ import {View, ScrollView, TouchableOpacity, Image, Alert} from 'react-native';
 import {Text, ActivityIndicator} from 'react-native-paper';
 import React, {useState, useRef, useEffect} from 'react';
 import {myStyles} from './styles';
-import RadioGroup from '../../../themes/buttons/RadioButtons';
 import TextInputGroup from '../../../themes/buttons/TextInputGroup';
 import CustomHeader from '../../../themes/text/TextWithGreenBg';
 import {
-  CheckboxItem,
   FilePickerRef,
   SelectPickerRef,
   SignatureCanvasRef,
@@ -21,7 +19,6 @@ import {
   //   userPersonalData,
   initialFormData,
   //   scaffoldData,
-  elevations,
   loadingCapacity,
   initialValues,
   firstPersonName,
@@ -30,12 +27,9 @@ import {
 } from '../../../data/recordOfToolboxData';
 import Address from '../../../components/common/Address';
 import {CanvasSignature} from '../../../themes/buttons/canvas-signature';
-import {useSelector} from 'react-redux';
-import {SelectPicker} from '../../../themes/buttons/selectDropdown';
 import useUserInformation from '../../../hooks/userInformation';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../../../types/type/types';
-import {monthlyInspectionSchema} from '../../../schema/yup-schema/fomsSchema';
 import {DatePickers} from '../../../themes/buttons/datePicker';
 import commonStyles from '../../../styles/commonStyles';
 
@@ -47,16 +41,13 @@ export const RecordToolbox = ({
   navigation: HomeNavigationProp;
 }) => {
   // Scroll View End
-  const [checkboxes, setCheckboxes] = useState<CheckboxItem[]>(loadingCapacity);
-  const [elevationData, setElevationData] =
-    useState<CheckboxItem[]>(elevations);
+
   const [selectedFiles, setSelectedFiles] = useState<DocumentPickerResponse[]>(
     [],
   );
   const [isCustomAlertVisible, setCustomAlertVisible] = useState(false);
   const [loading, setLoading] = useState(false);
-  const addressOptions = useSelector((state: any) => state.addressOptions);
-  const {username, userEmail} = useUserInformation();
+  const {userId} = useUserInformation();
 
   const mySignatureCanvasRefs = useRef<SignatureCanvasRef[]>([]);
   const mySelectPickerRef = useRef<SelectPickerRef>(null);
@@ -76,54 +67,9 @@ export const RecordToolbox = ({
     }
   };
 
-  const handleCheckboxPress = (label: string) => {
-    // @ts-ignore
-    setCheckboxes(prevCheckboxes => {
-      const updatedCheckboxes = prevCheckboxes.map((checkbox: CheckboxItem) => {
-        if (checkbox.label === label) {
-          const newStatus =
-            checkbox.status === 'checked'
-              ? 'unchecked'
-              : checkbox.status === 'unchecked'
-              ? 'checked'
-              : 'indeterminate';
-          return {
-            ...checkbox,
-            status: newStatus,
-          };
-        } else {
-          return checkbox;
-        }
-      });
-      return updatedCheckboxes;
-    });
-  };
-  const handleElevationDataPress = (label: string) => {
-    // @ts-ignore
-    setElevationData(prevElevation => {
-      const updatedCheckboxes = prevElevation.map((elevation: CheckboxItem) => {
-        if (elevation.label === label) {
-          const newStatus =
-            elevation.status === 'checked'
-              ? 'unchecked'
-              : elevation.status === 'unchecked'
-              ? 'checked'
-              : 'indeterminate';
-          return {
-            ...elevation,
-            status: newStatus,
-          };
-        } else {
-          return elevation;
-        }
-      });
-      return updatedCheckboxes;
-    });
-  };
-
   const handleCustomAlertClose = () => {
     setCustomAlertVisible(false);
-    // navigation.navigate('Home');
+    navigation.navigate('Home');
   };
 
   const handleSubmit1 = async (values: any) => {
@@ -136,6 +82,7 @@ export const RecordToolbox = ({
       );
       const requestData = {
         values,
+        userId: userId,
       };
 
     //   const response = await axios.post(

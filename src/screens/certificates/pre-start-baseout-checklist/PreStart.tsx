@@ -32,6 +32,7 @@ import {
   SelectPickerRef,
   SignatureCanvasRef,
 } from '../../../types/interfaces/types';
+import useUserInformation from '../../../hooks/userInformation';
 
 type HomeNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Home'>;
 
@@ -46,6 +47,7 @@ export const PreStart = ({navigation}: {navigation: HomeNavigationProp}) => {
   const mySignatureCanvasRefs = useRef<SignatureCanvasRef[]>([]);
   const myDatePickerRefs = useRef<DatePickersRef[]>([]);
   const mySelectPickerRef = useRef<SelectPickerRef>(null);
+  const {userId} = useUserInformation();
   // Scroll View start
   const scrollViewRef: any = useRef(null);
 
@@ -77,6 +79,7 @@ export const PreStart = ({navigation}: {navigation: HomeNavigationProp}) => {
       );
       const requestData = {
         values,
+        userId: userId,
         // imagesAttached: base64Images,
         // signature: signatures,
       };

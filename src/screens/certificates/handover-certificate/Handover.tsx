@@ -71,7 +71,7 @@ const Handover = ({navigation}: {navigation: HomeNavigationProp}) => {
   const [loading, setLoading] = useState(false);
 
   const addressOptions = useSelector((state: any) => state.addressOptions);
-  const {username, userEmail} = useUserInformation();
+  const {username, userEmail, userId} = useUserInformation();
 
   const mySignatureCanvasRefs = useRef<SignatureCanvasRef[]>([]);
   const myDatePickerRefs = useRef<DatePickersRef[]>([]);
@@ -160,6 +160,7 @@ const Handover = ({navigation}: {navigation: HomeNavigationProp}) => {
         signatures: values.signatures,
         imagesAttached: base64Images,
         signature: signatures,
+        userId: userId,
       };
 
       // const response = await axios.post(

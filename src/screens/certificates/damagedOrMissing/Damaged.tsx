@@ -66,7 +66,7 @@ export const Damaged = ({navigation}: {navigation: HomeNavigationProp}) => {
   const [isCustomAlertVisible, setCustomAlertVisible] = useState(false);
   const [loading, setLoading] = useState(false);
   const addressOptions = useSelector((state: any) => state.addressOptions);
-  const {username} = useUserInformation();
+  const {username, userId} = useUserInformation();
 
   const mySignatureCanvasRefs = useRef<SignatureCanvasRef[]>([]);
   const myDatePickerRefs = useRef<DatePickersRef[]>([]);
@@ -128,6 +128,7 @@ export const Damaged = ({navigation}: {navigation: HomeNavigationProp}) => {
         reportingCheck: values.reporting.reportingCheck,
         imagesAttached: base64Images,
         signature: signatures,
+        userId: userId,
       };
       // console.log(requestData, 'req');
 

@@ -65,7 +65,7 @@ export const MonthlyInspection = ({
   const [isCustomAlertVisible, setCustomAlertVisible] = useState(false);
   const [loading, setLoading] = useState(false);
   const addressOptions = useSelector((state: any) => state.addressOptions);
-  const {username, userEmail} = useUserInformation();
+  const {username, userEmail, userId} = useUserInformation();
 
   const mySignatureCanvasRefs = useRef<SignatureCanvasRef[]>([]);
   const mySelectPickerRef = useRef<SelectPickerRef>(null);
@@ -153,6 +153,8 @@ export const MonthlyInspection = ({
         // scaffoldDetails: values.scaffoldDetails,
         // signatures: values.signatures,
         signatureImages: base64Images,
+        userId: userId,
+
         // signature: signatures,
       };
 

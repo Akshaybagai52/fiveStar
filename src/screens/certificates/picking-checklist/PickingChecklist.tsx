@@ -66,8 +66,10 @@ export const PickingChecklist = ({
   const addressOptions = useSelector((state: any) => state.addressOptions);
   const mySignatureCanvasRefs = useRef<SignatureCanvasRef[]>([]);
   const myDatePickerRefs = useRef<DatePickersRef[]>([]);
-//   const mySelectPickerRef = useRef<SelectPickerRef>(null);
-//   const myFilePickerRef = useRef<FilePickerRef>(null);
+  //   const mySelectPickerRef = useRef<SelectPickerRef>(null);
+  //   const myFilePickerRef = useRef<FilePickerRef>(null);
+
+  const {userId} = useUserInformation();
   // Scroll View start
   const scrollViewRef: any = useRef(null);
 
@@ -88,8 +90,7 @@ export const PickingChecklist = ({
     navigation.navigate('Home');
   };
 
-  const handleSubmit1 = async (values:any) => {
- 
+  const handleSubmit1 = async (values: any) => {
     try {
       const base64Images = await Promise.all(
         selectedFiles.map(async file => {
@@ -98,7 +99,8 @@ export const PickingChecklist = ({
         }),
       );
       const requestData = {
-       values
+        values,
+        userId: userId,
       };
 
       // const response = await axios.post(
@@ -113,7 +115,7 @@ export const PickingChecklist = ({
       console.log('Post Response:', requestData);
       // console.log('signature', values.projectDetails.certificationRelation);
       // Alert.alert("Document submitted successfully")
-    //   mySelectPickerRef?.current?.clearPickerData();
+      //   mySelectPickerRef?.current?.clearPickerData();
 
       mySignatureCanvasRefs?.current?.forEach((ref: SignatureCanvasRef) =>
         ref.handleClearSignature(),
@@ -122,7 +124,7 @@ export const PickingChecklist = ({
         ref.clearDate(),
       );
       // mySelectPickerRefs?.current?.forEach((ref:SelectPickerRef) => ref.clearPickerData());
-    //   myFilePickerRef?.current?.clearAllFiles();
+      //   myFilePickerRef?.current?.clearAllFiles();
       setCustomAlertVisible(true);
     } catch (error) {
       console.error('Error:', error);
@@ -196,13 +198,13 @@ export const PickingChecklist = ({
                   options={truckLoadingData}
                   // name="projectDetails.certificationRelation.selectedOption"
                 />
-                
               </View>
 
               <View style={{marginBottom: 15, marginTop: 15}}>
-                <Text style={[commonStyles.text16,commonStyles.fontBold]}>Signature</Text>
+                <Text style={[commonStyles.text16, commonStyles.fontBold]}>
+                  Signature
+                </Text>
               </View>
-              
 
               <MySignatureCanvas
                 ref={(el: SignatureCanvasRef) =>

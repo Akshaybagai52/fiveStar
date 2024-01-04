@@ -14,7 +14,7 @@ import {
   industryData,
   occupation,
   occupationData,
-} from '../../../data/safetyIncidents';
+} from '../../../data/safetyIncidentsData';
 import {DatePickers} from '../datePicker';
 
 interface SafetyProps {

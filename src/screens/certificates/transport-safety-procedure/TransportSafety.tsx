@@ -65,6 +65,8 @@ const TransportSafety = () => {
   const myDatePickerRefs = useRef<DatePickersRef[]>([]);
   const mySelectPickerRef = useRef<SelectPickerRef[]>([]);
   const myFilePickerRef = useRef<FilePickerRef>(null);
+
+  const {userId} = useUserInformation();
   // Scroll View start
   const scrollViewRef: any = useRef(null);
 
@@ -114,6 +116,7 @@ const TransportSafety = () => {
       const requestData = {
         values,
         signature: signatures,
+        userId: userId,
       };
       console.log(requestData);
 

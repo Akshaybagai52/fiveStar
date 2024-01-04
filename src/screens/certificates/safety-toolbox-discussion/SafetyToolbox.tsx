@@ -29,7 +29,7 @@ import {
   secondListHeading,
   scaffoldingData,
   safetyToolboxProjectIdData,
-} from '../../../data/safetyToolbox';
+} from '../../../data/safetyToolboxData';
 import commonStyles from '../../../styles/commonStyles';
 import {AudioConverter} from '../../../themes/buttons/speechToText';
 import Address from '../../../components/common/Address';
@@ -58,7 +58,7 @@ export const SafetyToolbox = ({
   );
   const [isCustomAlertVisible, setCustomAlertVisible] = useState(false);
   const [loading, setLoading] = useState(false);
-  const {username, userEmail} = useUserInformation();
+  const {username, userEmail, userId} = useUserInformation();
 
   const mySignatureCanvasRefs = useRef<SignatureCanvasRef[]>([]);
   const myDatePickerRefs = useRef<DatePickersRef[]>([]);
@@ -130,6 +130,8 @@ export const SafetyToolbox = ({
         stageDiscuss: values.projectDetails.stageDiscussion,
         imagesAttached: base64Images,
         data: values.record.data,
+        userId: userId,
+
         // signature: signatures,
       };
       console.log(requestData);

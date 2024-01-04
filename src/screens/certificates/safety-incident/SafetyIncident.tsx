@@ -38,7 +38,7 @@ import {
   anyOneInjuredData,
   investigationOfficerData,
   safetyIncidentProjectIdData,
-} from '../../../data/safetyIncidents';
+} from '../../../data/safetyIncidentsData';
 import commonStyles from '../../../styles/commonStyles';
 import {AudioConverter} from '../../../themes/buttons/speechToText';
 import Address from '../../../components/common/Address';
@@ -67,7 +67,7 @@ export const SafetyIncident = () => {
   const [isCustomAlertVisible, setCustomAlertVisible] = useState(false);
   const [loading, setLoading] = useState(false);
   const addressOptions = useSelector((state: any) => state.addressOptions);
-  const {username, userEmail} = useUserInformation();
+  const {username, userEmail, userId} = useUserInformation();
 
   const mySignatureCanvasRefs = useRef<SignatureCanvasRef[]>([]);
   const myDatePickerRefs = useRef<DatePickersRef[]>([]);
@@ -144,6 +144,8 @@ export const SafetyIncident = () => {
         incidentImages: base64Images,
         measureImages: base64Images2,
         signature: signatures,
+        userId: userId,
+
       };
       console.log(requestData);
 
