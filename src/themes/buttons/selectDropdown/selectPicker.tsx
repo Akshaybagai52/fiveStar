@@ -31,6 +31,7 @@ interface SelectPickerProps {
   name?: string;
   loading?: boolean;
   searchable?: boolean;
+  initialValue?: string;
 }
 
 type SelectedValueProps = {
@@ -38,10 +39,11 @@ type SelectedValueProps = {
   customer_name: string | undefined;
   label: string | undefined;
   value: string | undefined;
+
 };
 
 export const SelectPicker = forwardRef(
-  ({data, label, name, searchable}: SelectPickerProps, ref) => {
+  ({data, label, name, searchable,initialValue}: SelectPickerProps, ref) => {
     const [open, setOpen] = useState<boolean>(false);
     const [value, setValue] = useState<string | null>(null);
     const [items, setItems] = useState<Item[]>(data);
@@ -97,7 +99,7 @@ export const SelectPicker = forwardRef(
               <DropDownPicker
                 loading={items.length > 1 ? false : true}
                 open={open}
-                value={value}
+                value={initialValue || value}
                 items={items}
                 setOpen={setOpen}
                 setValue={newValue => {

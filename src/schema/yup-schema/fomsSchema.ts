@@ -293,3 +293,29 @@ export const siteAuditSchema = Yup.object().shape({
   representative_email: Yup.string(),
   supervisorSignature: Yup.string(),
 });
+
+
+
+export const pickingChecklistSchema = Yup.object().shape({
+  pickingDetails: Yup.object().shape({
+    order: Yup.string().required('Order is required'),
+    fss_number: Yup.string().required('FSS Number is required'),
+    driver_load: Yup.string().required('Driver Load is required'),
+    picking_date: Yup.string(),
+    warehouse_person: Yup.string().required('Warehouse Person is required'),
+  }),
+  orderDetails: Yup.object().shape({
+    picked_equipment: Yup.string().required('Picked Equipment is required'),
+    notified_supervisor: Yup.string().required('Notified Supervisor is required'),
+    staging_area: Yup.string().required('Staging Area is required'),
+    strapped_labelled: Yup.string().required('Strapped and Labelled is required'),
+    safe_travel: Yup.string().required('Safe Travel is required'),
+  }),
+  truckLoading: Yup.object().shape({
+    allocated_correct_driver: Yup.string().required('Allocated Correct Driver is required'),
+    loaded_pallets_safely: Yup.string().required('Loaded Pallets Safely is required'),
+    manager_advised: Yup.string().required('Manager Advised is required'),
+    comfortable_with_order: Yup.string().required('Comfortable with Order is required'),
+    comments: Yup.string(),
+  }),
+});
