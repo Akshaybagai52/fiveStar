@@ -79,6 +79,9 @@ const commonStyles = StyleSheet.create({
     mTop15: {
       marginTop: 15,
     },
+    mt30: {
+      marginTop: 30,
+    },
     mL25: {
       marginLeft:25
     },

@@ -40,6 +40,7 @@ import useUserInformation from '../../../hooks/userInformation';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../../../types/type/types';
 import {DatePickers} from '../../../themes/buttons/datePicker';
+import { pickingChecklistSchema } from '../../../schema/yup-schema/fomsSchema';
 
 type HomeNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Home'>;
 
@@ -101,17 +102,17 @@ export const PickingChecklist = ({
       const requestData = {
         values,
         userId: userId,
+        signatures: signatures,
       };
-
-      // const response = await axios.post(
-      //   'https://fivestaraccess.com.au/custom_form/handover_native_app.php',
-      //   requestData,
-      //   {
-      //     headers: {
-      //       'Content-Type': 'application/json',
-      //     },
-      //   },
-      // );
+      const response = await axios.post(
+        'https://fivestaraccess.com.au/fivestaraccess_formapp/picking_loading_checklist_app.php',
+        requestData,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
+      );
       console.log('Post Response:', requestData);
       // console.log('signature', values.projectDetails.certificationRelation);
       // Alert.alert("Document submitted successfully")
@@ -153,7 +154,7 @@ export const PickingChecklist = ({
         <Formik
           initialValues={initialValues}
           enableReinitialize={true}
-          // validationSchema={validationSchema}
+          validationSchema={pickingChecklistSchema}
           onSubmit={async (values, {resetForm}) => {
             setLoading(true);
             await handleSubmit1(values);
@@ -184,6 +185,12 @@ export const PickingChecklist = ({
                 /> */}
                 <TextInputGroup inputFields={initialFormData} />
               </View>
+              <View style={[commonStyles.mt5]}>
+                <Text style={[commonStyles.text16, commonStyles.mb5]}>
+                  Date <Text style={[commonStyles.errorText]}>*</Text>
+                </Text>
+                <DatePickers name="picking_date" mode="date" />
+              </View>
               <View style={[commonStyles.mTop15]}>
                 <CustomHeader text="Order Details" />
                 <RadioGroupButton
@@ -199,8 +206,15 @@ export const PickingChecklist = ({
                   // name="projectDetails.certificationRelation.selectedOption"
                 />
               </View>
+              <View style={[commonStyles.mTop15]}>
+                <Text style={[commonStyles.text16, commonStyles.fontBold]}>Comments:</Text>
+                <Field
+                  name="truckLoading.comments"
+                  component={AudioConverter}
+                />
+              </View>
 
-              <View style={{marginBottom: 15, marginTop: 15}}>
+              <View style={[commonStyles.mt30, commonStyles.mb15]}>
                 <Text style={[commonStyles.text16, commonStyles.fontBold]}>
                   Signature
                 </Text>

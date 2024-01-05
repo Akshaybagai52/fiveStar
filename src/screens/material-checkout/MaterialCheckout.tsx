@@ -48,6 +48,8 @@ const initialFormData = [
     label: 'DELIVERY NOTES',
     // showAsterisk: true,
     name: 'notes',
+    prefilled: true,
+    prefilledUsername: true,
   },
 ];
 const gearConditionData = [
@@ -130,6 +132,7 @@ export const MaterialCheckout = ({navigation}: any) => {
       category: item.category,
     }));
     setMappedItems(mappedData);
+    console.log(mappedData)
     // setData([])
     // setUpdatedItems([]);
   };
@@ -146,17 +149,17 @@ export const MaterialCheckout = ({navigation}: any) => {
         products: mappedItems,
         // submitter: addressOptions.submitter,
       };
-      // console.log(requestData);
+      console.log(requestData);
 
-      const response = await axios.post(
-        'https://fivestaraccess.com.au/custom_form/material_order_process_app.php',
-        requestData,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        },
-      );
+      // const response = await axios.post(
+      //   'https://fivestaraccess.com.au/custom_form/material_order_process_app.php',
+      //   requestData,
+      //   {
+      //     headers: {
+      //       'Content-Type': 'application/json',
+      //     },
+      //   },
+      // );
 
       await dispatch(updateCheckoutDetails(requestData));
       navigation.navigate('Material Buy');
@@ -215,7 +218,7 @@ export const MaterialCheckout = ({navigation}: any) => {
   const addressOptions: any = useSelector<any>(
     (state: any) => state.address.address,
   );
-  console.log(addressOptions, 'addresssdfl;ksdf');
+  // console.log(addressOptions, 'addresssdfl;ksdf');
   // const checkoutDetails: any = useSelector<any>(
   //   (state: any) => state.delieveryDetails.address,
   // );
@@ -348,7 +351,7 @@ export const MaterialCheckout = ({navigation}: any) => {
               <View style={{backgroundColor: '#fff'}}>
                 <View>
                   {/* <Address /> */}
-                  <View style={{marginBottom: 20}}>
+                  <View>
                     <Text style={{fontSize: 30, fontWeight: 'bold'}}>
                       Delivery Details
                     </Text>
@@ -363,7 +366,7 @@ export const MaterialCheckout = ({navigation}: any) => {
                     ]}>
                     {addressOptions.submitter}
                   </Text>
-                  <View style={[commonStyles.mt5]}>
+                  <View>
                     <Text style={[commonStyles.text16, commonStyles.mb5]}>
                       DELIVERY DATE{' '}
                       <Text style={[commonStyles.errorText]}>*</Text>
@@ -385,11 +388,15 @@ export const MaterialCheckout = ({navigation}: any) => {
                       initialValue={addressOptions.date || ''}
                     />
                   </View>
-                  <TextInputGroup inputFields={initialFormData} />
+                  <TextInputGroup
+                    inputFields={initialFormData}
+                    username={addressOptions.notes}
+                  />
                   <SelectPicker
                     label={gearCondition}
                     data={gearConditionData}
                     searchable={false}
+                    initialValue={addressOptions.gearCondition}
                   />
 
                   <View>
@@ -412,8 +419,9 @@ export const MaterialCheckout = ({navigation}: any) => {
                       )}
                     </Text>
                   </View>
-
-                  <ButtonGreen text="Submit" onPress={handleSubmit} />
+                  {mappedItems.length >= 1 && (
+                    <ButtonGreen text="Submit" onPress={handleSubmit} />
+                   )}
                 </View>
               </View>
             )}

@@ -11,20 +11,24 @@ export const initialFormData: Partial<InputField>[] = [
   //   name: 'projectDetails.projectId',
   // },sdasdfsd
   {
-    label: 'Order',
+    label: 'Order ',
     name: 'pickingDetails.order',
+    showAsterisk: true,
   },
   {
     label: 'Fss No ',
     name: 'pickingDetails.fss_number',
+    showAsterisk: true,
   },
   {
     label: 'Driver/Load ',
     name: 'pickingDetails.driver_load',
+    showAsterisk: true,
   },
   {
     label: 'Warehouse Person Name ',
     name: 'pickingDetails.warehouse_person',
+    showAsterisk: true,
   },
 ];
 
@@ -111,27 +115,32 @@ export const erectionRadioData = [
     heading: '1. Has the order been checked for any missed picked equipment ?',
     options: twoOptions,
     name: 'orderDetails.picked_equipment',
+    showAsterisk: true,
   },
   {
     heading:
       '1a. Have we notified our onsite supervisors an any changes to the orders ?',
     options: twoOptions,
     name: 'orderDetails.notified_supervisor',
+    showAsterisk: true,
   },
   {
     heading: '2.Has the order been moved to the staging area ready to load ? ',
     options: twoOptions,
     name: 'orderDetails.staging_area',
+    showAsterisk: true,
   },
   {
     heading: '2a. Is the order strapped and labelled correctly and clearly ? ',
     options: twoOptions,
     name: 'orderDetails.strapped_labelled',
+    showAsterisk: true,
   },
   {
     heading: '2b. Is the order safe to travel ? ',
     options: twoOptions,
     name: 'orderDetails.safe_travel',
+    showAsterisk: true,
   },
 ];
 
@@ -140,22 +149,26 @@ export const truckLoadingData = [
       heading: '3a. Is the load allocated to the correct driver ? ',
       options: twoOptions,
       name: 'truckLoading.allocated_correct_driver',
+      showAsterisk: true,
     },
     {
       heading:
         '3b. Have we loaded the pallets safely ? ',
       options: twoOptions,
       name: 'truckLoading.loaded_pallets_safely',
+      showAsterisk: true,
     },
     {
-      heading: '4. Has the load been loaded in a timely metter ? If not has the manager been advised on the delays ? ',
+      heading: '4. Has the load been loaded in a timely metter? If not has the manager been advised on the delays? ',
       options: twoOptions,
       name: 'truckLoading.manager_advised',
+      showAsterisk: true,
     },
     {
       heading: '5. I am comfortable with this order and load ',
       options: twoOptions,
       name: 'truckLoading.comfortable_with_order',
+      showAsterisk: true,
     },
   ];
 

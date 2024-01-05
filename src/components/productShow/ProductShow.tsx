@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {View, Text, ScrollView, FlatList} from 'react-native';
 import {productStyles} from './style';
 import {ButtonGreen} from '../../themes/text/ButtonGreen';
@@ -6,6 +6,7 @@ import {useSelector} from 'react-redux';
 import axios from 'axios';
 import commonStyles from '../../styles/commonStyles';
 import useUserInformation from '../../hooks/userInformation';
+import CustomAlert from '../../themes/buttons/Alert';
 interface ProductProps {
   category: string;
   id: string;
@@ -25,26 +26,25 @@ interface DeliveryDetailsProps {
   products: ProductProps[]; // Assuming you've already defined the 'Product' interface
   time: string;
 }
-const ProductsShow = () => {
+const ProductsShow = ({navigation}: any) => {
   const deliveryDetails = useSelector(
     (state: any) => state.delieveryDetails.address,
   );
+  const [isCustomAlertVisible, setCustomAlertVisible] = useState(false);
 
   const {username, userId} = useUserInformation();
-  const {
-    address,
-    date,
-    gearCondition,
-    notes,
-    time,
-  }: DeliveryDetailsProps = deliveryDetails;
-  console.log(deliveryDetails)
+  const {address, date, gearCondition, notes, time}: DeliveryDetailsProps =
+    deliveryDetails;
+  const handleCustomAlertClose = () => {
+    setCustomAlertVisible(false);
+    navigation.navigate('Home');
+  };
   const handleSubmit = async (values: any) => {
     const data = {
       deliveryDetails,
       submitter: username,
-      userId: userId
-    }
+      userId: userId,
+    };
     try {
       const response = await axios.post(
         'https://fivestaraccess.com.au/fivestaraccess_formapp/material_order_process_app.php',
@@ -58,7 +58,7 @@ const ProductsShow = () => {
       console.log('Post Response:', data);
       // handleGetStartedPress();
 
-      // setCustomAlertVisible(true);
+      setCustomAlertVisible(true);
     } catch (error) {
       console.error('Error:', error);
     }
@@ -75,10 +75,7 @@ const ProductsShow = () => {
         <Text>{new Date(date).toLocaleDateString() || 'N/A'}</Text>
       </Text>
       <Text>
-        <Text style={productStyles.delivery_details_text}>
-          {' '}
-          Delivery Time :
-        </Text>{' '}
+        <Text style={productStyles.delivery_details_text}>Delivery Time :</Text>{' '}
         <Text>{new Date(time).toLocaleTimeString() || 'N/A'}</Text>
       </Text>
       <Text>
@@ -90,14 +87,20 @@ const ProductsShow = () => {
       <Text>
         <Text style={productStyles.delivery_details_text}>
           Gear Condition :
-        </Text>
+        </Text>{' '}
         <Text>{gearCondition || 'N/A'}</Text>
       </Text>
       <Text>
         <Text style={productStyles.delivery_details_text}>
           Total Weight(KG) :
         </Text>{' '}
-        <Text>To Do this</Text>
+        <Text>
+          {deliveryDetails.products.reduce(
+            (accumulator: any, currentValue: any) =>
+              accumulator + currentValue.weight,
+            0,
+          )}
+        </Text>
       </Text>
       <Text>
         <Text style={productStyles.delivery_details_text}>
@@ -106,6 +109,12 @@ const ProductsShow = () => {
         <Text>{address || 'N/A'}</Text>
       </Text>
       <View style={productStyles.checkout_button}>
+        <CustomAlert
+          visible={isCustomAlertVisible}
+          title="Details submitted successfully"
+          message="Thank you for being with us"
+          onClose={handleCustomAlertClose}
+        />
         <ButtonGreen text="Checkout" onPress={handleSubmit} />
       </View>
     </View>
